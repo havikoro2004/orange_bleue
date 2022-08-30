@@ -1,0 +1,12 @@
+html,body {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+}
+.login_form{
+  display: grid;
+  grid-template-columns: 1fr;
+  height: 100vh;
+  justify-items: center;
+  align-items: center;
+}
