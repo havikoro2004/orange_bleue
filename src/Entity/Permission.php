@@ -35,9 +35,6 @@ class Permission
     private ?bool $members_subscription_read = null;
 
     #[ORM\Column]
-    private ?bool $members_schedules_write = null;
-
-    #[ORM\Column]
     private ?bool $payement_schedules_read = null;
 
     #[ORM\Column]
@@ -51,7 +48,6 @@ class Permission
     private ?Client $client = null;
 
     #[ORM\OneToOne(inversedBy: 'permission', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
     private ?Branch $branch = null;
 
     public function getId(): ?int
@@ -139,18 +135,6 @@ class Permission
     public function setMembersSubscriptionRead(bool $members_subscription_read): self
     {
         $this->members_subscription_read = $members_subscription_read;
-
-        return $this;
-    }
-
-    public function isMembersSchedulesWrite(): ?bool
-    {
-        return $this->members_schedules_write;
-    }
-
-    public function setMembersSchedulesWrite(bool $members_schedules_write): self
-    {
-        $this->members_schedules_write = $members_schedules_write;
 
         return $this;
     }
