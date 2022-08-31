@@ -22,19 +22,19 @@ class Client
     #[ORM\Column(length: 255)]
     private ?string $active = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $short_desc = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $full_desc = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $logo = null;
+    private ?string $logo_url = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $url = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $dpo = null;
 
     #[ORM\Column(length: 255)]
@@ -45,6 +45,9 @@ class Client
 
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: Branch::class, orphanRemoval: true)]
     private Collection $branches;
+
+    #[ORM\OneToOne(mappedBy: 'client', cascade: ['persist', 'remove'])]
+    private ?User $user = null;
 
     public function __construct()
     {
@@ -85,7 +88,7 @@ class Client
         return $this->short_desc;
     }
 
-    public function setShortDesc(string $short_desc): self
+    public function setShortDesc(?string $short_desc): self
     {
         $this->short_desc = $short_desc;
 
@@ -104,14 +107,14 @@ class Client
         return $this;
     }
 
-    public function getLogo(): ?string
+    public function getLogoUrl(): ?string
     {
-        return $this->logo;
+        return $this->logo_url;
     }
 
-    public function setLogo(?string $logo): self
+    public function setLogoUrl(?string $logo_url): self
     {
-        $this->logo = $logo;
+        $this->logo_url = $logo_url;
 
         return $this;
     }
@@ -133,7 +136,7 @@ class Client
         return $this->dpo;
     }
 
-    public function setDpo(string $dpo): self
+    public function setDpo(?string $dpo): self
     {
         $this->dpo = $dpo;
 
@@ -190,6 +193,28 @@ class Client
                 $branch->setClient(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($user === null && $this->user !== null) {
+            $this->user->setClient(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($user !== null && $user->getClient() !== $this) {
+            $user->setClient($this);
+        }
+
+        $this->user = $user;
 
         return $this;
     }

@@ -17,9 +17,15 @@ class Branch
     #[ORM\Column(type: Types::TEXT)]
     private ?string $adress = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $active = null;
+
     #[ORM\ManyToOne(inversedBy: 'branches')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Client $client = null;
+
+    #[ORM\OneToOne(mappedBy: 'branch', cascade: ['persist', 'remove'])]
+    private ?User $user = null;
 
     public function getId(): ?int
     {
@@ -38,6 +44,18 @@ class Branch
         return $this;
     }
 
+    public function getActive(): ?string
+    {
+        return $this->active;
+    }
+
+    public function setActive(string $active): self
+    {
+        $this->active = $active;
+
+        return $this;
+    }
+
     public function getClient(): ?Client
     {
         return $this->client;
@@ -46,6 +64,28 @@ class Branch
     public function setClient(?Client $client): self
     {
         $this->client = $client;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($user === null && $this->user !== null) {
+            $this->user->setBranch(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($user !== null && $user->getBranch() !== $this) {
+            $user->setBranch($this);
+        }
+
+        $this->user = $user;
 
         return $this;
     }
