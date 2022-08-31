@@ -49,6 +49,9 @@ class Client
     #[ORM\OneToOne(mappedBy: 'client', cascade: ['persist', 'remove'])]
     private ?User $user = null;
 
+    #[ORM\OneToOne(mappedBy: 'client', cascade: ['persist', 'remove'])]
+    private ?Permission $permission = null;
+
     public function __construct()
     {
         $this->branches = new ArrayCollection();
@@ -215,6 +218,23 @@ class Client
         }
 
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getPermission(): ?Permission
+    {
+        return $this->permission;
+    }
+
+    public function setPermission(Permission $permission): self
+    {
+        // set the owning side of the relation if necessary
+        if ($permission->getClient() !== $this) {
+            $permission->setClient($this);
+        }
+
+        $this->permission = $permission;
 
         return $this;
     }
