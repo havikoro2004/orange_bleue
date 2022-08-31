@@ -29,9 +29,6 @@ class Client
     private ?string $full_desc = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $logo_url = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
     private ?string $url = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -106,18 +103,6 @@ class Client
     public function setFullDesc(?string $full_desc): self
     {
         $this->full_desc = $full_desc;
-
-        return $this;
-    }
-
-    public function getLogoUrl(): ?string
-    {
-        return $this->logo_url;
-    }
-
-    public function setLogoUrl(?string $logo_url): self
-    {
-        $this->logo_url = $logo_url;
 
         return $this;
     }

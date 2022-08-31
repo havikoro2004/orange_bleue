@@ -1,7 +1,12 @@
+@font-face {
+  font-family: 'bahan';
+  src: url("../fonts/bahanchrif_najib.ttf");
+}
 html,body {
   width: 100vw;
   height: 100vh;
   margin: 0;
+  font-family: 'bahan';
 }
 .login_form{
   display: grid;

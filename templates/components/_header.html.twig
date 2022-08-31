@@ -1,10 +1,10 @@
 <nav class="navbar navbar-dark navbar-expand-lg bg-dark">
     <div class="container-fluid">
-        <button class="navbar-toggler mb-3 mt-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 mt-4">
                 <li class="nav-item">
                     {% if app.user %}
                         <a href="/logout" class="text-white text-decoration-none d-flex align-items-center">
@@ -24,7 +24,6 @@
                     {% endif %}
                 </li>
             </ul>
-
         </div>
     </div>
 </nav>
