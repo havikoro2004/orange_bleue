@@ -15,3 +15,12 @@ html,body {
   justify-items: center;
   align-items: center;
 }
+.ul-connexion{
+  margin-top: 1.5rem;
+}
+
+@media (min-width: 992px) {
+  .ul-connexion{
+    margin-top: 0;
+  }
+}
