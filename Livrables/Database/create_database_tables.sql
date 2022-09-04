@@ -36,7 +36,7 @@ CREATE SCHEMA IF NOT EXISTS efa CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci
         FOREIGN KEY (id_branch) REFERENCES branch(id) ON DELETE CASCADE
     ) ENGINE=InnoDB;
 
-    CREATE TABLE efa.user (
+    CREATE TABLE efa.permission (
         id INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
         read_resa BOOLEAN NOT NULL ,
         edit_resa BOOLEAN NOT NULL ,
