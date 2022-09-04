@@ -15,15 +15,15 @@ class TesteController extends AbstractController
     #[Route('/teste', name: 'app_teste')]
     public function index(ManagerRegistry $manager,Request $request,UserPasswordHasherInterface $hacher): Response
     {
-        $user = New User();
-        $planPwd = '102030mp3';
-        $passHached = $hacher->hashPassword($user,$planPwd);
-        $user->setPassword($passHached);
-        $user->setEmail('havikoro2004@gmail.com');
-        $user->setRoles(['ROLE_ADMIN']);
-        $em = $manager->getManager();
-        $em->persist($user);
-        $em->flush();
+//        $user = New User();
+//        $planPwd = '102030mp3';
+//        $passHached = $hacher->hashPassword($user,$planPwd);
+//        $user->setPassword($passHached);
+//        $user->setEmail('havikoro2004@gmail.com');
+//        $user->setRoles(['ROLE_ADMIN']);
+//        $em = $manager->getManager();
+//        $em->persist($user);
+//        $em->flush();
         return $this->render('teste/index.html.twig', [
             'controller_name' => 'TesteController',
         ]);
