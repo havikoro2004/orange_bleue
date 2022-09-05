@@ -19,18 +19,8 @@ html,body {
   margin-top: 1.5rem;
 }
 
-#client_permissions{
-  display: grid;
-  grid-template-columns: 1fr 16fr;
-}
-
 @media (min-width: 992px) {
   .ul-connexion{
     margin-top: 0;
-  }
-
-  #client_permissions{
-    display: grid;
-    grid-template-columns: 1fr 16fr 1fr 16fr;
   }
 }

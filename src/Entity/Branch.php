@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\BranchRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -26,13 +24,9 @@ class Branch
     #[ORM\JoinColumn(nullable: false)]
     private ?Client $client = null;
 
-    #[ORM\ManyToMany(targetEntity: Permission::class, mappedBy: 'branch')]
-    private Collection $permissions;
-
-    public function __construct()
-    {
-        $this->permissions = new ArrayCollection();
-    }
+    #[ORM\ManyToOne(inversedBy: 'branches')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Permission $permission = null;
 
     public function getId(): ?int
     {
@@ -75,29 +69,14 @@ class Branch
         return $this;
     }
 
-    /**
-     * @return Collection<int, Permission>
-     */
-    public function getPermissions(): Collection
+    public function getPermission(): ?Permission
     {
-        return $this->permissions;
+        return $this->permission;
     }
 
-    public function addPermission(Permission $permission): self
+    public function setPermission(?Permission $permission): self
     {
-        if (!$this->permissions->contains($permission)) {
-            $this->permissions->add($permission);
-            $permission->addBranch($this);
-        }
-
-        return $this;
-    }
-
-    public function removePermission(Permission $permission): self
-    {
-        if ($this->permissions->removeElement($permission)) {
-            $permission->removeBranch($this);
-        }
+        $this->permission = $permission;
 
         return $this;
     }

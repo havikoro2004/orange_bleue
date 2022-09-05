@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
 class Client
@@ -17,11 +18,16 @@ class Client
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Length(max: 50)]
+    #[Assert\Regex('/^\w+/')]
+    #[Assert\NotBlank]
     private ?string $name = null;
 
     #[ORM\Column]
     private ?bool $active = null;
 
+
+    #[Assert\Regex('/^\w+/')]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $short_desc = null;
 
@@ -31,25 +37,28 @@ class Client
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $url = null;
 
+    #[Assert\Regex('/^\w+/')]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $dpo = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Email]
     private ?string $technical_contact = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Email]
     private ?string $commercial_contact = null;
-
-    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Branch::class, orphanRemoval: true)]
-    private Collection $branches;
 
     #[ORM\ManyToMany(targetEntity: Permission::class, mappedBy: 'client')]
     private Collection $permissions;
 
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Branch::class, orphanRemoval: true)]
+    private Collection $branches;
+
     public function __construct()
     {
-        $this->branches = new ArrayCollection();
         $this->permissions = new ArrayCollection();
+        $this->branches = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -154,6 +163,33 @@ class Client
     }
 
     /**
+     * @return Collection<int, Permission>
+     */
+    public function getPermissions(): Collection
+    {
+        return $this->permissions;
+    }
+
+    public function addPermission(Permission $permission): self
+    {
+        if (!$this->permissions->contains($permission)) {
+            $this->permissions->add($permission);
+            $permission->addClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removePermission(Permission $permission): self
+    {
+        if ($this->permissions->removeElement($permission)) {
+            $permission->removeClient($this);
+        }
+
+        return $this;
+    }
+
+    /**
      * @return Collection<int, Branch>
      */
     public function getBranches(): Collection
@@ -178,33 +214,6 @@ class Client
             if ($branch->getClient() === $this) {
                 $branch->setClient(null);
             }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Permission>
-     */
-    public function getPermissions(): Collection
-    {
-        return $this->permissions;
-    }
-
-    public function addPermission(Permission $permission): self
-    {
-        if (!$this->permissions->contains($permission)) {
-            $this->permissions->add($permission);
-            $permission->addClient($this);
-        }
-
-        return $this;
-    }
-
-    public function removePermission(Permission $permission): self
-    {
-        if ($this->permissions->removeElement($permission)) {
-            $permission->removeClient($this);
         }
 
         return $this;

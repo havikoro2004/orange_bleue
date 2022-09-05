@@ -3,10 +3,9 @@
 namespace App\Form;
 
 use App\Entity\Client;
-use App\Entity\Permission;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -19,33 +18,22 @@ class ClientType extends AbstractType
         $builder
             ->add('name',TextType::class)
             ->add('active',CheckboxType::class,[
-                'required' => false,
+                'required'=>false
             ])
             ->add('short_desc',TextType::class,[
-                'required' => false,
+                'required'=>false
             ])
             ->add('full_desc',TextareaType::class,[
-                'required' => false,
+                'required'=>false
             ])
             ->add('url',TextType::class,[
-                'required' => false,
+                'required'=>false
             ])
             ->add('dpo',TextType::class,[
-                'required' => false,
+                'required'=>false
             ])
-            ->add('technical_contact',TextType::class)
-            ->add('commercial_contact',TextType::class)
-            ->add('permissions',EntityType::class,[
-                'choice_label' => 'name',
-                'class' =>Permission::class,
-                'choice_attr' =>function(){
-                    return [
-                      'class'=>'form-check-input'
-                    ];
-                },
-                'multiple' => true,
-                'expanded' => true,
-            ])
+            ->add('technical_contact',EmailType::class)
+            ->add('commercial_contact',EmailType::class)
         ;
     }
 
