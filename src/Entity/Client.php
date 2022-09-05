@@ -40,19 +40,16 @@ class Client
     #[ORM\Column(length: 255)]
     private ?string $commercial_contact = null;
 
-    #[ORM\ManyToOne(inversedBy: 'clients')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Permission $permission = null;
-
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: Branch::class, orphanRemoval: true)]
     private Collection $branches;
 
-    #[ORM\OneToOne(mappedBy: 'client', cascade: ['persist', 'remove'])]
-    private ?User $user = null;
+    #[ORM\ManyToMany(targetEntity: Permission::class, mappedBy: 'client')]
+    private Collection $permissions;
 
     public function __construct()
     {
         $this->branches = new ArrayCollection();
+        $this->permissions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -156,18 +153,6 @@ class Client
         return $this;
     }
 
-    public function getPermission(): ?Permission
-    {
-        return $this->permission;
-    }
-
-    public function setPermission(?Permission $permission): self
-    {
-        $this->permission = $permission;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, Branch>
      */
@@ -198,24 +183,29 @@ class Client
         return $this;
     }
 
-    public function getUser(): ?User
+    /**
+     * @return Collection<int, Permission>
+     */
+    public function getPermissions(): Collection
     {
-        return $this->user;
+        return $this->permissions;
     }
 
-    public function setUser(?User $user): self
+    public function addPermission(Permission $permission): self
     {
-        // unset the owning side of the relation if necessary
-        if ($user === null && $this->user !== null) {
-            $this->user->setClient(null);
+        if (!$this->permissions->contains($permission)) {
+            $this->permissions->add($permission);
+            $permission->addClient($this);
         }
 
-        // set the owning side of the relation if necessary
-        if ($user !== null && $user->getClient() !== $this) {
-            $user->setClient($this);
-        }
+        return $this;
+    }
 
-        $this->user = $user;
+    public function removePermission(Permission $permission): self
+    {
+        if ($this->permissions->removeElement($permission)) {
+            $permission->removeClient($this);
+        }
 
         return $this;
     }

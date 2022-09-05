@@ -8,16 +8,7 @@ CREATE SCHEMA IF NOT EXISTS efa CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci
 
     CREATE TABLE efa.permission (
         id INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-        read_resa BOOLEAN NOT NULL ,
-        edit_resa BOOLEAN NOT NULL ,
-        remove_resa BOOLEAN NOT NULL ,
-        read_payment BOOLEAN NOT NULL ,
-        edit_payment BOOLEAN NOT NULL ,
-        manage_drinks BOOLEAN NOT NULL ,
-        add_sub BOOLEAN NOT NULL ,
-        edit_sub BOOLEAN NOT NULL ,
-        remove_sub BOOLEAN NOT NULL ,
-        manage_schedules BOOLEAN NOT NULL ,
+        name VARCHAR(255) NOT NULL
 
     ) ENGINE=InnoDB;
 
@@ -31,8 +22,7 @@ CREATE SCHEMA IF NOT EXISTS efa CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci
         dpo VARCHAR(255) ,
         technical_contact VARCHAR(255) NOT NULL,
         commercial_contact VARCHAR(255) NOT NULL,
-        id_permission INT(10) NOT NULL ,
-        FOREIGN KEY (id_permission) REFERENCES permission(id)
+
     ) ENGINE=InnoDB;
 
     CREATE TABLE efa.branch (
@@ -40,10 +30,27 @@ CREATE SCHEMA IF NOT EXISTS efa CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci
         adress TEXT NOT NULL ,
         active BOOLEAN NOT NULL ,
         id_client INT(10) NOT NULL,
-        id_permission INT(10) NOT NULL,
-        FOREIGN KEY (id_permission) REFERENCES permission(id)
-        FOREIGN KEY (id_client) REFERENCES client(id)
+        FOREIGN KEY (id_client) REFERENCES client(id) ON DELETE CASCADE
     ) ENGINE=InnoDB;
+
+
+    CREATE TABLE efa.client_permission (
+        id_client INT(10),
+        id_permission INT(10),
+        PRIMARY KEY (id_client,id_permission),
+        FOREIGN KEY (id_client) REFERENCES client(id),
+        FOREIGN KEY (id_permission) REFERENCES permission(id)
+    ) ENGINE=InnoDB;    
+
+
+    CREATE TABLE efa.branch_permission (
+        id_branch INT(10),
+        id_permission INT(10),
+        PRIMARY KEY (id_branch,id_permission),
+        FOREIGN KEY (id_branch) REFERENCES branch(id),
+        FOREIGN KEY (id_permission) REFERENCES permission(id)
+    ) ENGINE=InnoDB;   
+
 
     CREATE TABLE efa.user (
         id INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY ,

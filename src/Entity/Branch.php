@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\BranchRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -24,12 +26,13 @@ class Branch
     #[ORM\JoinColumn(nullable: false)]
     private ?Client $client = null;
 
-    #[ORM\ManyToOne(inversedBy: 'branches')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Permission $permission = null;
+    #[ORM\ManyToMany(targetEntity: Permission::class, mappedBy: 'branch')]
+    private Collection $permissions;
 
-    #[ORM\OneToOne(mappedBy: 'branch', cascade: ['persist', 'remove'])]
-    private ?User $user = null;
+    public function __construct()
+    {
+        $this->permissions = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -72,36 +75,29 @@ class Branch
         return $this;
     }
 
-    public function getPermission(): ?Permission
+    /**
+     * @return Collection<int, Permission>
+     */
+    public function getPermissions(): Collection
     {
-        return $this->permission;
+        return $this->permissions;
     }
 
-    public function setPermission(?Permission $permission): self
+    public function addPermission(Permission $permission): self
     {
-        $this->permission = $permission;
+        if (!$this->permissions->contains($permission)) {
+            $this->permissions->add($permission);
+            $permission->addBranch($this);
+        }
 
         return $this;
     }
 
-    public function getUser(): ?User
+    public function removePermission(Permission $permission): self
     {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): self
-    {
-        // unset the owning side of the relation if necessary
-        if ($user === null && $this->user !== null) {
-            $this->user->setBranch(null);
+        if ($this->permissions->removeElement($permission)) {
+            $permission->removeBranch($this);
         }
-
-        // set the owning side of the relation if necessary
-        if ($user !== null && $user->getBranch() !== $this) {
-            $user->setBranch($this);
-        }
-
-        $this->user = $user;
 
         return $this;
     }
