@@ -20,7 +20,7 @@
                 <div class="my-3 p-4 article m-auto rounded" style="width: 98%">
                     {% if client.getImageName() %}
                         <a href="/client/{{ client.id }}">
-                            <img width="200px" height="160px" src="images/client_logo/{{ client.getImageName() }}" alt="partenaire".{{ client.id }}>
+                            <img width="200px" height="160px" src="/images/client_logo/{{ client.getImageName() }}" alt="partenaire".{{ client.id }}>
                         </a>
                     {% else %}
                         <a href="/client/{{ client.id }}">

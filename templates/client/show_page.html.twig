@@ -16,9 +16,15 @@
         </div>
         <h1 class="text-center text-secondary my-4">Liste des partenaires</h1>
             <div class="my-3 p-4 article m-auto rounded" style="width: 98%">
-                <a href="/client/{{ client.id }}">
-                    <img width="200px" height="160px" src="{{ asset('build/images/teste.jpg') }}" alt="partenaire".{{ client.id }}>
-                </a>
+                {% if client.getImageName() %}
+                    <a href="/client/{{ client.id }}">
+                        <img width="200px" height="160px" src="/images/client_logo/{{ client.getImageName() }}" alt="partenaire".{{ client.id }}>
+                    </a>
+                {% else %}
+                    <a href="/client/{{ client.id }}">
+                        <img width="200px" height="160px" src="{{ asset('build/images/default.jpg') }}" alt="partenaire".{{ client.id }}>
+                    </a>
+                {% endif %}
                 <ul class="list-group">
                     <li class="list-group-item border-0">Client ID :{{ client.id }}</li>
                 </ul>
