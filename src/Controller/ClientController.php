@@ -35,7 +35,9 @@ class ClientController extends AbstractController
             $error = $validator->validate($data);
         }
         if ($form->isSubmitted() && $form->isValid()){
-            dd($data);
+            $em->persist($data);
+            $em->flush();
+            $this->addFlash('success','Le nouveau partenaire a bien été ajouté');
         }
 
         return $this->render('client/add.html.twig', [

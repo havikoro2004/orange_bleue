@@ -17,6 +17,7 @@ class Client
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\Column(length: 255)]
     #[Assert\Length(max: 50)]
     #[Assert\Regex('/^\w+/')]
     #[Assert\NotBlank]
