@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Vich\UploaderBundle\Form\Type\VichFileType;
 
 class ClientType extends AbstractType
 {
@@ -24,6 +25,9 @@ class ClientType extends AbstractType
                 'required'=>false
             ])
             ->add('full_desc',TextareaType::class,[
+                'required'=>false
+            ])
+            ->add('imageFile',VichFileType::class,[
                 'required'=>false
             ])
             ->add('url',TextType::class,[

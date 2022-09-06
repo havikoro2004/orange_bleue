@@ -14,6 +14,10 @@
         {{ form_label(form, 'Description complète')}}
         {{ form_widget(form.full_desc , {'attr': {'placeholder': 'Ajouter une description complète','class':'form-control mb-2'}}) }}
     </div>
+<div class="mx-4">
+    {{ form_label(form, 'Image logo')}}
+    {{ form_widget(form.imageFile , {'attr': {'class':'form-control mb-2'}}) }}
+</div>
     <div class="mx-4">
         {{ form_label(form, 'Url')}}
         {{ form_widget(form.url , {'attr': {'placeholder': 'Ajouter un url','class':'form-control mb-2'}}) }}

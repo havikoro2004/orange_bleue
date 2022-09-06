@@ -1,0 +1,33 @@
+{{ form_start(form) }}
+    <div class="mx-4 form-check form-switch">
+        {{ form_widget(form.read_resa , {'class':'form-control mb-2'}) }}
+    </div>
+    <div class="mx-4 form-check form-switch">
+        {{ form_widget(form.edit_resa , {'class':'form-control mb-2'}) }}
+    </div>
+    <div class="mx-4 form-check form-switch">
+        {{ form_widget(form.remove_resa , {'class':'form-control mb-2'}) }}
+    </div>
+    <div class="mx-4 form-check form-switch">
+        {{ form_widget(form.read_payment, {'class':'form-control mb-2'}) }}
+    </div>
+    <div class="mx-4 form-check form-switch">
+        {{ form_widget(form.edit_payment , {'class':'form-control mb-2'}) }}
+    </div>
+    <div class="mx-4 form-check form-switch">
+        {{ form_widget(form.manage_drink , {'class':'form-control mb-2'}) }}
+    </div>
+    <div class="mx-4 form-check form-switch">
+        {{ form_widget(form.add_sub , {'class':'form-control mb-2'}) }}
+    </div>
+    <div class="mx-4 form-check form-switch">
+        {{ form_widget(form.edit_sub , {'class':'form-control mb-2'}) }}
+    </div>
+    <div class="mx-4 form-check form-switch">
+        {{ form_widget(form.remove_sub , {'class':'form-control mb-2'}) }}
+    </div>
+    <div class="mx-4 form-check form-switch">
+        {{ form_widget(form.manage_schedules , {'class':'form-control mb-2'}) }}
+    </div>
+    <button class="btn btn-primary mx-4 mb-5">Valider</button>
+{{ form_end(form) }}

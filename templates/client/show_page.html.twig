@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+{% block title %}Ajouter un partenaire!{% endblock %}
+
+{% block body %}
+    {% include 'components/_header.html.twig' %}
+    <section>
+        <div class="d-flex align-items-center my-1 bread" style="height: 3rem">
+            <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
+                width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);
+                " aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 mx-3">
+                    <li class="breadcrumb-item"><a href="/" class="text-dark text-decoration-none">Accueil</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Partenaires</li>
+                </ol>
+            </nav>
+        </div>
+        <h1 class="text-center text-secondary my-4">Liste des partenaires</h1>
+            <div class="my-3 p-4 article m-auto rounded" style="width: 98%">
+                <a href="/client/{{ client.id }}">
+                    <img width="200px" height="160px" src="{{ asset('build/images/teste.jpg') }}" alt="partenaire".{{ client.id }}>
+                </a>
+                <ul class="list-group">
+                    <li class="list-group-item border-0">Client ID :{{ client.id }}</li>
+                </ul>
+            </div>
+        <a class="btn btn-primary" href="/permission/add/{{ client.id }}">Ajouter permissions</a>
+    </section>
+    {% include 'components/_footer.html.twig' %}
+{% endblock %}

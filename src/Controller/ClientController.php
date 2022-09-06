@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Client;
 use App\Form\ClientType;
+use App\Repository\ClientRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,14 +16,16 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class ClientController extends AbstractController
 {
     #[Route('/client', name: 'app_client')]
-    public function index(): Response
+    public function index(ClientRepository $clientRepository): Response
     {
+        $clients = $clientRepository->findAll();
         return $this->render('client/index.html.twig', [
             'controller_name' => 'ClientController',
+            'clients'=>$clients
         ]);
     }
 
-    #[Route('/client/add', name: 'app_clien_add')]
+    #[Route('/client/add', name: 'app_client_add')]
     public function add(ManagerRegistry $manager , Request $request,ValidatorInterface $validator): Response
     {
         $error =null;
@@ -30,7 +34,7 @@ class ClientController extends AbstractController
         $form = $this->createForm(ClientType::class);
         $form->handleRequest($request);
 
-        $data = $form->getData($client);
+        $data = $form->getData();
         if ($data){
             $error = $validator->validate($data);
         }
@@ -45,4 +49,17 @@ class ClientController extends AbstractController
             'errors'=>$error
         ]);
     }
+
+    #[Route('/client/{id}', name: 'app_client_one')]
+    #[Entity('client', options: ['id' => 'id'])]
+    public function showOne(Client $client,ClientRepository $clientRepository): Response
+    {
+        $clientId = $clientRepository->findOneBy([
+            'id'=>$client->getId()
+        ]);
+        return $this->render('client/show_page.html.twig', [
+            'client'=>$clientId
+        ]);
+    }
+
 }

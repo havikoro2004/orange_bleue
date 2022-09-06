@@ -1,20 +1,49 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Hello ClientController!{% endblock %}
+{% block title %}Ajouter un partenaire!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/Users/Najib/Desktop/Energy_fit_academy/src/Controller/ClientController.php'|file_link(0) }}">src/Controller/ClientController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/Users/Najib/Desktop/Energy_fit_academy/templates/client/index.html.twig'|file_link(0) }}">templates/client/index.html.twig</a></code></li>
-    </ul>
-</div>
+    {% include 'components/_header.html.twig' %}
+    <section>
+        <div class="d-flex align-items-center my-1 bread" style="height: 3rem">
+            <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
+                width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);
+                " aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 mx-3">
+                    <li class="breadcrumb-item"><a href="/" class="text-dark text-decoration-none">Accueil</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Partenaires</li>
+                </ol>
+            </nav>
+        </div>
+        <h1 class="text-center text-secondary my-4">Liste des partenaires</h1>
+        <div>
+            {% for client in clients %}
+                <div class="my-3 p-4 article m-auto rounded" style="width: 98%">
+                    {% if client.getImageName() %}
+                        <a href="/client/{{ client.id }}">
+                            <img width="200px" height="160px" src="images/client_logo/{{ client.getImageName() }}" alt="partenaire".{{ client.id }}>
+                        </a>
+                    {% else %}
+                        <a href="/client/{{ client.id }}">
+                            <img width="200px" height="160px" src="{{ asset('build/images/default.jpg') }}" alt="partenaire".{{ client.id }}>
+                        </a>
+                    {% endif %}
+                    <ul class="list-group">
+                        <li class="list-group-item border-0">Client ID :{{ client.id }}</li>
+                        <li class="list-group-item border-0">Nom : {{ client.name }}</li>
+                        {% if client.getShortDesc() %}
+                            <li class="list-group-item border-0">Description courte : {{ client.getShortDesc() }}</li>
+                        {% else %}
+                            <li class="list-group-item border-0">Description courte : <span class="text-danger">Non fourni</span></li>
+                        {% endif %}
+                        {% if client.getUrl() %}
+                            <li class="list-group-item border-0">Description courte : {{ client.getUrl() }}</li>
+                        {% else %}
+                            <li class="list-group-item border-0">Url : <span class="text-danger">Non fourni</span></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% include 'components/_footer.html.twig' %}
 {% endblock %}
