@@ -18,28 +18,30 @@
         <div>
             {% for client in clients %}
                 <div class="my-3 p-4 article m-auto rounded" style="width: 98%">
-                    {% if client.getImageName() %}
                         <a href="/client/{{ client.id }}">
-                            <img width="200px" height="160px" src="/images/client_logo/{{ client.getImageName() }}" alt="partenaire".{{ client.id }}>
+                            {% if client.getImageName() %}
+                                <img width="200px" height="160px" src="/images/client_logo/{{ client.getImageName() }}" alt="partenaire".{{ client.id }}>
+                            {% else %}
+                                <img width="200px" height="160px" src="{{ asset('build/images/default.jpg') }}" alt="partenaire".{{ client.id }}>
+                            {% endif %}
                         </a>
-                    {% else %}
-                        <a href="/client/{{ client.id }}">
-                            <img width="200px" height="160px" src="{{ asset('build/images/default.jpg') }}" alt="partenaire".{{ client.id }}>
-                        </a>
-                    {% endif %}
                     <ul class="list-group">
                         <li class="list-group-item border-0">Client ID :{{ client.id }}</li>
                         <li class="list-group-item border-0">Nom : {{ client.name }}</li>
-                        {% if client.getShortDesc() %}
-                            <li class="list-group-item border-0">Description courte : {{ client.getShortDesc() }}</li>
-                        {% else %}
-                            <li class="list-group-item border-0">Description courte : <span class="text-danger">Non fourni</span></li>
-                        {% endif %}
-                        {% if client.getUrl() %}
-                            <li class="list-group-item border-0">Description courte : {{ client.getUrl() }}</li>
-                        {% else %}
-                            <li class="list-group-item border-0">Url : <span class="text-danger">Non fourni</span></li>
-                        {% endif %}
+                        <li class="list-group-item border-0">
+                            Description courte :
+                            {% if client.getShortDesc() %}
+                                {{ client.getShortDesc() }}
+                            {% else %}
+                                <span class="text-danger">Non fourni</span></li>
+                            {% endif %}
+                        <li class="list-group-item border-0">
+                            Url :
+                            {% if client.getUrl() %}
+                                {{ client.getUrl() }}
+                            {% else %}
+                                <span class="text-danger">Non fourni</span></li>
+                            {% endif %}
                     </ul>
                 </div>
             {% endfor %}

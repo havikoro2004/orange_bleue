@@ -22,13 +22,20 @@ html,body {
 }
 .article {
   display: grid;
-  grid-template-columns: 1fr 6fr;
-  align-items: center;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr;
   background-color: #bdc3c7;
   gap: 1rem;
 }
 .bread{
   background-color: #bdc3c7;
+}
+@media (min-width: 720px) {
+  .article {
+    align-items: center;
+    grid-template-columns: 1fr 6fr;
+    grid-template-rows: 1fr ;
+  }
 }
 @media (min-width: 992px) {
   .ul-connexion{

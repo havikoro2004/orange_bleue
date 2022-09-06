@@ -10,11 +10,12 @@
                 " aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 mx-3">
                     <li class="breadcrumb-item"><a href="/" class="text-dark text-decoration-none">Accueil</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Partenaires</li>
+                    <li class="breadcrumb-item"><a href="/client" class="text-dark text-decoration-none">Partenaires</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ client.name }}</li>
                 </ol>
             </nav>
         </div>
-        <h1 class="text-center text-secondary my-4">Liste des partenaires</h1>
+        <h1 class="text-center text-secondary my-4">Page du partenaire {{ client.name }}</h1>
             <div class="my-3 p-4 article m-auto rounded" style="width: 98%">
                 {% if client.getImageName() %}
                     <a href="/client/{{ client.id }}">
@@ -27,6 +28,41 @@
                 {% endif %}
                 <ul class="list-group">
                     <li class="list-group-item border-0">Client ID :{{ client.id }}</li>
+                    <li class="list-group-item border-0">Nom client :{{ client.name }}</li>
+                    <li class="list-group-item border-0">
+                        Description courte :
+                        {% if client.getShortDesc() %}
+                            {{ client.getShortDesc() }}
+                        {% else %}
+                            <span class="text-danger">Non fourni</span>
+                        {% endif %}
+                    </li>
+                    <li class="list-group-item border-0">
+                        Description complète :
+                        {% if client.getFullDesc() %}
+                            {{ client.getFullDesc() }}
+                        {% else %}
+                            <span class="text-danger">Non fourni</span>
+                        {% endif %}
+                    </li>
+                    <li class="list-group-item border-0">
+                        Url :
+                        {% if client.getUrl() %}
+                            {{ client.getUrl() }}
+                        {% else %}
+                            <span class="text-danger">Non fourni</span>
+                        {% endif %}
+                    </li>
+                    <li class="list-group-item border-0">
+                        Dpo :
+                        {% if client.getDpo() %}
+                            {{ client.getDpo() }}
+                        {% else %}
+                            <span class="text-danger">Non fourni</span>
+                        {% endif %}
+                    </li>
+                    <li class="list-group-item border-0">Contact technique : {{ client.getTechnicalContact() }}</li>
+                    <li class="list-group-item border-0">Contact commercial : {{ client.getCommercialContact() }}</li>
                 </ul>
             </div>
         <a class="btn btn-primary" href="/permission/add/{{ client.id }}">Ajouter permissions</a>
