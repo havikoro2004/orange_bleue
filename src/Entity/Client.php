@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
 class Client
@@ -16,13 +17,16 @@ class Client
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[Assert\Length(max: 50)]
+    #[Assert\Regex('/^\w+/')]
+    #[Assert\NotBlank]
     private ?string $name = null;
 
     #[ORM\Column]
     private ?bool $active = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Regex('/^\w+/')]
     private ?string $short_desc = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
@@ -32,12 +36,15 @@ class Client
     private ?string $url = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Regex('/^\w+/')]
     private ?string $dpo = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Email]
     private ?string $technical_contact = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Email]
     private ?string $commercial_contact = null;
 
     #[ORM\ManyToMany(targetEntity: Permission::class, mappedBy: 'client')]

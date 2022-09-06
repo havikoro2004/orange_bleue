@@ -1,23 +1,34 @@
 {{ form_start(form) }}
-    {{ form_label(form, 'Nom')}}
-    {{ form_widget(form.name , {'attr': {'placeholder': 'Ajouter un nom','class':'form-control mb-2'}}) }}
-    <div class="form-check form-switch">
-        {{ form_label(form, 'Active')}}
+    <div class="mx-4">
+        {{ form_label(form, 'Nom')}}
+        {{ form_widget(form.name , {'attr': {'placeholder': 'Ajouter un nom','class':'form-control mb-2'}}) }}
+    </div>
+    <div class="form-check form-switch d-flex">
         {{ form_widget(form.active , {'attr': {'class':'form-control mb-2 form-check-input'}}) }}
     </div>
-    {{ form_label(form, 'Petite Description')}}
-    {{ form_widget(form.short_desc , {'attr': {'placeholder': 'Ajouter une petite description','class':'form-control mb-2'}}) }}
-    {{ form_label(form, 'Description complète')}}
-    {{ form_widget(form.full_desc , {'attr': {'placeholder': 'Ajouter une description complète','class':'form-control mb-2'}}) }}
-    {{ form_label(form, 'Url')}}
-    {{ form_widget(form.url , {'attr': {'placeholder': 'Ajouter un url','class':'form-control mb-2'}}) }}
-    {{ form_label(form, 'DPO')}}
-    {{ form_widget(form.dpo , {'attr': {'placeholder': 'Ajouter le DPO','class':'form-control mb-2'}}) }}
-    {{ form_label(form, 'Contact technique')}}
-    {{ form_widget(form.technical_contact , {'attr': {'placeholder': 'Ajouter le contact technique','class':'form-control mb-2'}}) }}
-    {{ form_label(form, 'Contact commercial')}}
-    {{ form_widget(form.commercial_contact , {'attr': {'placeholder': 'Ajouter le contact commercial','class':'form-control mb-2'}}) }}
-
-
-<button class="btn btn-primary">Valider</button>
+    <div class="mx-4">
+        {{ form_label(form, 'Petite Description')}}
+        {{ form_widget(form.short_desc , {'attr': {'placeholder': 'Ajouter une petite description','class':'form-control mb-2'}}) }}
+    </div>
+    <div class="mx-4">
+        {{ form_label(form, 'Description complète')}}
+        {{ form_widget(form.full_desc , {'attr': {'placeholder': 'Ajouter une description complète','class':'form-control mb-2'}}) }}
+    </div>
+    <div class="mx-4">
+        {{ form_label(form, 'Url')}}
+        {{ form_widget(form.url , {'attr': {'placeholder': 'Ajouter un url','class':'form-control mb-2'}}) }}
+    </div>
+    <div class="mx-4">
+        {{ form_label(form, 'DPO')}}
+        {{ form_widget(form.dpo , {'attr': {'placeholder': 'Ajouter le DPO','class':'form-control mb-2'}}) }}
+    </div>
+    <div class="mx-4">
+        {{ form_label(form, 'Contact technique')}}
+        {{ form_widget(form.technical_contact , {'attr': {'placeholder': 'Ajouter le contact technique','class':'form-control mb-2'}}) }}
+    </div>
+    <div class="mx-4">
+        {{ form_label(form, 'Contact commercial')}}
+        {{ form_widget(form.commercial_contact , {'attr': {'placeholder': 'Ajouter le contact commercial','class':'form-control mb-2'}}) }}
+    </div>
+    <button class="btn btn-primary mx-4 mb-5">Valider</button>
 {{ form_end(form) }}

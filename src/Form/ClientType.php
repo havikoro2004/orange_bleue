@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Client;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -31,8 +32,8 @@ class ClientType extends AbstractType
             ->add('dpo',TextType::class,[
                 'required'=>false
             ])
-            ->add('technical_contact',TextType::class)
-            ->add('commercial_contact',TextType::class)
+            ->add('technical_contact',EmailType::class)
+            ->add('commercial_contact',EmailType::class)
         ;
     }
 
