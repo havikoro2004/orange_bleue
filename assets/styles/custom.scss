@@ -24,21 +24,37 @@ html,body {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 1fr 1fr;
-  background-color: #bdc3c7;
-  gap: 1rem;
+  background-color: #dfe4ea;
+  gap: 0;
 }
 .bread{
-  background-color: #bdc3c7;
+  background-color: #dfe4ea;
+  margin-top: 0.7rem;
+}
+.home {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+  height: 100vh;
+  gap: 1rem;
 }
 @media (min-width: 720px) {
   .article {
     align-items: center;
     grid-template-columns: 1fr 6fr;
     grid-template-rows: 1fr ;
+    gap: 1rem;
+  }
+  .home {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
   }
 }
 @media (min-width: 992px) {
   .ul-connexion{
+    margin-top: 0;
+  }
+  .bread{
     margin-top: 0;
   }
 }
