@@ -1,0 +1,17 @@
+{{ form_start(form) }}
+    <div class="mx-4">
+        {{ form_label(form, 'Email ')}}
+        {{ form_widget(form.email , {'attr': {'placeholder': 'Ajouter une adresse email','class':'form-control mb-2'}}) }}
+    </div>
+    <div class="mx-4">
+        {{ form_label(form, 'Mot de passe ')}}
+        {{ form_widget(form.password , {'attr': {'placeholder': 'Ajouter un mot de passe','class':'form-control mb-2'}}) }}
+    </div>
+    <div class="mx-4">
+        {{ form_label(form, 'Confirmer le mot de passe ')}}
+        {{ form_widget(form.confirmPwd , {'attr': {'placeholder': 'Confirmer le mot de passe','class':'form-control mb-2'}}) }}
+    </div>
+   <div class="container text-center">
+       <button class="btn btn-primary mx-4 mb-5 mt-4" style="width: 10rem">Valider</button>
+   </div>
+{{ form_end(form) }}

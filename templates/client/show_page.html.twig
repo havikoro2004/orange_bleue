@@ -19,6 +19,7 @@
         {% if permissions is empty%}
          <a class="btn btn-primary" href="/permission/add/{{ client.id }}">Ajouter permission</a>
         {% endif %}
+        <a class="btn btn-primary" href="/client/user/add/{{ client.id }}">Ajouter utilisateur</a>
             <div class="my-3 p-4 article m-auto rounded" style="width: 98%">
                 {% if client.getImageName() %}
                     <a href="/client/{{ client.id }}">
