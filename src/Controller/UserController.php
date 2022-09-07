@@ -62,6 +62,44 @@ class UserController extends AbstractController
         ]);
     }
 
+    #[Route('/client/{id_client}/user/{id_user}/edit')]
+    #[Entity('client', options: ['id' => 'id_client'])]
+    public function edit(User $user,UserPasswordHasherInterface $hasher,UserRepository $UserRepository ,Client $client,ManagerRegistry $manager,Request $request,ValidatorInterface $validator):Response {
+        $em = $manager->getManager();
+        $error = null;
+        $form= $this->createForm(UserType::class,$user);
+        $form->handleRequest($request);
+        $data = $form->getData($user);
+        $userExiste = $UserRepository->findOneBy([
+            'email'=>$form->get('email')->getData()
+        ]);
+        if ($data){
+            $error = $validator->validate($data);
+        }
+        if ($form->isSubmitted() && $form->isValid()){
+            if ($form->get('password')->getData() !== $form->get('confirmPwd')->getData()){
+                $this->addFlash('alert','Les mots de passe ne correspondent pas');
+            } elseif ($userExiste && $userExiste->getId() !== $user->getId()){
+                $this->addFlash('alert','Cette adresse email est deja utilisé ');
+            }else {
+                $hachPwd = $hasher->hashPassword($user,$form->get('password')->getData());
+                $data->setPassword($hachPwd);
+                $data->setConfirmPwd($hachPwd);
+                $data->setRoles(['ROLE_READER']);
+                $data->setClient($client);
+                $em->persist($data);
+                $em->flush();
+                $this->addFlash('success','Le nouvel utilisateur a bien été enregistré');
+            }
+        }
+
+
+        return $this->render('user/user_edit.html.twig', [
+            'form'=>$form->createView(),
+            'errors'=>$error,'client'=>$client,
+        ]);
+    }
+
     #[Route('/client/{id_client}/user/{id_user}/delete')]
     #[Entity('client', options: ['id' => 'id_client'])]
     public function delete(Client $client ,ManagerRegistry $manager,User $user):Response {

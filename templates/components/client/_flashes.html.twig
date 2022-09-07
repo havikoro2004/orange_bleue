@@ -1,22 +1,19 @@
-<div class="container text-center">
-    <div class="container text-left">
-        {# ********************* Les messages Flashe ******************* #}
-        {% for message in app.flashes('success') %}
-            <div class="flash-notice text-center">
-                <div class="alert alert-success">{{ message }}</div>
-            </div>
-        {% endfor %}
-        {% for message in app.flashes('alert') %}
-            <div class="flash-notice text-center">
-                <div class="alert alert-danger">{{ message }}</div>
-            </div>
-        {% endfor %}
-        {# ********************* Les messages erreurs validator ******************* #}
-        {% for error in errors %}
-            <div class="alert alert-danger text-center">
-                {{ error.message }}
-            </div>
-        {% endfor %}
-    </div>
+<div class="container g-0">
+    {# ********************* Les messages Flashe ******************* #}
+    {% for message in app.flashes('success') %}
+        <div class="flash-notice text-center">
+            <div class="alert alert-success">{{ message }}</div>
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('alert') %}
+        <div class="flash-notice text-center">
+            <div class="alert alert-danger">{{ message }}</div>
+        </div>
+    {% endfor %}
+    {# ********************* Les messages erreurs validator ******************* #}
+    {% for error in errors %}
+        <div class="alert alert-danger text-center">
+            {{ error.message }}
+        </div>
+    {% endfor %}
 </div>
-

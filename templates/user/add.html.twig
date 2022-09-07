@@ -35,7 +35,7 @@
                         <th scope="row">{{ user.client.getId() }}</th>
                         <td>{{ user.email }}</td>
                         <td>
-                            <button class="btn btn-primary btnTable">Modifier</button>
+                            <a href="/client/{{ user.client.getId() }}/user/{{ user.id }}/edit" class="btn btn-primary btnTable">Modifier</a>
                         </td>
                         <td>
                             {% include 'components/user/_modal.html.twig' %}
@@ -45,7 +45,7 @@
                 </table>
             </div>
             <h2 class="text-center text-secondary">Rappel</h2>
-            <div class="container text-center alert alert-dark">Un partenaire doit avoir un utilisateur max</div>
+            <div class="container text-center alert alert-info">Un partenaire doit avoir un utilisateur max</div>
         {% else %}
             <div class="container text-center alert alert-dark">Aucun utilisateur n'est enregistré pour ce lient</div>
             {% include 'components/user/_form.html.twig' %}

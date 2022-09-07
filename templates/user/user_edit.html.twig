@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'bootstrap_5_layout.html.twig' %}
+{% block title %}Ajouter une permission!{% endblock %}
+
+{% block body %}
+    {% include 'components/_header.html.twig' %}
+    <section style="height: 90vh">
+        <div class="d-flex align-items-center border border-primary border-1 bread mx-1 rounded-2" style="height: 3rem">
+            <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
+                width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);
+                " aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 mx-3">
+                    <li class="breadcrumb-item"><a href="/" class="text-dark text-decoration-none">Accueil</a></li>
+                    <li class="breadcrumb-item"><a href="/client" class="text-dark text-decoration-none">Parnetaires</a></li>
+                    <li class="breadcrumb-item"><a href="/client/{{ client.id }}" class="text-dark text-decoration-none">Profil</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Ajouter</li>
+                </ol>
+            </nav>
+        </div>
+        <h1 class="text-center text-secondary my-4">Ajouter un utilisateur </h1>
+        {% include 'components/user/_flashes.html.twig' %}
+        {% include 'components/user/_form.html.twig' %}
+    </section>
+    {% include 'components/_footer.html.twig' %}
+{% endblock %}
