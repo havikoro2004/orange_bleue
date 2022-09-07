@@ -21,25 +21,39 @@ html,body {
   background-size: cover;
   background-position: center;
 }
+.btnHome{
+  height: 100%;
+}
 .ul-connexion{
   margin-top: 1.5rem;
 }
 .article {
   display: grid;
   grid-template-columns: 1fr;
-  background-color: #dfe4ea;
+  background-color: #f1f2f6;
   gap: 1rem;
 }
 .bread{
-  background-color: #dfe4ea;
+  background-color: #f1f2f6;
   margin-top: 0.7rem;
 }
 .home {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
   height: 100vh;
   gap: 1rem;
+  padding-top: 0.3rem;
+}
+.bodyHome{
+  background-image: url("../images/login_bg.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+.partenaire{
+  display: grid;
+  grid-template-columns: 1fr;
 }
 @media (min-width: 720px) {
   .article {
@@ -47,8 +61,12 @@ html,body {
     grid-template-rows: 1fr ;
   }
   .home {
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr;
+    height: 60vh;
+  }
+  .btnHome{
+    height: 50%;
   }
 }
 @media (min-width: 992px) {
@@ -57,5 +75,8 @@ html,body {
   }
   .bread{
     margin-top: 0;
+  }
+  .partenaire{
+    grid-template-columns: 1fr 1fr;
   }
 }
