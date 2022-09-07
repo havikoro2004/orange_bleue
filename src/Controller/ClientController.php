@@ -30,6 +30,7 @@ class ClientController extends AbstractController
     #[Route('/client/add', name: 'app_client_add')]
     public function add(ManagerRegistry $manager , Request $request,ValidatorInterface $validator): Response
     {
+        $client = New Client();
         $error =null;
         $em = $manager->getManager();
         $form = $this->createForm(ClientType::class);
@@ -40,6 +41,7 @@ class ClientController extends AbstractController
             $error = $validator->validate($data);
         }
         if ($form->isSubmitted() && $form->isValid()){
+            $data->setCreateAt(new \DateTime('now'));
             $em->persist($data);
             $em->flush();
             $this->addFlash('success','Le nouveau partenaire a bien été ajouté');
@@ -47,6 +49,32 @@ class ClientController extends AbstractController
         }
 
         return $this->render('client/add.html.twig', [
+            'form'=>$form->createView(),
+            'errors'=>$error
+        ]);
+    }
+
+
+    #[Route('/client/{id}/edit', name: 'app_client_edit')]
+    public function edit(Client $client,ManagerRegistry $manager , Request $request,ValidatorInterface $validator): Response
+    {
+        $error =null;
+        $em = $manager->getManager();
+        $form = $this->createForm(ClientType::class,$client);
+        $form->handleRequest($request);
+
+        $data = $form->getData();
+        if ($data){
+            $error = $validator->validate($data);
+        }
+        if ($form->isSubmitted() && $form->isValid()){
+            $em->persist($data);
+            $em->flush();
+            $this->addFlash('success','Le profil du client a bien été modifié');
+            return $this->redirectToRoute('app_client');
+        }
+
+        return $this->render('client/client_edit.html.twig', [
             'form'=>$form->createView(),
             'errors'=>$error
         ]);

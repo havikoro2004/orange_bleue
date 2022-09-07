@@ -6,3 +6,6 @@ import './bootstrap';
 if ( window.history.replaceState ) {
     window.history.replaceState( null, null, window.location.href );
 }
+if(performance.navigation.type == 2){
+    location.reload(true);
+}

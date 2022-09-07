@@ -48,6 +48,7 @@ class Client
     private ?\DateTimeInterface $updatedAt = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Url(protocols: ['http', 'https', 'ftp'])]
     private ?string $url = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -67,6 +68,9 @@ class Client
 
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: Branch::class)]
     private Collection $branches;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $createAt = null;
 
     public function __construct()
     {
@@ -256,5 +260,17 @@ class Client
     public function getImageName(): ?string
     {
         return $this->imageName;
+    }
+
+    public function getCreateAt(): ?\DateTimeInterface
+    {
+        return $this->createAt;
+    }
+
+    public function setCreateAt(\DateTimeInterface $createAt): self
+    {
+        $this->createAt = $createAt;
+
+        return $this;
     }
 }
