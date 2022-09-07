@@ -48,9 +48,13 @@ class UserController extends AbstractController
                 $data->setConfirmPwd($hachPwd);
                 $data->setRoles(['ROLE_READER']);
                 $data->setClient($client);
+                $data->setCreateAt(new \DateTime('now'));
                 $em->persist($data);
                 $em->flush();
                 $this->addFlash('success','Le nouvel utilisateur a bien été enregistré');
+                return $this->redirectToRoute('app_user_client_add',[
+                    'id'=>$client->getId()
+                ]);
             }
 
         }
