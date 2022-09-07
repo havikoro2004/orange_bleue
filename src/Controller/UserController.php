@@ -19,8 +19,12 @@ class UserController extends AbstractController
 {
     #[Route('/client/user/add/{id}', name: 'app_user_client_add')]
     #[Entity('client', options: ['id' => 'id'])]
-    public function index(UserPasswordHasherInterface $hasher,UserRepository $users ,Client $client,ManagerRegistry $manager,Request $request,ValidatorInterface $validator): Response
+    public function index(UserPasswordHasherInterface $hasher,UserRepository $UserRepository ,Client $client,ManagerRegistry $manager,Request $request,ValidatorInterface $validator): Response
     {
+        $users=null;
+        $users = $UserRepository->findOneBy([
+           'client'=>$client->getId()
+        ]);
         $user = New User();
         $em = $manager->getManager();
         $error = null;
@@ -34,7 +38,7 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()){
             if ($form->get('password')->getData() !== $form->get('confirmPwd')->getData()){
                 $this->addFlash('alert','Les mots de passe ne correspondent pas');
-            } elseif ($users->findOneBy([
+            } elseif ($UserRepository->findOneBy([
                 'email'=>$form->get('email')->getData()
             ])){
                 $this->addFlash('alert','Cette adresse email est deja utilisé ');
@@ -43,6 +47,7 @@ class UserController extends AbstractController
                 $data->setPassword($hachPwd);
                 $data->setConfirmPwd($hachPwd);
                 $data->setRoles(['ROLE_READER']);
+                $data->setClient($client);
                 $em->persist($data);
                 $em->flush();
                 $this->addFlash('success','Le nouvel utilisateur a bien été enregistré');
@@ -52,7 +57,21 @@ class UserController extends AbstractController
 
         return $this->render('user/add.html.twig', [
             'form'=>$form->createView(),
-            'errors'=>$error,'client'=>$client
+            'errors'=>$error,'client'=>$client,
+            'user'=>$users
+        ]);
+    }
+
+    #[Route('/client/{id_client}/user/{id_user}/delete')]
+    #[Entity('client', options: ['id' => 'id_client'])]
+    public function delete(Client $client ,ManagerRegistry $manager,User $user):Response {
+        $em = $manager->getManager();
+        $em->remove($user);
+        $em->flush();
+        $this-> addFlash('success','L\'utilisateur a bien été supprimé');
+
+        return $this->redirectToRoute('app_user_client_add',[
+            'id'=>$client->getId()
         ]);
     }
 }

@@ -16,10 +16,12 @@
             </nav>
         </div>
         <h1 class="text-center text-secondary my-4">Page du partenaire {{ client.name }}</h1>
-        {% if permissions is empty%}
-         <a class="btn btn-primary" href="/permission/add/{{ client.id }}">Ajouter permission</a>
-        {% endif %}
-        <a class="btn btn-primary" href="/client/user/add/{{ client.id }}">Ajouter utilisateur</a>
+            <div class="container text-center">
+                {% if permissions is empty%}
+                    <a class="btn btn-success" href="/permission/add/{{ client.id }}">Ajouter permission</a>
+                {% endif %}
+                <a class="btn btn-success" href="/client/user/add/{{ client.id }}">Gérer utilisateur</a>
+            </div>
             <div class="my-3 p-4 article m-auto rounded" style="width: 98%">
                 {% if client.getImageName() %}
                     <a href="/client/{{ client.id }}">
