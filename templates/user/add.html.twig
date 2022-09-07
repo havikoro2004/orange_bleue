@@ -21,7 +21,7 @@
         {% include 'components/user/_flashes.html.twig' %}
         {% if user %}
             <div class="mx-4">
-                <table class="table table-hover">
+                <table class="table table-hover text-center" >
                     <thead>
                     <tr>
                         <th scope="col">Id de l'utilisateur</th>
@@ -31,11 +31,11 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
+                    <tr class="align-middle">
                         <th scope="row">{{ user.client.getId() }}</th>
                         <td>{{ user.email }}</td>
                         <td>
-                            <button class="btn btn-primary">Modifier</button>
+                            <button class="btn btn-primary btnTable">Modifier</button>
                         </td>
                         <td>
                             {% include 'components/user/_modal.html.twig' %}
@@ -44,8 +44,12 @@
                     </tbody>
                 </table>
             </div>
+            <h2 class="text-center text-secondary">Rappel</h2>
+            <div class="container text-center alert alert-dark">Un partenaire doit avoir un utilisateur max</div>
+        {% else %}
+            <div class="container text-center alert alert-dark">Aucun utilisateur n'est enregistré pour ce lient</div>
+            {% include 'components/user/_form.html.twig' %}
         {% endif %}
-        {% include 'components/user/_form.html.twig' %}
     </section>
     {% include 'components/_footer.html.twig' %}
 {% endblock %}

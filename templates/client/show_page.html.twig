@@ -17,22 +17,24 @@
         </div>
         <h1 class="text-center text-secondary my-4">Page du partenaire {{ client.name }}</h1>
             <div class="container text-center">
-                {% if permissions is empty%}
+                {% if permissions is empty %}
                     <a class="btn btn-success" href="/permission/add/{{ client.id }}">Ajouter permission</a>
+                {% else %}
+                    <a class="btn btn-success" href="/permission/add/{{ client.id }}">Mofidier les permissions</a>
                 {% endif %}
                 <a class="btn btn-success" href="/client/user/add/{{ client.id }}">Gérer utilisateur</a>
             </div>
-            <div class="my-3 p-4 article m-auto rounded" style="width: 98%">
+            <div class="my-3 p-4 article m-auto rounded border border-primary" style="width: 98%">
                 {% if client.getImageName() %}
                     <a href="/client/{{ client.id }}">
-                        <img width="200px" height="160px" src="/images/client_logo/{{ client.getImageName() }}" alt="partenaire".{{ client.id }}>
+                        <img class="list-group border border-primary border-1" width="200px" height="160px" src="/images/client_logo/{{ client.getImageName() }}" alt="partenaire".{{ client.id }}>
                     </a>
                 {% else %}
                     <a href="/client/{{ client.id }}">
-                        <img width="200px" height="160px" src="{{ asset('build/images/default.jpg') }}" alt="partenaire".{{ client.id }}>
+                        <img class="border border-primary list-group border border-primary border-1" width="200px" height="160px" src="{{ asset('build/images/default.jpg') }}" alt="partenaire".{{ client.id }}>
                     </a>
                 {% endif %}
-                <ul class="list-group">
+                <ul class="list-group border border-primary border-1">
                     <li class="list-group-item border-0">Client ID :{{ client.id }}</li>
                     <li class="list-group-item border-0">Nom client :{{ client.name }}</li>
                     <li class="list-group-item border-0">

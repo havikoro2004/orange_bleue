@@ -21,6 +21,12 @@ html,body {
   background-size: cover;
   background-position: center;
 }
+table{
+  font-size: 80%;
+}
+.btnTable{
+  font-size: 80%;
+}
 .btnHome{
   height: 100%;
 }
@@ -34,7 +40,6 @@ html,body {
   gap: 1rem;
 }
 .bread{
-  background-color: #f1f2f6;
   margin-top: 0.7rem;
 }
 .home {
@@ -78,5 +83,11 @@ html,body {
   }
   .partenaire{
     grid-template-columns: 1fr 1fr;
+  }
+  table{
+    font-size: 100%;
+  }
+  .btnTable{
+    font-size: 100%;
   }
 }
