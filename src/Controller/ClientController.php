@@ -22,7 +22,8 @@ class ClientController extends AbstractController
         $clients = $clientRepository->findAll();
         return $this->render('client/index.html.twig', [
             'controller_name' => 'ClientController',
-            'clients'=>$clients
+            'clients'=>$clients,
+            'errors'=>null
         ]);
     }
 
@@ -30,7 +31,6 @@ class ClientController extends AbstractController
     public function add(ManagerRegistry $manager , Request $request,ValidatorInterface $validator): Response
     {
         $error =null;
-        $client = New Client();
         $em = $manager->getManager();
         $form = $this->createForm(ClientType::class);
         $form->handleRequest($request);
@@ -43,6 +43,7 @@ class ClientController extends AbstractController
             $em->persist($data);
             $em->flush();
             $this->addFlash('success','Le nouveau partenaire a bien été ajouté');
+            return $this->redirectToRoute('app_client');
         }
 
         return $this->render('client/add.html.twig', [

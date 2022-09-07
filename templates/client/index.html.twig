@@ -15,6 +15,7 @@
             </nav>
         </div>
         <h1 class="text-center text-secondary my-4">Liste des partenaires</h1>
+        {% include 'components/client/_flashes.html.twig' %}
         <div class="partenaire">
             {% for client in clients %}
                 <div class="my-3 p-4 article m-auto rounded list-group border border-primary border-1" style="width: 98%">
