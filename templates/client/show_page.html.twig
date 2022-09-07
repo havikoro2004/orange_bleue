@@ -18,11 +18,12 @@
         <h1 class="text-center text-secondary my-4">Page du partenaire {{ client.name }}</h1>
             <div class="container text-center">
                 {% if permissions is empty %}
-                    <a class="btn btn-success" href="/permission/add/{{ client.id }}">Ajouter permission</a>
+                    <a class="btn btn-success" href="/permission/add/{{ client.id }}">Ajouter permission &nbsp<i class="bi bi-plus-circle" style="font-size:14px"></i></a>
                 {% else %}
-                    <a class="btn btn-success" href="/permission/add/{{ client.id }}">Mofidier les permissions</a>
+                    <a class="btn btn-success" href="/permission/add/{{ client.id }}">Permissions &nbsp<i class="bi bi-exclamation-octagon" style="font-size:14px"></i></a>
                 {% endif %}
-                <a class="btn btn-success" href="/client/user/add/{{ client.id }}">Gérer utilisateur</a>
+                <a class="btn btn-success" href="/client/user/add/{{ client.id }}">Manager &nbsp<i class="bi bi-person-workspace" style="font-size:14px"></i></a>
+                <a class="btn btn-success" href="/client/user/add/{{ client.id }}">Modifier partenaire &nbsp <i class="bi bi-pencil-square" style="font-size:14px"></i></a>
             </div>
             <div class="my-3 p-4 article m-auto rounded border border-primary" style="width: 98%">
                 {% if client.getImageName() %}
