@@ -27,9 +27,8 @@ html,body {
 .article {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr 1fr;
   background-color: #dfe4ea;
-  gap: 0;
+  gap: 1rem;
 }
 .bread{
   background-color: #dfe4ea;
@@ -44,10 +43,8 @@ html,body {
 }
 @media (min-width: 720px) {
   .article {
-    align-items: center;
     grid-template-columns: 1fr 6fr;
     grid-template-rows: 1fr ;
-    gap: 1rem;
   }
   .home {
     grid-template-columns: 1fr 1fr;
