@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-{% block title %}Ajouter un partenaire!{% endblock %}
+{% block title %}Partenaire!{% endblock %}
 
 {% block body %}
     {% include 'components/_header.html.twig' %}
@@ -16,6 +16,9 @@
             </nav>
         </div>
         <h1 class="text-center text-secondary my-4">Page du partenaire {{ client.name }}</h1>
+        {% if permissions is empty%}
+         <a class="btn btn-primary" href="/permission/add/{{ client.id }}">Ajouter permission</a>
+        {% endif %}
             <div class="my-3 p-4 article m-auto rounded" style="width: 98%">
                 {% if client.getImageName() %}
                     <a href="/client/{{ client.id }}">
@@ -65,7 +68,6 @@
                     <li class="list-group-item border-0">Contact commercial : {{ client.getCommercialContact() }}</li>
                 </ul>
             </div>
-        <a class="btn btn-primary" href="/permission/add/{{ client.id }}">Ajouter permissions</a>
     </section>
     {% include 'components/_footer.html.twig' %}
 {% endblock %}

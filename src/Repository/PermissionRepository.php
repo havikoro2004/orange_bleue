@@ -39,20 +39,20 @@ class PermissionRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Permission[] Returns an array of Permission objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @return Permission[] Returns an array of Permission objects
+     */
+    public function finOneJoinClient($value): array
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p,c')
+            ->join('p.client','c')
+            ->where('c.id = :id')
+            ->setParameter('id', $value)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 
 //    public function findOneBySomeField($value): ?Permission
 //    {

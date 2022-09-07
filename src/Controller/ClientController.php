@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Client;
 use App\Form\ClientType;
 use App\Repository\ClientRepository;
+use App\Repository\PermissionRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -52,13 +53,22 @@ class ClientController extends AbstractController
 
     #[Route('/client/{id}', name: 'app_client_one')]
     #[Entity('client', options: ['id' => 'id'])]
-    public function showOne(Client $client,ClientRepository $clientRepository): Response
+    public function showOne(Client $client,ClientRepository $clientRepository,PermissionRepository $permissionRepository): Response
     {
+        $ifClientHavePermission = $permissionRepository->finOneJoinClient([
+            'id'=>$client->getId()
+        ]);
+
+        if (!$ifClientHavePermission){
+            $ifClientHavePermission=null;
+        }
+
         $clientId = $clientRepository->findOneBy([
             'id'=>$client->getId()
         ]);
         return $this->render('client/show_page.html.twig', [
-            'client'=>$clientId
+            'client'=>$clientId,
+            'permissions'=>$ifClientHavePermission
         ]);
     }
 
