@@ -93,7 +93,7 @@ class UserController extends AbstractController
                 $data->setClient($client);
                 $em->persist($data);
                 $em->flush();
-                $this->addFlash('success','Le nouvel utilisateur a bien été enregistré');
+                $this->addFlash('success','L\'utilisateur a bien été modifié');
             }
         }
 

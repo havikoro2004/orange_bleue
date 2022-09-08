@@ -53,7 +53,7 @@ class PermissionController extends AbstractController
         }
         return $this->render('permission/add.html.twig', [
             'form'=>$form->createView(),
-            'errors'=>$errors
+            'errors'=>$errors,
         ]);
     }
 

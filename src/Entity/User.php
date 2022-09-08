@@ -31,10 +31,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\Length(min: 8)]
     private ?string $password = null;
 
-    #[ORM\OneToOne(cascade: ['persist'])]
-    #[ORM\JoinColumn(onDelete: ['cascade'])]
-    private ?Client $client = null;
-
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?Branch $branch = null;
 
@@ -47,6 +43,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createAt = null;
+
+    #[ORM\OneToOne(inversedBy: 'user')]
+    private ?Client $client = null;
 
     public function getId(): ?int
     {
@@ -118,17 +117,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function getClient(): ?Client
-    {
-        return $this->client;
-    }
-
-    public function setClient(?Client $client): self
-    {
-        $this->client = $client;
-
-        return $this;
-    }
 
     public function getBranch(): ?Branch
     {
@@ -166,5 +154,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getClient(): ?Client
+    {
+        return $this->client;
+    }
 
+    public function setClient(?Client $client): self
+    {
+        $this->client = $client;
+
+        return $this;
+    }
 }

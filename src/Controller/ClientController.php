@@ -6,6 +6,7 @@ use App\Entity\Client;
 use App\Form\ClientType;
 use App\Repository\ClientRepository;
 use App\Repository\PermissionRepository;
+use App\Repository\UserRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -71,7 +72,7 @@ class ClientController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()){
             $em->persist($data);
             $em->flush();
-            $this->addFlash('success','Le profil du client a bien été modifié');
+            $this->addFlash('success','Le profil du client '.$client->getName().' a bien été modifié');
             return $this->redirectToRoute('app_client');
         }
 
@@ -104,8 +105,6 @@ class ClientController extends AbstractController
         ]);
     }
 
-
-
     #[Route('/client/{id}/active', name: 'app_client_active')]
     public function active(Client $client,ManagerRegistry $manager , Request $request,ValidatorInterface $validator): Response
     {
@@ -124,6 +123,22 @@ class ClientController extends AbstractController
         return $this->redirectToRoute('app_client');
     }
 
+    #[Route('/client/{id}/delete', name: 'app_client_delete')]
+    public function delete(UserRepository $userRepository,Client $client,ManagerRegistry $manager): Response
+    {
+        $em = $manager->getManager();
+        $user = $userRepository->findOneBy([
+           'client'=>$client->getId()
+        ]);
+       if ($user){
+           $em->remove($user);
+           $em->flush();
+       }
 
+       $em->remove($client);
+       $em->flush();
+       $this->addFlash('success','Le partenaire a bien été supprimé');
+       return $this->redirectToRoute('app_client');
+    }
 
 }
