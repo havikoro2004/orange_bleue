@@ -42,6 +42,7 @@ class ClientController extends AbstractController
         }
         if ($form->isSubmitted() && $form->isValid()){
             $data->setCreateAt(new \DateTime('now'));
+            $data->setActive(true);
             $em->persist($data);
             $em->flush();
             $this->addFlash('success','Le nouveau partenaire a bien été ajouté');

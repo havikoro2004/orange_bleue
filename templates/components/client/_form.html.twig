@@ -3,9 +3,6 @@
         {{ form_label(form, 'Nom')}}
         {{ form_widget(form.name , {'attr': {'placeholder': 'Ajouter un nom','class':'form-control mb-2'}}) }}
     </div>
-    <div class="form-check form-switch d-flex">
-        {{ form_widget(form.active , {'attr': {'class':'form-control mb-2 form-check-input'}}) }}
-    </div>
     <div class="mx-4">
         {{ form_label(form, 'Petite Description')}}
         {{ form_widget(form.short_desc , {'attr': {'placeholder': 'Ajouter une petite description','class':'form-control mb-2'}}) }}

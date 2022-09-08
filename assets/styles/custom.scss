@@ -62,6 +62,12 @@ table{
   display: grid;
   grid-template-columns: 1fr;
 }
+.imgActiveBtn{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-items: start;
+  align-items: center;
+}
 @media (min-width: 720px) {
   .article {
     grid-template-columns: 1fr 6fr;
@@ -74,6 +80,10 @@ table{
   }
   .btnHome{
     height: 50%;
+  }
+  .imgActiveBtn{
+    grid-template-columns: 1fr;
+    justify-items: center;
   }
 }
 @media (min-width: 992px) {

@@ -19,9 +19,6 @@ class ClientType extends AbstractType
     {
         $builder
             ->add('name',TextType::class)
-            ->add('active',CheckboxType::class,[
-                'required'=>false
-            ])
             ->add('short_desc',TextType::class,[
                 'required'=>false
             ])
