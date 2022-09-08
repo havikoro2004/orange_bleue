@@ -25,20 +25,20 @@
                 <a class="btn btn-success" href="/client/user/add/{{ client.id }}">Manager &nbsp<i class="bi bi-person-workspace" style="font-size:14px"></i></a>
                 <a class="btn btn-success" href="/client/{{ client.id }}/edit/">Modifier partenaire &nbsp <i class="bi bi-pencil-square" style="font-size:14px"></i></a>
             </div>
-            <div class="my-3 p-4 article m-auto rounded border border-primary" style="width: 98%">
+            <div class="my-3 p-4 article m-auto" style="width: 98%">
                 {% if client.getImageName() %}
                     <a href="/client/{{ client.id }}">
-                        <img class="list-group border border-primary border-1" width="200px" height="160px" src="/images/client_logo/{{ client.getImageName() }}" alt="partenaire".{{ client.id }}>
+                        <img class="list-group border border-secondary rounded-2" width="200px" height="160px" src="/images/client_logo/{{ client.getImageName() }}" alt="partenaire".{{ client.id }}>
                     </a>
                 {% else %}
                     <a href="/client/{{ client.id }}">
-                        <img class="border border-primary list-group border border-primary border-1" width="200px" height="160px" src="{{ asset('build/images/default.jpg') }}" alt="partenaire".{{ client.id }}>
+                        <img class="border border-secondary rounded-2" width="200px" height="160px" src="{{ asset('build/images/default.jpg') }}" alt="partenaire".{{ client.id }}>
                     </a>
                 {% endif %}
-                <ul class="list-group border border-primary border-1">
-                    <li class="list-group-item border-0">Client ID :{{ client.id }}</li>
-                    <li class="list-group-item border-0">Nom client :{{ client.name }}</li>
-                    <li class="list-group-item border-0">
+                <ul class="border border-secondary list-unstyled bg bg-white rounded-2">
+                    <li class="m-2">Client ID :{{ client.id }}</li>
+                    <li class="m-2">Nom client :{{ client.name }}</li>
+                    <li class="m-2">
                         Description courte :
                         {% if client.getShortDesc() %}
                             {{ client.getShortDesc() }}
@@ -46,7 +46,7 @@
                             <span class="text-danger">Non fourni</span>
                         {% endif %}
                     </li>
-                    <li class="list-group-item border-0">
+                    <li class="m-2">
                         Description complète :
                         {% if client.getFullDesc() %}
                             {{ client.getFullDesc() }}
@@ -54,7 +54,7 @@
                             <span class="text-danger">Non fourni</span>
                         {% endif %}
                     </li>
-                    <li class="list-group-item border-0">
+                    <li class="m-2">
                         Url :
                         {% if client.getUrl() %}
                             {{ client.getUrl() }}
@@ -62,7 +62,7 @@
                             <span class="text-danger">Non fourni</span>
                         {% endif %}
                     </li>
-                    <li class="list-group-item border-0">
+                    <li class="m-2">
                         Dpo :
                         {% if client.getDpo() %}
                             {{ client.getDpo() }}
@@ -70,9 +70,9 @@
                             <span class="text-danger">Non fourni</span>
                         {% endif %}
                     </li>
-                    <li class="list-group-item border-0">Contact technique : {{ client.getTechnicalContact() }}</li>
-                    <li class="list-group-item border-0">Contact commercial : {{ client.getCommercialContact() }}</li>
-                    <li class="list-group-item border-0">Date de création : {{ client.getCreateAt()|date('d-m-Y ') }} à {{ client.getCreateAt()|date(' H:i') }}</li>
+                    <li class="m-2">Contact technique : {{ client.getTechnicalContact() }}</li>
+                    <li class="m-2">Contact commercial : {{ client.getCommercialContact() }}</li>
+                    <li class="m-2">Date de création : {{ client.getCreateAt()|date('d-m-Y ') }} à {{ client.getCreateAt()|date(' H:i') }}</li>
                 </ul>
             </div>
     </section>

@@ -4,7 +4,7 @@
 {% block body %}
     {% include 'components/_header.html.twig' %}
     <section>
-        <div class="d-flex align-items-center border border-primary border-1 bread mx-1 rounded-2" style="height: 3rem">
+        <div class="d-flex align-items-center bread" style="height: 3rem">
             <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
                 width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);
                 " aria-label="breadcrumb">
@@ -16,43 +16,54 @@
         </div>
         <h1 class="text-center text-secondary my-4">Liste des partenaires</h1>
         {% include 'components/client/_flashes.html.twig' %}
-        <div class="partenaire">
-            {% for client in clients %}
-                <div class="my-3 p-4 article m-auto rounded list-group border border-primary border-1" style="width: 98%">
-                    <div class="imgActiveBtn">
-                        <a href="/client/{{ client.id }}">
-                            {% if client.getImageName() %}
-                                <img class="list-group border border-primary border-1" width="200px" height="160px" src="/images/client_logo/{{ client.getImageName() }}" alt="partenaire".{{ client.id }}>
-                            {% else %}
-                                <img class="list-group border border-primary border-1" width="200px" height="160px" src="{{ asset('build/images/default.jpg') }}" alt="partenaire".{{ client.id }}>
-                            {% endif %}
-                        </a>
-                        <div class="form-check form-switch mt-3">
-                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-                            <label class="form-check-label" for="flexSwitchCheckDefault">Active</label>
-                        </div>
-                    </div>
-                    <ul class="list-group list-group border border-primary border-1">
-                        <li class="list-group-item border-0">Client ID :{{ client.id }}</li>
-                        <li class="list-group-item border-0">Nom : {{ client.name }}</li>
-                        <li class="list-group-item border-0">
-                            Description courte :
-                            {% if client.getShortDesc() %}
-                                {{ client.getShortDesc() }}
-                            {% else %}
-                                <span class="text-danger">Non fourni</span></li>
-                            {% endif %}
-                        <li class="list-group-item border-0">
-                            Url :
-                            {% if client.getUrl() %}
-                                {{ client.getUrl() }}
-                            {% else %}
-                                <span class="text-danger">Non fourni</span></li>
-                            {% endif %}
-                    </ul>
+           {% if clients %}
+               <div class="partenaire">
+                   {% for client in clients %}
+                       <div class="my-3 p-4 article m-auto rounded list-group" style="width: 98%">
+                           <div class="imgActiveBtn">
+                               <a href="/client/{{ client.id }}">
+                                   {% if client.getImageName() %}
+                                       <img class="list-group border border-secondary" width="200px" height="160px" src="/images/client_logo/{{ client.getImageName() }}" alt="partenaire".{{ client.id }}>
+                                   {% else %}
+                                       <img class="list-group border border-secondary" width="200px" height="160px" src="{{ asset('build/images/default.jpg') }}" alt="partenaire".{{ client.id }}>
+                                   {% endif %}
+                               </a>
+                               <div class="form-check form-switch mt-3">
+                                   <input data-bs-toggle="modal" data-bs-target="#exampleModal{{client.id }}" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" {% if client.active %} checked {% endif %}>
+                                   <label class="form-check-label" for="flexSwitchCheckDefault">Active</label>
+                               </div>
+                               {% include 'components/client/_modal.html.twig' %}
+                           </div>
+                           <ul class="border border-secondary list-unstyled bg bg-white rounded-2">
+                               <li class="m-2">Client ID :{{ client.id }}</li>
+                               <li class="m-2">Nom : {{ client.name }}</li>
+                               <li class="m-2">
+                                   Description courte :
+                                   {% if client.getShortDesc() %}
+                                   {{ client.getShortDesc() }}
+                                   {% else %}
+                                   <span class="text-danger">Non fourni</span></li>
+                               {% endif %}
+                               <li class="m-2">
+                                   Url :
+                                   {% if client.getUrl() %}
+                                   {{ client.getUrl() }}
+                                   {% else %}
+                                   <span class="text-danger">Non fourni</span></li>
+                               {% endif %}
+                           </ul>
+                       </div>
+                   {% endfor %}
                 </div>
-            {% endfor %}
-        </div>
+            {% else %}
+                <div class="container text-center mb-3">
+                    <div class="alert alert-dark text-center">
+                        Aucun partenaire n'est enregistré
+                    </div>
+                    <img src="{{ asset('build/images/no_client.jpg') }}" alt="" width="100%">
+                </div>
+            {% endif %}
+
     </section>
     {% include 'components/_footer.html.twig' %}
 {% endblock %}

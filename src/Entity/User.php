@@ -32,6 +32,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\OneToOne(cascade: ['persist'])]
+    #[ORM\JoinColumn(onDelete: ['cascade'])]
     private ?Client $client = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
