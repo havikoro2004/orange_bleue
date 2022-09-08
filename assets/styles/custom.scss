@@ -86,6 +86,8 @@ table{
   .imgActiveBtn{
     grid-template-columns: 1fr;
     justify-items: center;
+    align-items: start;
+    grid-template-rows: 165px 37px;
   }
 }
 @media (min-width: 992px) {

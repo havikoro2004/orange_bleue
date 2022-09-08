@@ -85,6 +85,7 @@ class ClientController extends AbstractController
     #[Entity('client', options: ['id' => 'id'])]
     public function showOne(Client $client,ClientRepository $clientRepository,PermissionRepository $permissionRepository): Response
     {
+        $errors = null;
         $ifClientHavePermission = $permissionRepository->finOneJoinClient([
             'id'=>$client->getId()
         ]);
@@ -98,7 +99,8 @@ class ClientController extends AbstractController
         ]);
         return $this->render('client/show_page.html.twig', [
             'client'=>$clientId,
-            'permissions'=>$ifClientHavePermission
+            'permissions'=>$ifClientHavePermission,
+            'errors'=>$errors
         ]);
     }
 
@@ -110,10 +112,11 @@ class ClientController extends AbstractController
         $em = $manager->getManager();
         $status = $client->isActive();
         $message = null;
+        $error=null;
         if ($status){
-            $message = 'Le client a bien été désactivé';
+            $message = 'Le client '.$client->getName().'a bien été désactivé';
         } else {
-            $message = 'Le client a bien été activé';
+            $message = 'Le client '.$client->getName().' a bien été activé';
         }
         $client->setActive(!$client->isActive());
         $em->flush();

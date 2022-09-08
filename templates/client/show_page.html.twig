@@ -16,6 +16,7 @@
             </nav>
         </div>
         <h1 class="text-center text-secondary my-4">Page du partenaire {{ client.name }}</h1>
+        {% include 'components/client/_flashes.html.twig' %}
             <div class="container text-center">
                 {% if permissions is empty %}
                     <a class="btn btn-success" href="/permission/add/{{ client.id }}">Ajouter permission &nbsp<i class="bi bi-plus-circle" style="font-size:14px"></i></a>
@@ -26,15 +27,21 @@
                 <a class="btn btn-success" href="/client/{{ client.id }}/edit/">Modifier partenaire &nbsp <i class="bi bi-pencil-square" style="font-size:14px"></i></a>
             </div>
             <div class="my-3 p-4 article m-auto" style="width: 98%">
-                {% if client.getImageName() %}
+                <div class="imgActiveBtn">
                     <a href="/client/{{ client.id }}">
-                        <img class="list-group border border-secondary rounded-2" width="200px" height="160px" src="/images/client_logo/{{ client.getImageName() }}" alt="partenaire".{{ client.id }}>
+                        {% if client.getImageName() %}
+                            <img class="list-group border border-secondary" width="200px" height="160px" src="/images/client_logo/{{ client.getImageName() }}" alt="partenaire".{{ client.id }}>
+                        {% else %}
+                            <img class="list-group border border-secondary" width="200px" height="160px" src="{{ asset('build/images/default.jpg') }}" alt="partenaire".{{ client.id }}>
+                        {% endif %}
                     </a>
-                {% else %}
-                    <a href="/client/{{ client.id }}">
-                        <img class="border border-secondary rounded-2" width="200px" height="160px" src="{{ asset('build/images/default.jpg') }}" alt="partenaire".{{ client.id }}>
-                    </a>
-                {% endif %}
+                    <div class="form-check form-switch mt-3" id="activBtnOnePage">
+                        <input data-bs-toggle="modal" data-bs-target="#exampleModal{{client.id }}" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" {% if client.active %} checked {% endif %}>
+                        <label class="form-check-label" for="flexSwitchCheckDefault">Active</label>
+                        {% include 'components/client/_modal.html.twig' %}
+                    </div>
+
+                </div>
                 <ul class="border border-secondary list-unstyled bg bg-white rounded-2">
                     <li class="m-2">Client ID :{{ client.id }}</li>
                     <li class="m-2">Nom client :{{ client.name }}</li>
