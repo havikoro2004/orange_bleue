@@ -113,7 +113,7 @@ class ClientController extends AbstractController
         $message = null;
         $error=null;
         if ($status){
-            $message = 'Le client '.$client->getName().'a bien été désactivé';
+            $message = 'Le client '.$client->getName().'a bien été désactivé ';
         } else {
             $message = 'Le client '.$client->getName().' a bien été activé';
         }

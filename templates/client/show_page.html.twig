@@ -9,8 +9,8 @@
                 width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);
                 " aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 mx-3">
-                    <li class="breadcrumb-item"><a href="/" class="text-dark text-decoration-none">Accueil</a></li>
-                    <li class="breadcrumb-item"><a href="/client" class="text-dark text-decoration-none">Partenaires</a></li>
+                    <li title="Accueil" class="breadcrumb-item"><a href="/" class="text-dark text-decoration-none">Accueil</a></li>
+                    <li title="Partenaire"  class="breadcrumb-item"><a href="/client" class="text-dark text-decoration-none">Partenaires</a></li>
                     <li class="breadcrumb-item active" aria-current="page">{{ client.name }}</li>
                 </ol>
             </nav>
@@ -19,12 +19,12 @@
         {% include 'components/client/_flashes.html.twig' %}
             <div class="container text-center">
                 {% if permissions is empty %}
-                    <a class="btn btn-success" href="/permission/add/{{ client.id }}">Ajouter permission &nbsp<i class="bi bi-plus-circle" style="font-size:14px"></i></a>
+                    <a title="Ajouter une permission"  class="btn btn-success" href="/permission/add/{{ client.id }}">Ajouter permission &nbsp<i class="bi bi-plus-circle" style="font-size:14px"></i></a>
                 {% endif %}
-                <a class="btn btn-success" href="/client/user/add/{{ client.id }}">Manager &nbsp<i class="bi bi-person-workspace" style="font-size:14px"></i></a>
-                <a class="btn btn-success" href="/client/{{ client.id }}/edit/">Modifier partenaire &nbsp <i class="bi bi-pencil-square" style="font-size:14px"></i></a>
+                <a title="Voir les managers"  class="btn btn-success" href="/client/user/add/{{ client.id }}">Manager &nbsp<i class="bi bi-person-workspace" style="font-size:14px"></i></a>
+                <a title="Modifier le partenaire"  class="btn btn-success" href="/client/{{ client.id }}/edit/">Modifier partenaire &nbsp <i class="bi bi-pencil-square" style="font-size:14px"></i></a>
                 <!-- Button trigger modal -->
-                <a type="button" class="btn btn-danger btnTable" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <a title="Supprimer le partenaire"  type="button" class="btn btn-danger btnTable" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     Supprimer <i class="bi bi-trash3" style="font-size:14px"></i>
                 </a>
                 {% include 'components/client/_modal_delete.html.twig' %}
@@ -39,8 +39,8 @@
                         {% endif %}
                     </a>
                     <div class="form-check form-switch mt-3" id="activBtnOnePage">
-                        <input data-bs-toggle="modal" data-bs-target="#exampleModal{{client.id }}" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" {% if client.active %} checked {% endif %}>
-                        <label class="form-check-label" for="flexSwitchCheckDefault">Active</label>
+                        <input title="{% if client.active %} Désactiver {% else%} Activer {% endif %}" data-bs-toggle="modal" data-bs-target="#exampleModal{{client.id }}" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" {% if client.active %} checked {% endif %}>
+                        <label class="form-check-label" for="flexSwitchCheckDefault">{% if client.active %} Activé {% else%}Désactivé {% endif %}</label>
                         {% include 'components/client/_modal.html.twig' %}
                     </div>
 

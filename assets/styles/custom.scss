@@ -10,6 +10,21 @@ html,body {
   display: grid;
   grid-template-rows: 6vh 5fr 6vh;
 }
+.form-check-input:checked {
+  background-color: #09AB18;
+  border-color: #09AB18;
+}
+.form-check-input {
+  background-color: #E81750;
+  border-color: #E81750;
+}
+.form-switch .form-check-input {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='white'/%3e%3c/svg%3e");
+}
+.form-switch .form-check-input:focus {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='white'/%3e%3c/svg%3e");
+}
+
 .login_form{
   display: grid;
   grid-template-columns: 1fr;
