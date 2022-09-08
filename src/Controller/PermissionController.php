@@ -50,6 +50,10 @@ class PermissionController extends AbstractController
             $data->addClient($client);
             $em->persist($data);
             $em->flush();
+            $this->addFlash('success','Les permissions ont bien été ajoutées');
+            return $this->redirectToRoute('app_client_one',[
+                'id'=>$client->getId()
+            ]);
         }
         return $this->render('permission/add.html.twig', [
             'form'=>$form->createView(),
