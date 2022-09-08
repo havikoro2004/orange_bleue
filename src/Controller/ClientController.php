@@ -102,4 +102,25 @@ class ClientController extends AbstractController
         ]);
     }
 
+
+
+    #[Route('/client/{id}/active', name: 'app_client_active')]
+    public function active(Client $client,ManagerRegistry $manager , Request $request,ValidatorInterface $validator): Response
+    {
+        $em = $manager->getManager();
+        $status = $client->isActive();
+        $message = null;
+        if ($status){
+            $message = 'Le client a bien été désactivé';
+        } else {
+            $message = 'Le client a bien été activé';
+        }
+        $client->setActive(!$client->isActive());
+        $em->flush();
+        $this->addFlash('success',$message);
+        return $this->redirectToRoute('app_client');
+    }
+
+
+
 }

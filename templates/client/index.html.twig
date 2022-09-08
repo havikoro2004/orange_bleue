@@ -17,7 +17,7 @@
         <h1 class="text-center text-secondary my-4">Liste des partenaires</h1>
         {% include 'components/client/_flashes.html.twig' %}
            {% if clients %}
-               <div class="partenaire">
+               <div class="partenaire" id="clientCard">
                    {% for client in clients %}
                        <div class="my-3 p-4 article m-auto rounded list-group" style="width: 98%">
                            <div class="imgActiveBtn">
