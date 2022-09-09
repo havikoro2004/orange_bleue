@@ -3,7 +3,7 @@
 
 {% block body %}
     {% include 'components/_header.html.twig' %}
-    <div style="height: 100vh">
+    <div style="height: 100%">
         <section>
             <div class="d-flex align-items-center bread" style="height: 3rem">
                 <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
@@ -88,7 +88,7 @@
             </div>
         </section>
         <div class="d-flex flex-row-reverse align-items-center mx-3">
-            <span class="ms-3">Permissions</span>
+            <span class="ms-3">Permissions globales</span>
             <a id="btnPermissionClient" class="text-decoration-none text-dark" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
                 <i onclick="teste(this)" class="bi bi-plus-circle-dotted" style="font-size: 1.5rem"></i>
                 <script>
@@ -99,9 +99,63 @@
                 </script>
             </a>
         </div>
-        <div class="collapse mx-3 mt-2" id="collapseExample">
-            <div class="card card-body">
-                Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
+        <div class="collapse mx-3 my-3" id="collapseExample">
+            {% include 'components/client/_modal_permissions.html.twig' %}
+            <div id="permissionCollaps" class="card card-body permissiongrid">
+                <div>
+                    <div class="form-check form-switch">
+                        <input value="isReadResa" name="{{ client.id }}" data-bs-toggle="modal" data-bs-target="#permissionsModal" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault"
+                            {% if permissions.isReadResa() %} checked {% endif %}>
+                        <label class="form-check-label" for="flexSwitchCheckDefault">Lire les réservations</label>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input value="isEditResa" name="{{ client.id }}" data-bs-toggle="modal" data-bs-target="#permissionsModal" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault"
+                                {% if permissions.isEditResa() %} checked {% endif %}>
+                        <label data-bs-toggle="modal" data-bs-target="#permissionsModal" class="form-check-label" for="flexSwitchCheckDefault">Modifier les réservations</label>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input value="isRemoveResa" name="{{ client.id }}" data-bs-toggle="modal" data-bs-target="#permissionsModal" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault"
+                                {% if permissions.isRemoveResa() %} checked {% endif %}>
+                        <label class="form-check-label" for="flexSwitchCheckDefault">Supprimer les réservations</label>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input value="isReadPayment" name="{{ client.id }}" data-bs-toggle="modal" data-bs-target="#permissionsModal" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault"
+                                {% if permissions.isReadPayment() %} checked {% endif %}>
+                        <label class="form-check-label" for="flexSwitchCheckDefault">Lire les paiements</label>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input value="isEditPayment" name="{{ client.id }}" data-bs-toggle="modal" data-bs-target="#permissionsModal" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault"
+                                {% if permissions.isEditPayment() %} checked {% endif %}>
+                        <label class="form-check-label" for="flexSwitchCheckDefault">Modifier les paiements</label>
+                    </div>
+                </div>
+                <div>
+                    <div class="form-check form-switch">
+                        <input value="isManageDrink" name="{{ client.id }}" data-bs-toggle="modal" data-bs-target="#permissionsModal" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault"
+                                {% if permissions.isManageDrink() %} checked {% endif %}>
+                        <label class="form-check-label" for="flexSwitchCheckDefault">Gérer les boissons</label>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input value="isAddSub" name="{{ client.id }}" data-bs-toggle="modal" data-bs-target="#permissionsModal" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault"
+                                {% if permissions.isAddSub() %} checked {% endif %}>
+                        <label class="form-check-label" for="flexSwitchCheckDefault">Inscrire les abonnés</label>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input value="isEditSub" name="{{ client.id }}" data-bs-toggle="modal" data-bs-target="#permissionsModal" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault"
+                                {% if permissions.isEditSub() %} checked {% endif %}>
+                        <label class="form-check-label" for="flexSwitchCheckDefault">Modifier les abonnés</label>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input value="isRemoveSub" name="{{ client.id }}" data-bs-toggle="modal" data-bs-target="#permissionsModal" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault"
+                                {% if permissions.isRemoveSub() %} checked {% endif %}>
+                        <label class="form-check-label" for="flexSwitchCheckDefault">Supprimer les abonnés</label>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input value="isManageSchedules" name="{{ client.id }}" data-bs-toggle="modal" data-bs-target="#permissionsModal" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault"
+                                {% if permissions.isManageSchedules() %} checked {% endif %}>
+                        <label class="form-check-label" for="flexSwitchCheckDefault">Gérer les horaires</label>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

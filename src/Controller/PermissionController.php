@@ -6,12 +6,14 @@ use App\Entity\Client;
 use App\Entity\Permission;
 use App\Form\PermissionType;
 use App\Repository\PermissionRepository;
+use App\Services\getPermissionsMethodes;
 use Doctrine\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PermissionController extends AbstractController
@@ -62,11 +64,16 @@ class PermissionController extends AbstractController
 
     #[Route('/permission/edit/{id}', name: 'app_permission_edit')]
     #[Entity('client', options: ['id' => 'id'])]
-    public function edit(Client $client,ManagerRegistry $manager,Request $request ,ValidatorInterface $validator,PermissionRepository $permissionRepository): Response
+    public function edit(Request $request,Client $client,ManagerRegistry $manager,PermissionRepository $permissionRepository): Response
     {
-        return $this->render('permission/edit.html.twig', [
+        $em = $manager->getManager();
+        $permissionsByClient = $permissionRepository->finOneJoinClient($client);
+        $getMethode = New getPermissionsMethodes();
+        $axiosPost = json_decode($request->getContent())->inputName;
+        $getMethode->getMethodes($permissionsByClient,$axiosPost,!$permissionsByClient->isReadResa());
+        $em->flush();
+        $this->addFlash('success','La permission a bien été changée');
 
-        ]);
     }
 
 }

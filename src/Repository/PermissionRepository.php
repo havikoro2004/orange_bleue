@@ -39,10 +39,8 @@ class PermissionRepository extends ServiceEntityRepository
         }
     }
 
-    /**
-     * @return Permission[] Returns an array of Permission objects
-     */
-    public function finOneJoinClient($value): array
+
+    public function finOneJoinClient($value):Permission
     {
         return $this->createQueryBuilder('p')
             ->select('p,c')
@@ -50,7 +48,7 @@ class PermissionRepository extends ServiceEntityRepository
             ->where('c.id = :id')
             ->setParameter('id', $value)
             ->getQuery()
-            ->getResult()
+            ->getOneOrNullResult()
         ;
     }
 

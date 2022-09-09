@@ -88,6 +88,7 @@ class ClientController extends AbstractController
     {
         $permissions = $permissionRepository->finOneJoinClient($client->getId());
         $errors = null;
+
         $ifClientHavePermission = $permissionRepository->finOneJoinClient([
             'id'=>$client->getId()
         ]);

@@ -60,3 +60,28 @@ if (pageOneInput){
         })
     })
 }
+if (document.getElementById('permissionCollaps')){
+    const permissionCollaps = document.getElementById('permissionCollaps')
+    const switchesBtns = permissionCollaps.getElementsByClassName('form-check-input')
+    const permissionModal = document.getElementById('permissionsModal')
+    const editPermissionBtn = permissionModal.getElementsByClassName('modal-footer')[0].children[1]
+    for (let i = 0 ; i < switchesBtns.length ; i++){
+        switchesBtns[i].addEventListener('click',(e)=>{
+            e.preventDefault()
+            editPermissionBtn.addEventListener('click',()=>{
+                axios.post('/permission/edit/'+ switchesBtns[i].name, {
+                    inputName: switchesBtns[i].value,
+                })
+                    .then(function (response) {
+                        console.log(response);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+                location.reload();
+            })
+
+        })
+    }
+
+}
