@@ -14,7 +14,18 @@ html,body {
   background-color: #09AB18;
   border-color: #09AB18;
 }
-
+.connexion:hover {
+  color: #c7c7c7;
+}
+.menusHover:hover{
+  color: #6c757d;
+}
+.menusHover{
+  color: black;
+}
+.imgHover:hover{
+  opacity: 70%;
+}
 .login_form{
   display: grid;
   grid-template-columns: 1fr;

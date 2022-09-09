@@ -10,8 +10,8 @@
                 width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);
                 " aria-label="breadcrumb">
                     <ol class="breadcrumb mb-0 mx-3">
-                        <li title="Accueil" class="breadcrumb-item"><a href="/" class="text-dark text-decoration-none">Accueil</a></li>
-                        <li title="Partenaire"  class="breadcrumb-item"><a href="/client" class="text-dark text-decoration-none">Partenaires</a></li>
+                        <li title="Accueil" class="breadcrumb-item"><a href="/" class="text-decoration-none menusHover">Accueil</a></li>
+                        <li title="Partenaire"  class="breadcrumb-item"><a href="/client" class="menusHover text-decoration-none">Partenaires</a></li>
                         <li class="breadcrumb-item active" aria-current="page">{{ client.name }}</li>
                     </ol>
                 </nav>
@@ -34,9 +34,9 @@
                 <div class="imgActiveBtn">
                     <a href="/client/{{ client.id }}">
                         {% if client.getImageName() %}
-                            <img class="list-group border border-secondary" width="200px" height="160px" src="/images/client_logo/{{ client.getImageName() }}" alt="partenaire".{{ client.id }}>
+                            <img class="list-group border border-secondary imgHover" width="200px" height="160px" src="/images/client_logo/{{ client.getImageName() }}" alt="partenaire".{{ client.id }}>
                         {% else %}
-                            <img class="list-group border border-secondary" width="200px" height="160px" src="{{ asset('build/images/default.jpg') }}" alt="partenaire".{{ client.id }}>
+                            <img class="list-group border border-secondary imgHover" width="200px" height="160px" src="{{ asset('build/images/default.jpg') }}" alt="partenaire".{{ client.id }}>
                         {% endif %}
                     </a>
                     <div class="form-check form-switch mt-3" id="activBtnOnePage">
