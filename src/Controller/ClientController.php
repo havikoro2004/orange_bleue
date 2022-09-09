@@ -86,6 +86,7 @@ class ClientController extends AbstractController
     #[Entity('client', options: ['id' => 'id'])]
     public function showOne(Client $client,ClientRepository $clientRepository,PermissionRepository $permissionRepository): Response
     {
+        $permissions = $permissionRepository->finOneJoinClient($client->getId());
         $errors = null;
         $ifClientHavePermission = $permissionRepository->finOneJoinClient([
             'id'=>$client->getId()
@@ -101,7 +102,8 @@ class ClientController extends AbstractController
         return $this->render('client/show_page.html.twig', [
             'client'=>$clientId,
             'permissions'=>$ifClientHavePermission,
-            'errors'=>$errors
+            'errors'=>$errors,
+            'permissions'=>$permissions
         ]);
     }
 

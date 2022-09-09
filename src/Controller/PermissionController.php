@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Client;
 use App\Entity\Permission;
 use App\Form\PermissionType;
-use App\Repository\ClientRepository;
 use App\Repository\PermissionRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
@@ -63,7 +62,7 @@ class PermissionController extends AbstractController
 
     #[Route('/permission/edit/{id}', name: 'app_permission_edit')]
     #[Entity('client', options: ['id' => 'id'])]
-    public function edit(): Response
+    public function edit(Client $client,ManagerRegistry $manager,Request $request ,ValidatorInterface $validator,PermissionRepository $permissionRepository): Response
     {
         return $this->render('permission/edit.html.twig', [
 

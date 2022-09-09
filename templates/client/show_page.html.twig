@@ -3,20 +3,21 @@
 
 {% block body %}
     {% include 'components/_header.html.twig' %}
-    <section>
-        <div class="d-flex align-items-center bread" style="height: 3rem">
-            <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
+    <div style="height: 100vh">
+        <section>
+            <div class="d-flex align-items-center bread" style="height: 3rem">
+                <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
                 width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);
                 " aria-label="breadcrumb">
-                <ol class="breadcrumb mb-0 mx-3">
-                    <li title="Accueil" class="breadcrumb-item"><a href="/" class="text-dark text-decoration-none">Accueil</a></li>
-                    <li title="Partenaire"  class="breadcrumb-item"><a href="/client" class="text-dark text-decoration-none">Partenaires</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">{{ client.name }}</li>
-                </ol>
-            </nav>
-        </div>
-        <h1 class="text-center text-secondary my-4">Page du partenaire {{ client.name }}</h1>
-        {% include 'components/client/_flashes.html.twig' %}
+                    <ol class="breadcrumb mb-0 mx-3">
+                        <li title="Accueil" class="breadcrumb-item"><a href="/" class="text-dark text-decoration-none">Accueil</a></li>
+                        <li title="Partenaire"  class="breadcrumb-item"><a href="/client" class="text-dark text-decoration-none">Partenaires</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">{{ client.name }}</li>
+                    </ol>
+                </nav>
+            </div>
+            <h1 class="text-center text-secondary my-4">Page du partenaire {{ client.name }}</h1>
+            {% include 'components/client/_flashes.html.twig' %}
             <div class="container text-center">
                 {% if permissions is empty %}
                     <a title="Ajouter une permission"  class="btn btn-success" href="/permission/add/{{ client.id }}">Ajouter permission &nbsp<i class="bi bi-plus-circle" style="font-size:14px"></i></a>
@@ -85,6 +86,24 @@
                     <li class="m-2">Date de création : {{ client.getCreateAt()|date('d-m-Y ') }} à {{ client.getCreateAt()|date(' H:i') }}</li>
                 </ul>
             </div>
-    </section>
+        </section>
+        <div class="d-flex flex-row-reverse align-items-center mx-3">
+            <span class="ms-3">Permissions</span>
+            <a id="btnPermissionClient" class="text-decoration-none text-dark" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                <i onclick="teste(this)" class="bi bi-plus-circle-dotted" style="font-size: 1.5rem"></i>
+                <script>
+                    const teste = (x)=>{
+                        x.classList.toggle("bi-plus-circle-dotted");
+                        x.classList.toggle('bi-dash-circle-dotted')
+                    }
+                </script>
+            </a>
+        </div>
+        <div class="collapse mx-3 mt-2" id="collapseExample">
+            <div class="card card-body">
+                Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
+            </div>
+        </div>
+    </div>
     {% include 'components/_footer.html.twig' %}
 {% endblock %}
