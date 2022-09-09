@@ -21,7 +21,7 @@ if (cardClient){
         switchBtn[0].addEventListener('click',(e)=>{
             e.preventDefault()
             validBtn.addEventListener('click',()=>{
-                modalBody[0].innerHTML ="<div class=\"spinner-border text-primary text-center\" role=\"status\">\n" +
+                modalBody[0].innerHTML ="<div class=\"spinner-border text-primary\" role=\"status\">\n" +
                     "</div>"
                 axios.post('/client/'+validBtn.id+'/active', {
                 })
@@ -45,7 +45,7 @@ if (pageOneInput){
     btnActiveOnePage.addEventListener('click',(e)=>{
         e.preventDefault()
         modalBtn.addEventListener('click',()=>{
-            modalOnePageBody[0].innerHTML ="<div class=\"spinner-border text-primary text-center\" role=\"status\">\n" +
+            modalOnePageBody[0].innerHTML ="<div class=\"spinner-border text-primary\" role=\"status\">\n" +
                 "</div>"
 
             axios.post('/client/'+modalBtn.id+'/active', {
@@ -65,10 +65,13 @@ if (document.getElementById('permissionCollaps')){
     const switchesBtns = permissionCollaps.getElementsByClassName('form-check-input')
     const permissionModal = document.getElementById('permissionsModal')
     const editPermissionBtn = permissionModal.getElementsByClassName('modal-footer')[0].children[1]
+    const modalPermissionBody = permissionModal.getElementsByClassName('modal-body')[0]
     for (let i = 0 ; i < switchesBtns.length ; i++){
         switchesBtns[i].addEventListener('click',(e)=>{
             e.preventDefault()
             editPermissionBtn.addEventListener('click',()=>{
+                modalPermissionBody.innerHTML="<div class=\"spinner-border text-primary text-center\" role=\"status\">\n" +
+                    "</div>"
                 axios.post('/permission/edit/'+ switchesBtns[i].name, {
                     inputName: switchesBtns[i].value,
                 })
