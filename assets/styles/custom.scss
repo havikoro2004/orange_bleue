@@ -86,7 +86,10 @@ table{
   margin-left: 2rem;
   margin-right: 2rem;
 }
-
+.permissionsGlobales{
+  display: grid;
+  grid-template-columns: 1fr ;
+}
 @media (min-width: 720px) {
   .article {
     grid-template-columns: 1fr 6fr;
@@ -128,5 +131,8 @@ table{
     margin-left: 5rem;
     margin-right: 5rem;
     padding: 5rem;
+  }
+  .permissionsGlobales{
+    grid-template-columns: 1fr 1fr;
   }
 }

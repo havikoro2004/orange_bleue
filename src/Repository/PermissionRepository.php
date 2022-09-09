@@ -40,7 +40,7 @@ class PermissionRepository extends ServiceEntityRepository
     }
 
 
-    public function finOneJoinClient($value):Permission
+    public function finOneJoinClient($value)
     {
         return $this->createQueryBuilder('p')
             ->select('p,c')

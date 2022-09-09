@@ -86,7 +86,10 @@ class ClientController extends AbstractController
     #[Entity('client', options: ['id' => 'id'])]
     public function showOne(Client $client,ClientRepository $clientRepository,PermissionRepository $permissionRepository): Response
     {
-        $permissions = $permissionRepository->finOneJoinClient($client->getId());
+        $permissions=null;
+        if ($permissionRepository->finOneJoinClient($client->getId())){
+            $permissions =$permissionRepository->finOneJoinClient($client->getId());
+        }
         $errors = null;
 
         $ifClientHavePermission = $permissionRepository->finOneJoinClient([
