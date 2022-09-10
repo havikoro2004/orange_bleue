@@ -126,6 +126,7 @@ class ClientController extends AbstractController
             $structurePermissions = New Permission();
             $permissions->cloneClass($structurePermissions);
             $structurePermissions->addClient($client);
+            $structurePermissions->setBranch(true);
 
             $data->setClient($client);
             $data->setPermission($structurePermissions);

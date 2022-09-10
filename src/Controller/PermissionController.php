@@ -49,6 +49,7 @@ class PermissionController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()){
 
             $data->addClient($client);
+            $data->setBranch(false);
             $em->persist($data);
             $em->flush();
             $this->addFlash('success','Les permissions ont bien été ajoutées');

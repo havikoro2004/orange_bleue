@@ -51,7 +51,7 @@ class Permission
     #[ORM\OneToMany(mappedBy: 'permission', targetEntity: Branch::class)]
     private Collection $branches;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(nullable: true,options: ['default'=>0])]
     private ?bool $branch = null;
 
     public function __construct()
@@ -264,4 +264,5 @@ class Permission
 
         return $this;
     }
+
 }

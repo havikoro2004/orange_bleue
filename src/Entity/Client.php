@@ -66,7 +66,7 @@ class Client
     #[ORM\ManyToMany(targetEntity: Permission::class, mappedBy: 'client')]
     private Collection $permissions;
 
-    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Branch::class)]
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Branch::class,cascade: ['persist', 'remove'])]
     private Collection $branches;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
