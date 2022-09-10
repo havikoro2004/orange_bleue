@@ -50,7 +50,6 @@
                         <label class="form-check-label text-secondary" for="flexSwitchCheckDefault">{% if client.active %} On {% else%}Off {% endif %}</label>
                         {% include 'components/client/_modal.html.twig' %}
                     </div>
-
                 </div>
                 <ul class="border border-secondary list-unstyled bg bg-white rounded-2">
                     <li class="m-2">Client ID :{{ client.id }}</li>
@@ -96,6 +95,38 @@
        {% if permissions %}
            {% include 'components/permission/_form_edit_permissions.html.twig' %}
        {% endif %}
+        <div>
+            {% if branches %}
+                <h3 class="text-center text-secondary mb-3">Structures du partenaire</h3>
+                {% for branche in branches %}
+                    <div class="cardBranchPermissions mb-4">
+                        <div class="imgActiveBtn">
+                            {% if branche.getImageName() %}
+                                <img class="list-group border border-secondary imgHover" width="200px" height="160px" src="../images/structure_logo/{{ branche.getImageName() }}" alt="structure".{{ client.id }}>
+                            {% else %}
+                                <img class="list-group border border-secondary imgHover" width="200px" height="160px" src="{{ asset('build/images/strucDefault.jpg') }}" alt="partenaire".{{ client.id }}>
+                            {% endif %}
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                                    <label class="form-check-label text-secondary" for="flexSwitchCheckDefault">On</label>
+                                </div>
+                        </div>
+                        <div>
+                            <ul class="list-unstyled">
+                                <li class="m-2">Structure Id :{{ branche.id }}</li>
+                                <li class="m-2">Adresse :{{ branche.adress }}</li>
+                                <li class="m-2">Date de création :{{ branche.getCreatedAt()|date('d-m-Y ') }}</li>
+                            </ul>
+                        </div>
+                        <div class="editPermissionsBranch">
+                            {% include 'components/branch/_form_edit_permissions.html.twig' %}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="alert alert-dark text-center container mt-2">Aucune structure n'est ajoutée pour ce partenaire</div>
+            {% endif %}
+        </div>
     </div>
     {% include 'components/_footer.html.twig' %}
 {% endblock %}

@@ -137,13 +137,12 @@ class ClientController extends AbstractController
             $em->flush();
             $this->addFlash('success','La nouvelle structure a bien été crée');
             return $this->redirect($request->getUri());
-            /*  Afficher les branches du partenaire  */
-
-        $branches = $branchRepository->findBy([
-            'client'=>$client->getId()
-        ]);
 
         }
+
+        /*  Afficher les branches du partenaire  */
+
+        $branches = $branchRepository->findBranchOfClient($client);
 
         return $this->render('client/show_page.html.twig', [
             'client'=>$clientId,

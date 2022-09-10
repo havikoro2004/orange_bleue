@@ -39,6 +39,21 @@ class BranchRepository extends ServiceEntityRepository
         }
     }
 
+    public function findBranchOfClient($value)
+    {
+        return $this->createQueryBuilder('b')
+            ->select('b,p')
+            ->join('b.permission','p')
+            ->where('b.client = :id')
+            ->andWhere('p.branch=:status')
+            ->setParameter('status',true)
+            ->setParameter('id', $value)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+
 //    /**
 //     * @return Branch[] Returns an array of Branch objects
 //     */
@@ -54,13 +69,4 @@ class BranchRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Branch
-//    {
-//        return $this->createQueryBuilder('b')
-//            ->andWhere('b.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }
