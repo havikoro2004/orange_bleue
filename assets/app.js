@@ -7,10 +7,12 @@ import axios from 'axios';
 if ( window.history.replaceState ) {
     window.history.replaceState( null, null, window.location.href );
 }
-if(performance.navigation.type == 2){
-    location.reload(true);
-}
-
+//Clear les formulaire quand on click sur precedent ou suivant sur le navigateur
+window.onpageshow = function(event) {
+    if (event.persisted || performance.getEntriesByType("navigation")[0].type === 'back_forward') {
+        location.reload();
+    }
+};
 const cardClient = document.getElementById('clientCard')
 if (cardClient){
     for (let i = 0 ; i < cardClient.children.length ; i++){

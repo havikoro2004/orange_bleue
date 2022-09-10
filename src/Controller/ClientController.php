@@ -7,6 +7,7 @@ use App\Entity\Client;
 use App\Entity\Permission;
 use App\Form\BranchType;
 use App\Form\ClientType;
+use App\Repository\BranchRepository;
 use App\Repository\ClientRepository;
 use App\Repository\PermissionRepository;
 use App\Repository\UserRepository;
@@ -89,14 +90,18 @@ class ClientController extends AbstractController
 
     #[Route('/client/{id}', name: 'app_client_one')]
     #[Entity('client', options: ['id' => 'id'])]
-    public function showOne(ValidatorInterface $validator,ManagerRegistry $manager,Request $request,Client $client,ClientRepository $clientRepository,PermissionRepository $permissionRepository): Response
+    public function showOne(BranchRepository $branchRepository,ValidatorInterface $validator
+                            ,ManagerRegistry $manager,
+                            Request $request,Client $client,ClientRepository $clientRepository,
+                            PermissionRepository $permissionRepository): Response
     {
+        $errors = null;
         $permissions=null;
+        $branches=null;
+
         if ($permissionRepository->finOneJoinClient($client->getId())){
             $permissions =$permissionRepository->finOneJoinClient($client->getId());
         }
-        $errors = null;
-
         $ifClientHavePermission = $permissionRepository->finOneJoinClient([
             'id'=>$client->getId()
         ]);
@@ -125,12 +130,18 @@ class ClientController extends AbstractController
             $data->setClient($client);
             $data->setPermission($structurePermissions);
             $data->setActive(true);
+            $data->setCreatedAt(new \DateTime('now'));
 
             $em->persist($data);
             $em->flush();
-
-
             $this->addFlash('success','La nouvelle structure a bien été crée');
+            return $this->redirect($request->getUri());
+            /*  Afficher les branches du partenaire  */
+
+        $branches = $branchRepository->findBy([
+            'client'=>$client->getId()
+        ]);
+
         }
 
         return $this->render('client/show_page.html.twig', [
@@ -138,6 +149,7 @@ class ClientController extends AbstractController
             'permissions'=>$ifClientHavePermission,
             'errors'=>$errors,
             'permissions'=>$permissions,
+            'branches'=>$branches,
             'form'=>$form->createView()
         ]);
     }
