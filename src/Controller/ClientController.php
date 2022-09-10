@@ -2,11 +2,16 @@
 
 namespace App\Controller;
 
+use App\Entity\Branch;
 use App\Entity\Client;
+use App\Entity\Permission;
+use App\Form\BranchType;
 use App\Form\ClientType;
 use App\Repository\ClientRepository;
 use App\Repository\PermissionRepository;
 use App\Repository\UserRepository;
+
+use App\Services\CloneClass;
 use Doctrine\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -84,7 +89,7 @@ class ClientController extends AbstractController
 
     #[Route('/client/{id}', name: 'app_client_one')]
     #[Entity('client', options: ['id' => 'id'])]
-    public function showOne(Client $client,ClientRepository $clientRepository,PermissionRepository $permissionRepository): Response
+    public function showOne(ValidatorInterface $validator,ManagerRegistry $manager,Request $request,Client $client,ClientRepository $clientRepository,PermissionRepository $permissionRepository): Response
     {
         $permissions=null;
         if ($permissionRepository->finOneJoinClient($client->getId())){
@@ -103,11 +108,37 @@ class ClientController extends AbstractController
         $clientId = $clientRepository->findOneBy([
             'id'=>$client->getId()
         ]);
+
+        $branch = New Branch();
+        $em = $manager->getManager();
+        $form = $this->createForm(BranchType::class);
+        $form->handleRequest($request);
+        $data = $form->getData($branch);
+        if ($data){
+            $error = $validator->validate($data);
+        }
+        if ($form->isSubmitted() && $form->isValid()){
+            $structurePermissions = New Permission();
+            $permissions->cloneClass($structurePermissions);
+            $structurePermissions->addClient($client);
+
+            $data->setClient($client);
+            $data->setPermission($structurePermissions);
+            $data->setActive(true);
+
+            $em->persist($data);
+            $em->flush();
+
+
+            $this->addFlash('success','La nouvelle structure a bien été crée');
+        }
+
         return $this->render('client/show_page.html.twig', [
             'client'=>$clientId,
             'permissions'=>$ifClientHavePermission,
             'errors'=>$errors,
-            'permissions'=>$permissions
+            'permissions'=>$permissions,
+            'form'=>$form->createView()
         ]);
     }
 

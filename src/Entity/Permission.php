@@ -51,6 +51,9 @@ class Permission
     #[ORM\OneToMany(mappedBy: 'permission', targetEntity: Branch::class)]
     private Collection $branches;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $branch = null;
+
     public function __construct()
     {
         $this->client = new ArrayCollection();
@@ -232,6 +235,32 @@ class Permission
                 $branch->setPermission(null);
             }
         }
+
+        return $this;
+    }
+    public function cloneClass(Permission $permission):Void
+    {
+        $permission->setReadResa($this->isReadResa())
+                   ->setEditResa($this->isEditResa())
+                   ->setRemoveResa($this->isRemoveResa())
+                   ->setReadPayment($this->isReadPayment())
+                   ->setEditPayment($this->isEditPayment())
+                   ->setManageDrink($this->isManageDrink())
+                   ->setAddSub($this->isAddSub())
+                   ->setEditSub($this->isEditSub())
+                   ->setRemoveSub($this->isRemoveSub())
+                   ->setManageSchedules($this->isManageSchedules())
+            ;
+    }
+
+    public function isBranch(): ?bool
+    {
+        return $this->branch;
+    }
+
+    public function setBranch(?bool $branch): self
+    {
+        $this->branch = $branch;
 
         return $this;
     }

@@ -24,7 +24,7 @@ class Branch
     #[ORM\JoinColumn(nullable: false)]
     private ?Client $client = null;
 
-    #[ORM\ManyToOne(inversedBy: 'branches')]
+    #[ORM\ManyToOne(inversedBy: 'branches',cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Permission $permission = null;
 

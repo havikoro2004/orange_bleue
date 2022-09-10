@@ -19,7 +19,7 @@
             <h1 class="text-center text-secondary my-4">Page du partenaire {{ client.name }}</h1>
             {% include 'components/client/_flashes.html.twig' %}
             <div class="d-flex justify-content-center">
-                <a title="Voir les managers"  class="btn btn-success btnTable mx-2" href="/client/user/add/{{ client.id }}">Structure &nbsp<i class="bi bi-house-fill" style="font-size:14px"></i></a>
+                <a title="Voir les managers"  class="btn btn-success btnTable mx-2" data-bs-toggle="collapse" href="#collapseExample">Structure &nbsp<i class="bi bi-plus-circle" style="font-size:14px"></i></a>
                 {% if permissions is empty %}
                     <a title="Ajouter une permission"  class="btn btn-success btnTable mx-2" href="/permission/add/{{ client.id }}">Permission &nbsp<i class="bi bi-plus-circle" style="font-size:14px"></i></a>
                 {% endif %}
@@ -30,6 +30,11 @@
                     Supprimer <i class="bi bi-trash3" style="font-size:14px"></i>
                 </a>
                 {% include 'components/client/_modal_delete.html.twig' %}
+            </div>
+            <div class="collapse" id="collapseExample">
+                <div class="card card-body m-3">
+                    {% include 'components/client/_branch_form.html.twig' %}
+                </div>
             </div>
             <div class="my-3 p-4 article m-auto" style="width: 98%">
                 <div class="imgActiveBtn">

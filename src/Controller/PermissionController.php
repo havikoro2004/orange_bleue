@@ -40,7 +40,7 @@ class PermissionController extends AbstractController
         $errors = null;
         $em=$manager->getManager();
         $form = $this->createForm(PermissionType::class);
-        $data = $form->handleRequest($request);
+        $form->handleRequest($request);
 
         $data = $form->getData();
         if ($data){

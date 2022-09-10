@@ -46,6 +46,8 @@ class PermissionRepository extends ServiceEntityRepository
             ->select('p,c')
             ->join('p.client','c')
             ->where('c.id = :id')
+            ->andWhere('p.branch=:teste')
+            ->setParameter('teste',false)
             ->setParameter('id', $value)
             ->getQuery()
             ->getOneOrNullResult()
