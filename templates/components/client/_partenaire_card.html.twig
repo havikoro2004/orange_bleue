@@ -13,7 +13,9 @@
     <h1 class="text-center text-secondary my-4">Page du partenaire {{ client.name }}</h1>
     {% include 'components/client/_flashes.html.twig' %}
     <div class="d-flex justify-content-center">
-        <a title="Voir les managers"  class="btn btn-success btnTable mx-2" data-bs-toggle="collapse" href="#collapsAddBranch">Structure &nbsp<i class="bi bi-plus-circle" style="font-size:14px"></i></a>
+        {% if permissions %}
+            <a title="Voir les managers"  class="btn btn-success btnTable mx-2" data-bs-toggle="collapse" href="#collapsAddBranch">Structure &nbsp<i class="bi bi-plus-circle" style="font-size:14px"></i></a>
+        {% endif %}
         {% if permissions is empty %}
             <a title="Ajouter une permission"  class="btn btn-success btnTable mx-2" href="/permission/add/{{ client.id }}">Permission &nbsp<i class="bi bi-plus-circle" style="font-size:14px"></i></a>
         {% endif %}
@@ -25,11 +27,17 @@
         </a>
         {% include 'components/client/_modal_delete.html.twig' %}
     </div>
-    <div class="collapse" id="collapsAddBranch">
-        <div class="card card-body m-3">
-            {% include 'components/branch/_branch_form.html.twig' %}
+    {% if permissions %}
+        <div class="collapse" id="collapsAddBranch">
+            <div class="card card-body m-3">
+                {% include 'components/branch/_branch_form.html.twig' %}
+            </div>
         </div>
-    </div>
+    {% else %}
+        <div class="alert-info alert text-center container mt-4">
+            Vous devez ajouter des permissions au client pour pouvoir ajouter des structures
+        </div>
+    {% endif %}
     <div class="my-3 p-4 article m-auto" style="width: 98%">
         <div class="imgActiveBtn">
             <a href="/client/{{ client.id }}">

@@ -1,44 +1,45 @@
-<div>
+<div class="firstPartPermissions">
     <div class="form-check form-switch">
-        <input {% if branche.permission.isReadResa() %}checked {% endif%} class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+        {% include 'components/branch/_modal_edit_permissions.html.twig' %}
+        <input {% if branche.isActive == false %}disabled {% endif%} name="{{ branche.id }}" value="isReadResa" data-bs-toggle="modal" data-bs-target="#editBranchPermissions" {% if branche.permission.isReadResa() %}checked {% endif%} class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
         <label class="form-check-label" for="flexSwitchCheckDefault">Lire les réservations</label>
     </div>
     <div class="form-check form-switch">
-        <input {% if branche.permission.isEditResa() %}checked {% endif%} class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+        <input {% if branche.isActive == false %}disabled {% endif%} name="{{ branche.id }} value="isEditResa" data-bs-toggle="modal" data-bs-target="#editBranchPermissions" name="{{ branche.id }}" {% if branche.permission.isEditResa() %}checked {% endif%} class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
         <label class="form-check-label" for="flexSwitchCheckDefault">Modifier les réservations</label>
     </div>
     <div class="form-check form-switch">
-        <input {% if branche.permission.isRemoveResa() %}checked {% endif%} class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+        <input {% if branche.isActive == false %}disabled {% endif%} name="{{ branche.id }} value="isRemoveResa" name="{{ branche.id }}" data-bs-toggle="modal" data-bs-target="#editBranchPermissions" {% if branche.permission.isRemoveResa() %}checked {% endif%} class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
         <label class="form-check-label" for="flexSwitchCheckDefault">Supprimer les réservations</label>
     </div>
     <div class="form-check form-switch">
-        <input {% if branche.permission.isReadPayment() %}checked {% endif%} class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+        <input {% if branche.isActive == false %}disabled {% endif%} name="{{ branche.id }} value="isReadPayment" name="{{ branche.id }}" data-bs-toggle="modal" data-bs-target="#editBranchPermissions" {% if branche.permission.isReadPayment() %}checked {% endif%} class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
         <label class="form-check-label" for="flexSwitchCheckDefault">Lire les paiements</label>
     </div>
     <div class="form-check form-switch">
-        <input {% if branche.permission.isEditPayment() %}checked {% endif%} class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+        <input {% if branche.isActive == false %}disabled {% endif%} name="{{ branche.id }} value="isEditPayment" name="{{ branche.id }}" data-bs-toggle="modal" data-bs-target="#editBranchPermissions" {% if branche.permission.isEditPayment() %}checked {% endif%} class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
         <label class="form-check-label" for="flexSwitchCheckDefault">Modifier les paiements</label>
     </div>
 </div>
-<div>
+<div class="firstPartPermissions">
     <div class="form-check form-switch">
-        <input {% if branche.permission.isManageDrink() %}checked {% endif%} class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+        <input {% if branche.isActive == false %}disabled {% endif%} name="{{ branche.id }} value="isManageDrink" name="{{ branche.id }}" data-bs-toggle="modal" data-bs-target="#editBranchPermissions" {% if branche.permission.isManageDrink() %}checked {% endif%} class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
         <label class="form-check-label" for="flexSwitchCheckDefault">Gérer les boissons</label>
     </div>
     <div class="form-check form-switch">
-        <input {% if branche.permission.isAddSub() %}checked {% endif%} class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+        <input {% if branche.isActive == false %}disabled {% endif%} name="{{ branche.id }} value="isReadSub" name="{{ branche.id }}" data-bs-toggle="modal" data-bs-target="#editBranchPermissions" {% if branche.permission.isAddSub() %}checked {% endif%} class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
         <label class="form-check-label" for="flexSwitchCheckDefault">Inscrire les abonnés</label>
     </div>
     <div class="form-check form-switch">
-        <input {% if branche.permission.isEditSub() %}checked {% endif%} class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+        <input {% if branche.isActive == false %}disabled {% endif%} name="{{ branche.id }} value="isEditSub" name="{{ branche.id }}" data-bs-toggle="modal" data-bs-target="#editBranchPermissions" {% if branche.permission.isEditSub() %}checked {% endif%} class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
         <label class="form-check-label" for="flexSwitchCheckDefault">Modifier les abonnés</label>
     </div>
     <div class="form-check form-switch">
-        <input {% if branche.permission.isRemoveSub() %}checked {% endif%} class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+        <input {% if branche.isActive == false %}disabled {% endif%} name="{{ branche.id }} value="isRemoveSub" name="{{ branche.id }}" data-bs-toggle="modal" data-bs-target="#editBranchPermissions"{% if branche.permission.isRemoveSub() %}checked {% endif%} class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
         <label class="form-check-label" for="flexSwitchCheckDefault">Supprimer les abonnés</label>
     </div>
     <div class="form-check form-switch">
-        <input {% if branche.permission.isManageSchedules() %}checked {% endif%} class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+        <input {% if branche.isActive == false %}disabled {% endif%} name="{{ branche.id }} value="isManageSchedules" name="{{ branche.id }}" data-bs-toggle="modal" data-bs-target="#editBranchPermissions" {% if branche.permission.isManageSchedules() %}checked {% endif%} class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
         <label class="form-check-label" for="flexSwitchCheckDefault">Gérer les horaires</label>
     </div>
 </div>

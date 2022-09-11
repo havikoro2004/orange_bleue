@@ -53,6 +53,17 @@ class PermissionRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
+    public function fineOneJoinBranch($value)
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p,b')
+            ->join('p.branches','b')
+            ->where('b.id = :id')
+            ->setParameter('id', $value)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
 
 //    public function findOneBySomeField($value): ?Permission
 //    {

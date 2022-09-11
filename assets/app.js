@@ -49,7 +49,6 @@ if (pageOneInput){
         modalBtn.addEventListener('click',()=>{
             modalOnePageBody[0].innerHTML ="<div class=\"spinner-border text-primary\" role=\"status\">\n" +
                 "</div>"
-
             axios.post('/client/'+modalBtn.id+'/active', {
             })
                 .then(function (response) {
@@ -114,4 +113,35 @@ if (document.getElementById('branchCard')){
             })
     }
 
+}
+
+if(document.getElementById('branchCard')){
+    const branchCard = document.getElementById('branchCard')
+    for (let i=0;i<branchCard.children.length;i++){
+        const cards = branchCard.children[i].getElementsByClassName('editPermissionsBranch')[0].getElementsByClassName('form-check-input')
+        for (let j=0;j<cards.length;j++){
+            cards[j].addEventListener('click',(e)=>{
+                e.preventDefault()
+                const modal = document.getElementById('editBranchPermissions')
+                const footer = modal.getElementsByClassName('modal-footer')[0].children[1]
+                const idClient = branchCard.getAttribute('class');
+                const body = modal.getElementsByClassName('modal-body')[0]
+                const idBranch = cards[j].name
+                footer.addEventListener('click',()=>{
+                    body.innerHTML="<div class=\"spinner-border text-primary text-center\" role=\"status\">\n" +
+                        "</div>"
+                    axios.post('/permission/'+idClient+'/'+idBranch+'/edit', {
+                        inputName: cards[j].value,
+                    })
+                        .then(function (response) {
+                            console.log(response);
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                    location.reload();
+                })
+            })
+        }
+    }
 }

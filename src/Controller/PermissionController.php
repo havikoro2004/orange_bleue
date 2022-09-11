@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Branch;
 use App\Entity\Client;
 use App\Entity\Permission;
 use App\Form\PermissionType;
+use App\Repository\BranchRepository;
 use App\Repository\PermissionRepository;
 use App\Services\getPermissionsMethodes;
 use Doctrine\Persistence\ManagerRegistry;
@@ -71,9 +73,26 @@ class PermissionController extends AbstractController
         $permissionsByClient = $permissionRepository->finOneJoinClient($client);
         $getMethode = New getPermissionsMethodes();
         $axiosPost = json_decode($request->getContent())->inputName;
-        $getMethode->getMethodes($permissionsByClient,$axiosPost,!$permissionsByClient->isReadResa());
+        $getMethode->getMethodes($permissionsByClient,$axiosPost);
         $em->flush();
         $this->addFlash('success','La permission a bien été changée');
+
+    }
+
+    #[Route('/permission/{clien_id}/{branch_id}/edit', name: 'app_permission_branch_edit')]
+    #[Entity('client', options: ['id' => 'clien_id'])]
+    #[Entity('branch', options: ['id' => 'branch_id'])]
+    public function branchEditPermissions(BranchRepository $branchRepository,Request $request,Branch $branch,ManagerRegistry $manager,PermissionRepository $permissionRepository): Response
+    {
+        $em = $manager->getManager();
+        $branches = $branchRepository->findOneBy([
+            'id'=>$branch->getId()
+        ]);
+        $permissions = $permissionRepository->fineOneJoinBranch($branches);
+        $getMethode = New getPermissionsMethodes();
+        $axiosPost = json_decode($request->getContent())->inputName;
+        $getMethode->getMethodes($permissions,$axiosPost);
+        $em->flush();
 
     }
 

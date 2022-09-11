@@ -34,12 +34,13 @@ class Branch
     #[ORM\JoinColumn(nullable: false)]
     private ?Client $client = null;
 
-    #[ORM\ManyToOne(inversedBy: 'branches',cascade: ['persist'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Permission $permission = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
+
+    #[ORM\ManyToOne(inversedBy: 'branches',cascade: ['persist'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Permission $permission = null;
 
     public function getId(): ?int
     {
@@ -81,19 +82,6 @@ class Branch
 
         return $this;
     }
-
-    public function getPermission(): ?Permission
-    {
-        return $this->permission;
-    }
-
-    public function setPermission(?Permission $permission): self
-    {
-        $this->permission = $permission;
-
-        return $this;
-    }
-
     public function setImageFile(?File $imageFile = null): void
     {
         $this->imageFile = $imageFile;
@@ -128,6 +116,18 @@ class Branch
     public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getPermission(): ?Permission
+    {
+        return $this->permission;
+    }
+
+    public function setPermission(?Permission $permission): self
+    {
+        $this->permission = $permission;
 
         return $this;
     }

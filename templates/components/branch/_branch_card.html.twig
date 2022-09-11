@@ -1,5 +1,5 @@
 <h3 class="text-center text-secondary mb-3">Structures du partenaire</h3>
-<div id="branchCard">
+<div class="{{ client.id }}" id="branchCard">
     {% for branche in branches %}
         <div class="cardBranchPermissions mb-4">
             <div class="imgActiveBtn">
@@ -10,7 +10,8 @@
                 {% endif %}
                 {% include 'components/branch/_modal_active_branch.html.twig' %}
                 <div class="form-check form-switch">
-                    <input {% if branche.isActive()%} checked {% endif %} name="{{ branche.id }}" title="Désactiver" data-bs-toggle="modal" data-bs-target="#activeBranch{{ branche.id }}" class="form-check-input activeBranch" type="checkbox" role="switch" id="branchActive">
+                    <input  {% if branche.isActive()%} checked {% endif %} name="{{ branche.id }}" title="Désactiver" data-bs-toggle="modal" data-bs-target="#activeBranch{{ branche.id }}" class="form-check-input activeBranch" type="checkbox" role="switch" id="branchActive">
+                    <label class="form-check-label text-secondary" for="flexSwitchCheckDefault">{% if branche.isActive %} On {% else%}Off {% endif %}</label>
                 </div>
             </div>
             <div>
@@ -20,7 +21,7 @@
                     <li class="m-2">Date de création :{{ branche.getCreatedAt()|date('d-m-Y ') }}</li>
                 </ul>
             </div>
-            <div class="editPermissionsBranch">
+            <div id="name={{ branche.id}}" class="editPermissionsBranch">
                 {% include 'components/branch/_form_edit_permissions.html.twig' %}
             </div>
         </div>

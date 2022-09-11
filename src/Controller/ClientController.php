@@ -155,7 +155,7 @@ class ClientController extends AbstractController
     }
 
     #[Route('/client/{id}/active', name: 'app_client_active')]
-    public function active(Client $client,ManagerRegistry $manager , Request $request,ValidatorInterface $validator): Response
+    public function active(BranchRepository $branchRepository,Client $client,ManagerRegistry $manager , Request $request,ValidatorInterface $validator): Response
     {
         $em = $manager->getManager();
         $status = $client->isActive();
@@ -167,6 +167,12 @@ class ClientController extends AbstractController
             $message = 'Le client '.$client->getName().' a bien été activé';
         }
         $client->setActive(!$client->isActive());
+        $branches =$branchRepository->findBy([
+            'client'=>$client->getId()
+        ]);
+        foreach ($branches as $branch){
+            $branch->setActive($client->isActive());
+        }
         $em->flush();
         $this->addFlash('success',$message);
         return $this->redirectToRoute('app_client');
