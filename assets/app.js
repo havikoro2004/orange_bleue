@@ -85,8 +85,33 @@ if (document.getElementById('permissionCollaps')){
                     });
                 location.reload();
             })
-
         })
+    }
+}
+if (document.getElementById('branchCard')){
+    const activeBranchModal = document.getElementById('branchCard')
+    for (let i=0 ; i< activeBranchModal.children.length ; i++){
+
+       const activeBtn = activeBranchModal.children[i].getElementsByClassName('activeBranch')
+            activeBtn[0].addEventListener('click',(e)=>{
+                e.preventDefault()
+                const footer = activeBranchModal.children[i].getElementsByClassName('modal-footer')[0].children[1]
+                const body = activeBranchModal.children[i].getElementsByClassName('modal-body')[0]
+                footer.addEventListener('click',()=>{
+                    body.innerHTML="<div class=\"spinner-border text-primary text-center\" role=\"status\">\n" +
+                        "</div>"
+                    axios.post('/branch/'+ activeBtn[0].name+'/edit', {
+                    })
+                        .then(function (response) {
+                            console.log(response);
+                            document.body.scrollTop = document.documentElement.scrollTop = 0;
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                    location.reload();
+                })
+            })
     }
 
 }

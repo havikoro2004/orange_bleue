@@ -1,0 +1,88 @@
+<section>
+    <div class="d-flex align-items-center bread" style="height: 3rem">
+        <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
+                width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);
+                " aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0 mx-3">
+                <li title="Accueil" class="breadcrumb-item"><a href="/" class="text-decoration-none menusHover">Accueil</a></li>
+                <li title="Partenaire"  class="breadcrumb-item"><a href="/client" class="menusHover text-decoration-none">Partenaires</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ client.name }}</li>
+            </ol>
+        </nav>
+    </div>
+    <h1 class="text-center text-secondary my-4">Page du partenaire {{ client.name }}</h1>
+    {% include 'components/client/_flashes.html.twig' %}
+    <div class="d-flex justify-content-center">
+        <a title="Voir les managers"  class="btn btn-success btnTable mx-2" data-bs-toggle="collapse" href="#collapsAddBranch">Structure &nbsp<i class="bi bi-plus-circle" style="font-size:14px"></i></a>
+        {% if permissions is empty %}
+            <a title="Ajouter une permission"  class="btn btn-success btnTable mx-2" href="/permission/add/{{ client.id }}">Permission &nbsp<i class="bi bi-plus-circle" style="font-size:14px"></i></a>
+        {% endif %}
+        <a title="Voir les managers"  class="btn btn-success btnTable mx-2" href="/client/user/add/{{ client.id }}">Manager &nbsp<i class="bi bi-person-workspace" style="font-size:14px"></i></a>
+        <a title="Modifier le partenaire"  class="btn btn-success btnTable mx-2" href="/client/{{ client.id }}/edit/">Modifier &nbsp <i class="bi bi-pencil-square" style="font-size:14px"></i></a>
+        <!-- Button trigger modal -->
+        <a title="Supprimer le partenaire"  type="button" class="btn btn-danger btnTable" data-bs-toggle="modal" data-bs-target="#suprimerClient">
+            Supprimer <i class="bi bi-trash3" style="font-size:14px"></i>
+        </a>
+        {% include 'components/client/_modal_delete.html.twig' %}
+    </div>
+    <div class="collapse" id="collapsAddBranch">
+        <div class="card card-body m-3">
+            {% include 'components/branch/_branch_form.html.twig' %}
+        </div>
+    </div>
+    <div class="my-3 p-4 article m-auto" style="width: 98%">
+        <div class="imgActiveBtn">
+            <a href="/client/{{ client.id }}">
+                {% if client.getImageName() %}
+                    <img class="list-group border border-secondary imgHover" width="200px" height="160px" src="/images/client_logo/{{ client.getImageName() }}" alt="partenaire".{{ client.id }}>
+                {% else %}
+                    <img class="list-group border border-secondary imgHover" width="200px" height="160px" src="{{ asset('build/images/default.jpg') }}" alt="partenaire".{{ client.id }}>
+                {% endif %}
+            </a>
+            <div class="form-check form-switch mt-3" id="activBtnOnePage">
+                <input title="{% if client.active %} Désactiver {% else%} Activer {% endif %}" data-bs-toggle="modal" data-bs-target="#exampleModal{{client.id }}" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" {% if client.active %} checked {% endif %}>
+                <label class="form-check-label text-secondary" for="flexSwitchCheckDefault">{% if client.active %} On {% else%}Off {% endif %}</label>
+                {% include 'components/client/_modal.html.twig' %}
+            </div>
+        </div>
+        <ul class="border border-secondary list-unstyled bg bg-white rounded-2">
+            <li class="m-2">Client ID :{{ client.id }}</li>
+            <li class="m-2">Nom client :{{ client.name }}</li>
+            <li class="m-2">
+                Description courte :
+                {% if client.getShortDesc() %}
+                    {{ client.getShortDesc() }}
+                {% else %}
+                    <span class="text-danger">Non fourni</span>
+                {% endif %}
+            </li>
+            <li class="m-2">
+                Description complète :
+                {% if client.getFullDesc() %}
+                    {{ client.getFullDesc() }}
+                {% else %}
+                    <span class="text-danger">Non fourni</span>
+                {% endif %}
+            </li>
+            <li class="m-2">
+                Url :
+                {% if client.getUrl() %}
+                    {{ client.getUrl() }}
+                {% else %}
+                    <span class="text-danger">Non fourni</span>
+                {% endif %}
+            </li>
+            <li class="m-2">
+                Dpo :
+                {% if client.getDpo() %}
+                    {{ client.getDpo() }}
+                {% else %}
+                    <span class="text-danger">Non fourni</span>
+                {% endif %}
+            </li>
+            <li class="m-2">Contact technique : {{ client.getTechnicalContact() }}</li>
+            <li class="m-2">Contact commercial : {{ client.getCommercialContact() }}</li>
+            <li class="m-2">Date de création : {{ client.getCreateAt()|date('d-m-Y ') }} à {{ client.getCreateAt()|date(' H:i') }}</li>
+        </ul>
+    </div>
+</section>
