@@ -7,8 +7,11 @@ html,body {
   height: 100vh;
   margin: 0;
   font-family: 'bahan';
+}
+.content {
   display: grid;
   grid-template-rows: 6vh 5fr 6vh;
+  height: 100vh;
 }
 .showPermissClient{
   display: flex;

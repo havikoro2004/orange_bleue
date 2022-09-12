@@ -1,19 +1,21 @@
 {% extends 'base.html.twig' %}
 {% block title %}Partenaire!{% endblock %}
 {% block body %}
-    {% include 'components/_header.html.twig' %}
-    <div style="height: 100%">
-        {% include 'components/client/_partenaire_card.html.twig' %}
-       {% if permissions %}
-           {% include 'components/permission/_form_edit_permissions.html.twig' %}
-       {% endif %}
-        <div>
-            {% if branches %}
-                {% include 'components/branch/_branch_card.html.twig' %}
-            {% else %}
-                <div class="alert alert-dark text-center container mt-2">Aucune structure n'est ajoutée pour ce partenaire</div>
+    <div class="content">
+        {% include 'components/_header.html.twig' %}
+        <div style="height: 100%">
+            {% include 'components/client/_partenaire_card.html.twig' %}
+            {% if permissions %}
+                {% include 'components/permission/_form_edit_permissions.html.twig' %}
             {% endif %}
+            <div>
+                {% if branches %}
+                    {% include 'components/branch/_branch_card.html.twig' %}
+                {% else %}
+                    <div class="alert alert-dark text-center container mt-2">Aucune structure n'est ajoutée pour ce partenaire</div>
+                {% endif %}
+            </div>
         </div>
+        {% include 'components/_footer.html.twig' %}
     </div>
-    {% include 'components/_footer.html.twig' %}
 {% endblock %}

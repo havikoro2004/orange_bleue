@@ -3,7 +3,8 @@
 {% block title %}Energy fit Academy : Bienvenue à bord!{% endblock %}
 
 {% block body %}
-    {% include 'components/_header.html.twig' %}
+    <div class="content">
+        {% include 'components/_header.html.twig' %}
         <div class="bodyHome">
             <div class="container text-center mt-5">
                 <img src="{{ asset('build/images/brand.png') }}" alt="brand" style="width: 25rem ; height: 23rem">
@@ -32,5 +33,6 @@
                 </a>
             </div>
         </div>
-    {% include 'components/_footer.html.twig' %}
+        {% include 'components/_footer.html.twig' %}
+    </div>
 {% endblock %}

@@ -3,53 +3,55 @@
 {% block title %}Utilisateur de la structure{% endblock %}
 
 {% block body %}
-    {% include 'components/_header.html.twig' %}
-    <section style="height: 90vh">
-        <div class="d-flex align-items-center bread" style="height: 3rem">
-            <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
+    <div class="content">
+        {% include 'components/_header.html.twig' %}
+        <section style="height: 90vh">
+            <div class="d-flex align-items-center bread" style="height: 3rem">
+                <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
                 width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);
                 " aria-label="breadcrumb">
-                <ol class="breadcrumb mb-0 mx-3">
-                    <li title="Accueil" class="breadcrumb-item"><a href="/" class="menusHover text-decoration-none">Accueil</a></li>
-                    <li title="Partenaires"  class="breadcrumb-item"><a href="/client" class="menusHover text-decoration-none">Parnetaires</a></li>
-                    <li title="Profil" class="breadcrumb-item"><a href="/client/{{ client.id }}" class="menusHover text-decoration-none">Profil</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Ajouter</li>
-                </ol>
-            </nav>
-        </div>
-        <h1 class="text-center text-secondary my-4">Ajouter un utilisateur pour la structure </h1>
-        {% include 'components/branch/user/_flashes.html.twig' %}
-        {% if user %}
-            <div class="mx-4">
-                <table class="table table-hover text-center" >
-                    <thead>
-                    <tr>
-                        <th scope="col">Id de la structure</th>
-                        <th scope="col">Adresse E-mail</th>
-                        <th scope="col">Modifier</th>
-                        <th scope="col">Supprimer</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr class="align-middle">
-                        <th scope="row">{{ user.id }}</th>
-                        <td>{{ user.email }}</td>
-                        <td>
-                            <a href="/client/{{ client.id }}/branch/{{ branche.id }}/edit_user" class="btn btn-primary btnTable">Modifier</a>
-                        </td>
-                        <td>
-                            {% include 'components/branch/user/_modal.html.twig' %}
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                    <ol class="breadcrumb mb-0 mx-3">
+                        <li title="Accueil" class="breadcrumb-item"><a href="/" class="menusHover text-decoration-none">Accueil</a></li>
+                        <li title="Partenaires"  class="breadcrumb-item"><a href="/client" class="menusHover text-decoration-none">Parnetaires</a></li>
+                        <li title="Profil" class="breadcrumb-item"><a href="/client/{{ client.id }}" class="menusHover text-decoration-none">Profil</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Ajouter</li>
+                    </ol>
+                </nav>
             </div>
-            <h2 class="text-center text-secondary">Rappel</h2>
-            <div class="container text-center alert alert-info">Un partenaire doit avoir un utilisateur max</div>
-        {% else %}
-            <div class="container text-center alert alert-dark">Aucun utilisateur n'est enregistré pour ce lient</div>
-            {% include 'components/branch/user/_form.html.twig' %}
-        {% endif %}
-    </section>
-    {% include 'components/_footer.html.twig' %}
+            <h1 class="text-center text-secondary my-4">Ajouter un utilisateur pour la structure </h1>
+            {% include 'components/branch/user/_flashes.html.twig' %}
+            {% if user %}
+                <div class="mx-4">
+                    <table class="table table-hover text-center" >
+                        <thead>
+                        <tr>
+                            <th scope="col">Id de la structure</th>
+                            <th scope="col">Adresse E-mail</th>
+                            <th scope="col">Modifier</th>
+                            <th scope="col">Supprimer</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="align-middle">
+                            <th scope="row">{{ user.id }}</th>
+                            <td>{{ user.email }}</td>
+                            <td>
+                                <a href="/client/{{ client.id }}/branch/{{ branche.id }}/edit_user" class="btn btn-primary btnTable">Modifier</a>
+                            </td>
+                            <td>
+                                {% include 'components/branch/user/_modal.html.twig' %}
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h2 class="text-center text-secondary">Rappel</h2>
+                <div class="container text-center alert alert-info">Un partenaire doit avoir un utilisateur max</div>
+            {% else %}
+                <div class="container text-center alert alert-dark">Aucun utilisateur n'est enregistré pour ce lient</div>
+                {% include 'components/branch/user/_form.html.twig' %}
+            {% endif %}
+        </section>
+        {% include 'components/_footer.html.twig' %}
+    </div>
 {% endblock %}
