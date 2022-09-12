@@ -18,7 +18,7 @@
             </nav>
         </div>
         <h1 class="text-center text-secondary my-4">Ajouter un utilisateur pour la structure </h1>
-        {% include 'components/client/user/_flashes.html.twig' %}
+        {% include 'components/branch/user/_flashes.html.twig' %}
         {% if user %}
             <div class="mx-4">
                 <table class="table table-hover text-center" >
@@ -35,7 +35,7 @@
                         <th scope="row">{{ user.id }}</th>
                         <td>{{ user.email }}</td>
                         <td>
-                            <a href="" class="btn btn-primary btnTable">Modifier</a>
+                            <a href="/client/{{ client.id }}/branch/{{ branche.id }}/edit_user" class="btn btn-primary btnTable">Modifier</a>
                         </td>
                         <td>
                             {% include 'components/branch/user/_modal.html.twig' %}
@@ -48,7 +48,7 @@
             <div class="container text-center alert alert-info">Un partenaire doit avoir un utilisateur max</div>
         {% else %}
             <div class="container text-center alert alert-dark">Aucun utilisateur n'est enregistré pour ce lient</div>
-            {% include 'components/client/user/_form.html.twig' %}
+            {% include 'components/branch/user/_form.html.twig' %}
         {% endif %}
     </section>
     {% include 'components/_footer.html.twig' %}
