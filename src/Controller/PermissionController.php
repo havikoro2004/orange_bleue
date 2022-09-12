@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Controller;
-
 use App\Entity\Branch;
 use App\Entity\Client;
 use App\Entity\Permission;
@@ -16,7 +15,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PermissionController extends AbstractController
@@ -31,7 +29,7 @@ class PermissionController extends AbstractController
     }
 
     #[Route('/permission/add/{id}', name: 'app_permission_add')]
-
+    #[IsGranted('ROLE_ADMIN')]
     public function add(Client $client,ManagerRegistry $manager,Request $request ,ValidatorInterface $validator,PermissionRepository $permissionRepository): Response
     {
         $ifClientHavePermission = $permissionRepository->finOneJoinClient([

@@ -1,0 +1,30 @@
+<h3 class="text-center text-secondary mb-3">Structures du partenaire</h3>
+<div class="{{ client.id }}" id="branchCard">
+    {% for branche in branches %}
+    <div class="grandDivCardPermissions my-4">
+        <div class="cardBranchPermissions">
+            <div class="imgActiveBtn">
+                {% if branche.getImageName() %}
+                    <img class="list-group border border-secondary imgHover" width="200px" height="160px" src="../images/structure_logo/{{ branche.getImageName() }}" alt="structure".{{ client.id }}>
+                {% else %}
+                    <img class="list-group border border-secondary imgHover" width="200px" height="160px" src="{{ asset('build/images/strucDefault.jpg') }}" alt="partenaire".{{ client.id }}>
+                {% endif %}
+                <div class="form-check form-switch ms-3">
+                    <input disabled{% if branche.isActive()%} checked {% endif %}  class="form-check-input activeBranch" type="checkbox" role="switch">
+                    <label class="form-check-label text-secondary" >{% if branche.isActive %} On {% else%}Off {% endif %}</label>
+                </div>
+            </div>
+            <div>
+                <ul class="list-unstyled">
+                    <li class="m-2">Structure Id :{{ branche.id }}</li>
+                    <li class="m-2">Adresse :{{ branche.adress }}</li>
+                    <li class="m-2">Date de création :{{ branche.getCreatedAt()|date('d-m-Y ') }}</li>
+                </ul>
+            </div>
+            <div id="name={{ branche.id}}" class="editPermissionsBranch">
+                {% include 'components/guest/_permissions_branche.html.twig' %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>

@@ -1,0 +1,44 @@
+<div class="firstPartPermissions">
+    <div class="form-check form-switch">
+        <input disabled {% if branche.permission.isReadResa() %}checked {% endif%} class="form-check-input" type="checkbox" role="switch" >
+        <label class="form-check-label" >Lire les réservations</label>
+    </div>
+    <div class="form-check form-switch">
+        <input disabled {% if branche.permission.isEditResa() %}checked {% endif%} class="form-check-input" type="checkbox" role="switch" >
+        <label class="form-check-label" >Modifier les réservations</label>
+    </div>
+    <div class="form-check form-switch">
+        <input disabled {% if branche.permission.isRemoveResa() %}checked {% endif%} class="form-check-input" type="checkbox" role="switch" >
+        <label class="form-check-label" >Supprimer les réservations</label>
+    </div>
+    <div class="form-check form-switch">
+        <input disabled {% if branche.permission.isReadPayment() %}checked {% endif%} class="form-check-input" type="checkbox" role="switch" >
+        <label class="form-check-label" >Lire les paiements</label>
+    </div>
+    <div class="form-check form-switch">
+        <input disabled {% if branche.permission.isEditPayment() %}checked {% endif%} class="form-check-input" type="checkbox" role="switch" >
+        <label class="form-check-label" >Modifier les paiements</label>
+    </div>
+</div>
+<div class="firstPartPermissions">
+    <div class="form-check form-switch">
+        <input disabled {% if branche.permission.isManageDrink() %}checked {% endif%} class="form-check-input" type="checkbox" role="switch" >
+        <label class="form-check-label" >Gérer les boissons</label>
+    </div>
+    <div class="form-check form-switch">
+        <input disabled {% if branche.permission.isAddSub() %}checked {% endif%} class="form-check-input" type="checkbox" role="switch" >
+        <label class="form-check-label" >Inscrire les abonnés</label>
+    </div>
+    <div class="form-check form-switch">
+        <input disabled {% if branche.permission.isEditSub() %}checked {% endif%} class="form-check-input" type="checkbox" role="switch" >
+        <label class="form-check-label" >Modifier les abonnés</label>
+    </div>
+    <div class="form-check form-switch">
+        <input disabled {% if branche.permission.isRemoveSub() %}checked {% endif%} class="form-check-input" type="checkbox" role="switch" >
+        <label class="form-check-label" >Supprimer les abonnés</label>
+    </div>
+    <div class="form-check form-switch">
+        <input disabled {% if branche.permission.isManageSchedules() %}checked {% endif%} class="form-check-input" type="checkbox" role="switch" >
+        <label class="form-check-label" >Gérer les horaires</label>
+    </div>
+</div>

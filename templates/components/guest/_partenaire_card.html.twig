@@ -1,0 +1,57 @@
+<section>
+    <h1 class="text-center text-secondary my-4">Page du partenaire {{ client.name }}</h1>
+    <div class="my-3 p-4 article m-auto" style="width: 98%">
+        <div class="imgActiveBtn">
+
+                {% if client.getImageName() %}
+                    <img class="list-group border border-secondary imgHover" width="200px" height="160px" src="/images/client_logo/{{ client.getImageName() }}" alt="partenaire".{{ client.id }}>
+                {% else %}
+                    <img class="list-group border border-secondary imgHover" width="200px" height="160px" src="{{ asset('build/images/default.jpg') }}" alt="partenaire".{{ client.id }}>
+                {% endif %}
+
+            <div class="form-check form-switch mt-3" id="activBtnOnePage">
+                <input disabled title="{% if client.active %} Désactiver {% else%} Activer {% endif %}" class="form-check-input" type="checkbox" role="switch" {% if client.active %} checked {% endif %}>
+                <label class="form-check-label text-secondary" >{% if client.active %} On {% else%}Off {% endif %}</label>
+            </div>
+        </div>
+        <ul class="border border-secondary list-unstyled bg bg-white rounded-2">
+            <li class="m-2">Client ID :{{ client.id }}</li>
+            <li class="m-2">Nom client :{{ client.name }}</li>
+            <li class="m-2">
+                Description courte :
+                {% if client.getShortDesc() %}
+                    {{ client.getShortDesc() }}
+                {% else %}
+                    <span class="text-danger">Non fourni</span>
+                {% endif %}
+            </li>
+            <li class="m-2">
+                Description complète :
+                {% if client.getFullDesc() %}
+                    {{ client.getFullDesc() }}
+                {% else %}
+                    <span class="text-danger">Non fourni</span>
+                {% endif %}
+            </li>
+            <li class="m-2">
+                Url :
+                {% if client.getUrl() %}
+                    {{ client.getUrl() }}
+                {% else %}
+                    <span class="text-danger">Non fourni</span>
+                {% endif %}
+            </li>
+            <li class="m-2">
+                Dpo :
+                {% if client.getDpo() %}
+                    {{ client.getDpo() }}
+                {% else %}
+                    <span class="text-danger">Non fourni</span>
+                {% endif %}
+            </li>
+            <li class="m-2">Contact technique : {{ client.getTechnicalContact() }}</li>
+            <li class="m-2">Contact commercial : {{ client.getCommercialContact() }}</li>
+            <li class="m-2">Date de création : {{ client.getCreateAt()|date('d-m-Y ') }} à {{ client.getCreateAt()|date(' H:i') }}</li>
+        </ul>
+    </div>
+</section>

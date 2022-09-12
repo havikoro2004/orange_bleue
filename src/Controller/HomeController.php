@@ -11,9 +11,14 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_USER')]
     public function index(): Response
     {
+        if ($this->getUser()->getRoles()[0] == 'ROLE_READER'){
+            return $this->redirectToRoute('app_guest_client',[
+                'id'=>$this->getUser()->getClient()->getId()
+            ]);
+        }
         return $this->render('home/index.html.twig');
     }
 }
