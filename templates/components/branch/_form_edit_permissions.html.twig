@@ -27,7 +27,7 @@
         <label class="form-check-label" >Gérer les boissons</label>
     </div>
     <div class="form-check form-switch">
-        <input {% if branche.isActive == false %}disabled {% endif%} name="{{ branche.id }}" value="isReadSub" name="{{ branche.id }}" data-bs-toggle="modal" data-bs-target="#editBranchPermissions" {% if branche.permission.isAddSub() %}checked {% endif%} class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+        <input {% if branche.isActive == false %}disabled {% endif%} name="{{ branche.id }}" value="isAddSub" name="{{ branche.id }}" data-bs-toggle="modal" data-bs-target="#editBranchPermissions" {% if branche.permission.isAddSub() %}checked {% endif%} class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
         <label class="form-check-label" >Inscrire les abonnés</label>
     </div>
     <div class="form-check form-switch">
