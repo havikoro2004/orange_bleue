@@ -1,7 +1,8 @@
 <h3 class="text-center text-secondary mb-3">Structures du partenaire</h3>
 <div class="{{ client.id }}" id="branchCard">
     {% for branche in branches %}
-        <div class="cardBranchPermissions mb-4">
+    <div class="grandDivCardPermissions my-4">
+        <div class="cardBranchPermissions">
             <div class="imgActiveBtn">
                 {% if branche.getImageName() %}
                     <img class="list-group border border-secondary imgHover" width="200px" height="160px" src="../images/structure_logo/{{ branche.getImageName() }}" alt="structure".{{ client.id }}>
@@ -25,6 +26,12 @@
                 {% include 'components/branch/_form_edit_permissions.html.twig' %}
             </div>
         </div>
-
+        <div class="container text-center">
+            {% include 'components/branch/_delete_modal.html.twig' %}
+            <a href="" class="btn btn-success">Modifier &nbsp <i class="bi bi-pencil-square" style="font-size:14px"></i></a>
+            <a href="" class="btn btn-success">Manager &nbsp<i class="bi bi-person-workspace" style="font-size:14px"></i></a>
+            <a href="" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete{{ branche.id }}">Supprimer <i class="bi bi-trash3" style="font-size:14px"></i></a>
+        </div>
+    </div>
     {% endfor %}
 </div>

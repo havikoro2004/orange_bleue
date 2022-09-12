@@ -3,9 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Branch;
+use App\Entity\Client;
 use App\Repository\BranchRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -31,6 +34,20 @@ class BranchController extends AbstractController
 
         return $this->render('branch/index.html.twig', [
             'controller_name' => 'BranchController',
+        ]);
+    }
+
+    #[Route('/client/{id_client}/branch/{id_branch}/delete', name: 'app_branch_delete')]
+    #[Entity('client', options: ['id' => 'id_client'])]
+    #[Entity('branch', options: ['id' => 'id_branch'])]
+    public function delete(Client $client,Branch $branch,ManagerRegistry $manager): Response
+    {
+        $em = $manager->getManager();
+        $em->remove($branch);
+        $em->flush();
+        $this->addFlash('success','La structure a bien été supprimée');
+        return $this->redirectToRoute('app_client_one',[
+            'id'=>$client->getId()
         ]);
     }
 }
