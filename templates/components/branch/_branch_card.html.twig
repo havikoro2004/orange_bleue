@@ -19,6 +19,8 @@
                 <ul class="list-unstyled">
                     <li class="m-2">Structure Id :{{ branche.id }}</li>
                     <li class="m-2">Adresse :{{ branche.adress }}</li>
+                    <li class="m-2">Manager : {% if branche.getUser() %}{{ branche.getUser().getEmail() }} {% else %}
+                            <span class="text-danger">Non fourni</span>{% endif %}</li>
                     <li class="m-2">Date de création :{{ branche.getCreatedAt()|date('d-m-Y ') }}</li>
                 </ul>
             </div>

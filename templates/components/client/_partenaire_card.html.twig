@@ -90,6 +90,8 @@
             </li>
             <li class="m-2">Contact technique : {{ client.getTechnicalContact() }}</li>
             <li class="m-2">Contact commercial : {{ client.getCommercialContact() }}</li>
+            <li class="m-2">Manager : {% if client.getUser() %}{{ client.getUser().getEmail() }}
+                {% else %}<span class="text-danger">Non fourni</span>{% endif %}</li>
             <li class="m-2">Date de création : {{ client.getCreateAt()|date('d-m-Y ') }} à {{ client.getCreateAt()|date(' H:i') }}</li>
         </ul>
     </div>
