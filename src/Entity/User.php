@@ -31,9 +31,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\Length(min: 8)]
     private ?string $password = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?Branch $branch = null;
-
     /**
      * @var string The hashed password
      */
@@ -46,6 +43,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\OneToOne(inversedBy: 'user')]
     private ?Client $client = null;
+
+    #[ORM\OneToOne(inversedBy: 'user')]
+    private ?Branch $branch = null;
 
     public function getId(): ?int
     {
@@ -117,19 +117,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-
-    public function getBranch(): ?Branch
-    {
-        return $this->branch;
-    }
-
-    public function setBranch(?Branch $branch): self
-    {
-        $this->branch = $branch;
-
-        return $this;
-    }
-
     public function getConfirmPwd(): ?string
     {
         return $this->confirmPwd;
@@ -162,6 +149,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setClient(?Client $client): self
     {
         $this->client = $client;
+
+        return $this;
+    }
+
+    public function getBranch(): ?Branch
+    {
+        return $this->branch;
+    }
+
+    public function setBranch(?Branch $branch): self
+    {
+        $this->branch = $branch;
 
         return $this;
     }

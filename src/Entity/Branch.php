@@ -42,6 +42,9 @@ class Branch
     #[ORM\JoinColumn(nullable: false)]
     private ?Permission $permission = null;
 
+    #[ORM\OneToOne(mappedBy: 'branch', cascade: ['persist', 'remove'])]
+    private ?User $user = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -128,6 +131,28 @@ class Branch
     public function setPermission(?Permission $permission): self
     {
         $this->permission = $permission;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($user === null && $this->user !== null) {
+            $this->user->setBranch(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($user !== null && $user->getBranch() !== $this) {
+            $user->setBranch($this);
+        }
+
+        $this->user = $user;
 
         return $this;
     }
