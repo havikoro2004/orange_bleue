@@ -4,11 +4,17 @@
 }
 html,body {
   width: 100%;
-  height: 100%;
+  height: 100vh;
   margin: 0;
   font-family: 'bahan';
   display: grid;
   grid-template-rows: 6vh 5fr 6vh;
+}
+.showPermissClient{
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: center;
 }
 .form-check-input:checked {
   background-color: #09AB18;
@@ -168,5 +174,9 @@ table{
   }
   .editPermissionsBranch{
     grid-template-columns: 1fr 1fr;
+  }
+  .showPermissClient{
+    justify-content: end;
+    margin-right: 3rem;
   }
 }

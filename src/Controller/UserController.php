@@ -9,6 +9,7 @@ use App\Form\UserType;
 use App\Repository\UserRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,6 +21,7 @@ class UserController extends AbstractController
 {
     #[Route('/client/user/add/{id}', name: 'app_user_client_add')]
     #[Entity('client', options: ['id' => 'id'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function index(UserPasswordHasherInterface $hasher, UserRepository $UserRepository, Client $client, ManagerRegistry $manager, Request $request, ValidatorInterface $validator): Response
     {
         $users = null;
@@ -69,6 +71,7 @@ class UserController extends AbstractController
 
     #[Route('/client/{id_client}/user/{id_user}/edit')]
     #[Entity('client', options: ['id' => 'id_client'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function edit(User $user, UserPasswordHasherInterface $hasher, UserRepository $UserRepository, Client $client, ManagerRegistry $manager, Request $request, ValidatorInterface $validator): Response
     {
         $em = $manager->getManager();
@@ -107,6 +110,7 @@ class UserController extends AbstractController
 
     #[Route('/client/{id_client}/user/{id_user}/delete')]
     #[Entity('client', options: ['id' => 'id_client'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function delete(Client $client, ManagerRegistry $manager, User $user): Response
     {
         $em = $manager->getManager();
@@ -122,6 +126,7 @@ class UserController extends AbstractController
     #[Route('/client/{id_client}/branch/{id_branch}/add_user', name: 'app_user_branch_add')]
     #[Entity('client', options: ['id' => 'id_client'])]
     #[Entity('branch', options: ['id' => 'id_branch'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function branchAddUser(UserPasswordHasherInterface $hasher, Branch $branch, ValidatorInterface $validator, UserRepository $UserRepository, Client $client, Request $request, ManagerRegistry $manager): Response
     {
         $users = null;
@@ -176,6 +181,7 @@ class UserController extends AbstractController
     #[Route('/client/{id_client}/branch/{id_branch}/delete_user')]
     #[Entity('client', options: ['id' => 'id_client'])]
     #[Entity('branch', options: ['id' => 'id_branch'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function deleteUser(Branch $branch, UserRepository $userRepository, Client $client, ManagerRegistry $manager): Response
     {
         $user = $userRepository->findOneBy([
@@ -194,6 +200,7 @@ class UserController extends AbstractController
     #[Route('/client/{id_client}/branch/{id_branch}/edit_user')]
     #[Entity('client', options: ['id' => 'id_client'])]
     #[Entity('branch', options: ['id' => 'id_branch'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function branchUserEdit(UserPasswordHasherInterface $hasher, Branch $branch, ValidatorInterface $validator, UserRepository $UserRepository, Client $client, Request $request, ManagerRegistry $manager): Response
     {
         $users = null;

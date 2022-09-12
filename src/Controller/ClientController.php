@@ -15,6 +15,7 @@ use App\Repository\UserRepository;
 use App\Services\CloneClass;
 use Doctrine\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,6 +25,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class ClientController extends AbstractController
 {
     #[Route('/client', name: 'app_client')]
+    #[IsGranted('ROLE_ADMIN')]
     public function index(ClientRepository $clientRepository): Response
     {
         $clients = $clientRepository->findAll();
@@ -35,6 +37,7 @@ class ClientController extends AbstractController
     }
 
     #[Route('/client/add', name: 'app_client_add')]
+    #[IsGranted('ROLE_ADMIN')]
     public function add(ManagerRegistry $manager , Request $request,ValidatorInterface $validator): Response
     {
         $client = New Client();
@@ -64,6 +67,7 @@ class ClientController extends AbstractController
 
 
     #[Route('/client/{id}/edit', name: 'app_client_edit')]
+    #[IsGranted('ROLE_ADMIN')]
     public function edit(Client $client,ManagerRegistry $manager , Request $request,ValidatorInterface $validator): Response
     {
         $error =null;
@@ -90,6 +94,7 @@ class ClientController extends AbstractController
 
     #[Route('/client/{id}', name: 'app_client_one')]
     #[Entity('client', options: ['id' => 'id'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function showOne(BranchRepository $branchRepository,ValidatorInterface $validator
                             ,ManagerRegistry $manager,
                             Request $request,Client $client,ClientRepository $clientRepository,
@@ -155,6 +160,7 @@ class ClientController extends AbstractController
     }
 
     #[Route('/client/{id}/active', name: 'app_client_active')]
+    #[IsGranted('ROLE_ADMIN')]
     public function active(Client $client,ManagerRegistry $manager , Request $request,ValidatorInterface $validator): Response
     {
         $em = $manager->getManager();
@@ -173,6 +179,7 @@ class ClientController extends AbstractController
     }
 
     #[Route('/client/{id}/delete', name: 'app_client_delete')]
+    #[IsGranted('ROLE_ADMIN')]
     public function delete(UserRepository $userRepository,Client $client,ManagerRegistry $manager): Response
     {
         $em = $manager->getManager();

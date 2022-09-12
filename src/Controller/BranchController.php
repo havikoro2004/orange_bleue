@@ -8,6 +8,7 @@ use App\Form\BranchType;
 use App\Repository\BranchRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,6 +18,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class BranchController extends AbstractController
 {
     #[Route('/branch/{id}/edit', name: 'app_branch_edit')]
+    #[IsGranted('ROLE_ADMIN')]
     public function index(Branch $branch,ManagerRegistry $manager,BranchRepository $branchRepository): Response
     {
         $em = $manager->getManager();
@@ -42,6 +44,7 @@ class BranchController extends AbstractController
     #[Route('/client/{id_client}/branch/{id_branch}/delete', name: 'app_branch_delete')]
     #[Entity('client', options: ['id' => 'id_client'])]
     #[Entity('branch', options: ['id' => 'id_branch'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function delete(Client $client,Branch $branch,ManagerRegistry $manager): Response
     {
         $em = $manager->getManager();
@@ -56,6 +59,7 @@ class BranchController extends AbstractController
     #[Route('/client/{id_client}/branch/{id_branch}/edit', name: 'app_branch_edit')]
     #[Entity('client', options: ['id' => 'id_client'])]
     #[Entity('branch', options: ['id' => 'id_branch'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function edit(Request $request,ValidatorInterface $validator,Client $client,Branch $branch,ManagerRegistry $manager): Response
     {
         $em = $manager->getManager();
