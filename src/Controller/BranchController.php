@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class BranchController extends AbstractController
 {
-    #[Route('/branch/{id}/edit', name: 'app_branch_edit')]
+    #[Route('/branch/{id}/edit', name: 'app_branch_active')]
     #[IsGranted('ROLE_ADMIN')]
     public function index(Branch $branch,ManagerRegistry $manager,BranchRepository $branchRepository): Response
     {
