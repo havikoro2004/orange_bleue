@@ -28,7 +28,7 @@ class ClientController extends AbstractController
     #[IsGranted('ROLE_ADMIN')]
     public function index(ClientRepository $clientRepository): Response
     {
-        $clients = $clientRepository->findAll();
+        $clients = $clientRepository->findAllDesc();
         return $this->render('client/index.html.twig', [
             'controller_name' => 'ClientController',
             'clients'=>$clients,

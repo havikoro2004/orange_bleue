@@ -54,6 +54,7 @@
                                     {% else %}
                                     <span class="text-danger">Non fourni</span></li>
                                 {% endif %}
+                                <li class="m-2">Date de création : {{ client.getCreateAt()|date('d-m-Y ') }}</li>
                             </ul>
                         </div>
                     {% endfor %}

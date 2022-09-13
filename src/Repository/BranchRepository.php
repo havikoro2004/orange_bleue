@@ -46,6 +46,7 @@ class BranchRepository extends ServiceEntityRepository
             ->join('b.permission','p')
             ->where('b.client = :id')
             ->andWhere('p.branch=:status')
+            ->orderBy('b.createdAt','DESC')
             ->setParameter('status',true)
             ->setParameter('id', $value)
             ->getQuery()

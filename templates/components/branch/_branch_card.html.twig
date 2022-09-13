@@ -21,7 +21,7 @@
                     <li class="m-2">Adresse :{{ branche.adress }}</li>
                     <li class="m-2">Manager : {% if branche.getUser() %}{{ branche.getUser().getEmail() }} {% else %}
                             <span class="text-danger">Non fourni</span>{% endif %}</li>
-                    <li class="m-2">Date de création :{{ branche.getCreatedAt()|date('d-m-Y ') }}</li>
+                    <li class="m-2">Date de création :{{ branche.getCreatedAt()|date('d-m-Y ') }} à {{ branche.getCreatedAt()|date(' H:i')}} </li>
                 </ul>
             </div>
             <div id="name={{ branche.id}}" class="editPermissionsBranch">
