@@ -19,6 +19,11 @@ class HomeController extends AbstractController
                 'id'=>$this->getUser()->getClient()->getId()
             ]);
         }
+        if ($this->getUser()->getRoles()[0] == 'ROLE_USER'){
+            return $this->redirectToRoute('app_guest_branch',[
+                'id'=>$this->getUser()->getBranch()->getId()
+            ]);
+        }
         return $this->render('home/index.html.twig');
     }
 }

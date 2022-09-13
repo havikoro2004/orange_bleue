@@ -4,13 +4,13 @@
     <div class="content">
         {% include 'components/_header.html.twig' %}
         <div style="height: 100%">
-            {% include 'components/guest/_partenaire_card.html.twig' %}
+            {% include 'components/guest/client/_partenaire_card.html.twig' %}
             {% if permissions %}
-                {% include 'components/guest/_form_edit_permissions.html.twig' %}
+                {% include 'components/guest/client/_form_edit_permissions.html.twig' %}
             {% endif %}
             <div>
                 {% if branches %}
-                    {% include 'components/guest/_branch_card.html.twig' %}
+                    {% include 'components/guest/client/_branch_card.html.twig' %}
                 {% else %}
                     <div class="alert alert-dark text-center container mt-2">Aucune structure n'est ajoutée pour ce partenaire</div>
                 {% endif %}
