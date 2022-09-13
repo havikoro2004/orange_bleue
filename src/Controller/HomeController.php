@@ -15,11 +15,17 @@ class HomeController extends AbstractController
     public function index(): Response
     {
         if ($this->getUser()->getRoles()[0] == 'ROLE_READER'){
+            if (!$this->getUser()->getClient()->isActive()){
+                return $this->redirectToRoute('app_inactive');
+            }
             return $this->redirectToRoute('app_guest_client',[
                 'id'=>$this->getUser()->getClient()->getId()
             ]);
         }
         if ($this->getUser()->getRoles()[0] == 'ROLE_USER'){
+            if (!$this->getUser()->getBranch()->isActive()){
+                return $this->redirectToRoute('app_inactive');
+            }
             return $this->redirectToRoute('app_guest_branch',[
                 'id'=>$this->getUser()->getBranch()->getId()
             ]);

@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Au revoir!{% endblock %}
+
+{% block body %}
+{% include 'components/_header.html.twig' %}
+    <div class="example-wrapper">
+        <h1 class="text-secondary text-center m-5">Compte désactivé</h1>
+        <div class="container alert alert-danger text-center">
+            Ce compte est désactivé
+        </div>
+        <div class="d-flex justify-content-center text-center">
+            <img class="list-group border border-secondary" width="50%" height="80%" src="{{ asset('build/images/inactif.jpg') }}">
+        </div>
+    </div>
+{% endblock %}
