@@ -155,3 +155,8 @@ if (document.getElementById('editBranch')){
     const sectionBranchEdit =document.getElementById('editBranch')
     sectionBranchEdit.getElementsByTagName('form')[0].children[2].readOnly=true
 }
+
+if (document.getElementById('errorsNewPassword')){
+    const errorsNewPassword = document.getElementById('errorsNewPassword')
+    console.log(errorsNewPassword.getElementsByTagName('ul')[0].setAttribute('class','list-unstyled m-0 p-0'))
+}

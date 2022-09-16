@@ -95,6 +95,7 @@ class ClientController extends AbstractController
                 $hashedPassword = $hasher->hashPassword($userClient,$planPassword);
                 $userClient->setPassword($hashedPassword);
                 $userClient->setConfirmPwd($hashedPassword);
+                $userClient->setToken(md5(uniqid()));
                 $userClient->setCreateAt(new \DateTime('now'));
                 $userClient->setRoles(['ROLE_READER']);
                 $userClient->setClient($data);
@@ -104,6 +105,7 @@ class ClientController extends AbstractController
                     ->from(new Address('havikoro2004@gmail.com','Energy Fit Academy'))
                     ->to($userClient->getEmail())
                     ->subject('Activation de compte')
+                    ->context(['token'=>$userClient->getToken()])
                     ->htmlTemplate('mails/activation.html.twig');
                 $mailer->send($email);
 
