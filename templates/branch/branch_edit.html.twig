@@ -3,7 +3,7 @@
 {% block title %}Modifier la structure{% endblock %}
 
 {% block body %}
-    <div class="content">
+    <div class="content" id="editBranch">
         {% include 'components/_header.html.twig' %}
         <section style="height: 100vh">
             <div class="d-flex align-items-center bread" style="height: 3rem">
@@ -12,12 +12,11 @@
                 " aria-label="breadcrumb">
                     <ol class="breadcrumb mb-0 mx-3">
                         <li title="Accueil" class="breadcrumb-item"><a href="/" class="menusHover text-decoration-none">Accueil</a></li>
-                        <li title="Partenaires" class="breadcrumb-item"><a href="/client/{{ client.id }}" class="menusHover text-decoration-none">Partenaires</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Modifier</li>
                     </ol>
                 </nav>
             </div>
-            <h1 class="text-center text-secondary my-4">Modifier le partenaire</h1>
+            <h1 class="text-center text-secondary my-4">Modifier la structure</h1>
             {% include 'components/client/_flashes.html.twig' %}
             <div class="container">
                 {% include 'components/branch/_branch_form.html.twig' %}

@@ -145,3 +145,13 @@ if(document.getElementById('branchCard')){
         }
     }
 }
+
+if (document.getElementById('modifClient')){
+    const sectionPartenaireEdit = document.getElementById('modifClient')
+    sectionPartenaireEdit.getElementsByTagName('form')[0].children[6].children[1].readOnly=true
+}
+
+if (document.getElementById('editBranch')){
+    const sectionBranchEdit =document.getElementById('editBranch')
+    sectionBranchEdit.getElementsByTagName('form')[0].children[2].readOnly=true
+}

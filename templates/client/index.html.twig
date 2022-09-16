@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-{% block title %}Ajouter un partenaire!{% endblock %}
+{% block title %}PAGE PARTENAIRES{% endblock %}
 
 {% block body %}
     <div class="content">
@@ -16,6 +16,9 @@
                 </nav>
             </div>
             <h1 class="text-center text-secondary my-4">Liste des partenaires</h1>
+            <div class="text-center m-4">
+                <a href="/client/add" class="btn btn-primary">Ajouter partenaire</a>
+            </div>
             {% include 'components/client/_flashes.html.twig' %}
             {% if clients %}
                 <div class="partenaire" id="clientCard">

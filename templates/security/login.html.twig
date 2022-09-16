@@ -14,7 +14,16 @@
                     You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
                 </div>
             {% endif %}
-
+            {% for message in app.flashes('success') %}
+                <div class="flash-notice text-center">
+                    <div class="alert alert-success">{{ message }}</div>
+                </div>
+            {% endfor %}
+            {% for message in app.flashes('alert') %}
+                <div class="flash-notice text-center">
+                    <div class="alert alert-danger">{{ message }}</div>
+                </div>
+            {% endfor %}
             <h1 class="h3 mb-3 font-weight-normal text-center">Connexion</h1>
             <label for="inputEmail">Email</label>
             <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="mb-3 form-control" autocomplete="email" required autofocus>

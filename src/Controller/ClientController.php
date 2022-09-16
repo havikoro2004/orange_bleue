@@ -17,19 +17,40 @@ use App\Services\CloneClass;
 use Doctrine\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
+use Symfony\Component\Mime\Message;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ClientController extends AbstractController
 {
-    #[Route('/client', name: 'app_client')]
+    #[Route('/', name: 'app_home')]
     #[IsGranted('ROLE_ADMIN')]
     public function index(ClientRepository $clientRepository): Response
     {
+        if ($this->getUser()->getRoles()[0] == 'ROLE_READER'){
+            if (!$this->getUser()->getClient()->isActive()){
+                return $this->redirectToRoute('app_inactive');
+            }
+            return $this->redirectToRoute('app_guest_client',[
+                'id'=>$this->getUser()->getClient()->getId()
+            ]);
+        }
+        if ($this->getUser()->getRoles()[0] == 'ROLE_USER'){
+            if (!$this->getUser()->getBranch()->isActive()){
+                return $this->redirectToRoute('app_inactive');
+            }
+            return $this->redirectToRoute('app_guest_branch',[
+                'id'=>$this->getUser()->getBranch()->getId()
+            ]);
+        }
         $clients = $clientRepository->findAllDesc();
         return $this->render('client/index.html.twig', [
             'controller_name' => 'ClientController',
@@ -40,7 +61,9 @@ class ClientController extends AbstractController
 
     #[Route('/client/add', name: 'app_client_add')]
     #[IsGranted('ROLE_ADMIN')]
-    public function add(UserPasswordHasherInterface $hasher,PermissionRepository $permissionRepository,ManagerRegistry $manager , Request $request,ValidatorInterface $validator): Response
+    public function add(UserPasswordHasherInterface $hasher,PermissionRepository
+    $permissionRepository,ManagerRegistry $manager , Request $request,
+                        ValidatorInterface $validator,MailerInterface $mailer,UserRepository $UserRepository): Response
     {
         $userClient = New User();
         $error =null;
@@ -61,21 +84,37 @@ class ClientController extends AbstractController
             $addPermissions->setBranch(false);
             $data->addPermission($addPermissions);
 
-
             $userClient->setEmail($data->getTechnicalContact());
-            $planPassword = md5(uniqid());
-            $hashedPassword = $hasher->hashPassword($userClient,$planPassword);
-            $userClient->setPassword($hashedPassword);
-            $userClient->setConfirmPwd($hashedPassword);
-            $userClient->setCreateAt(new \DateTime('now'));
-            $userClient->setRoles(['ROLE_READER']);
-            $userClient->setClient($data);
-            $em->persist($userClient);
+            if ($UserRepository->findOneBy([
+                'email'=>$data->getTechnicalContact()
+            ]))
+            {
+                $this->addFlash('alert','Cette adresse email est deja utilisé');
+            } else {
+                $planPassword = md5(uniqid());
+                $hashedPassword = $hasher->hashPassword($userClient,$planPassword);
+                $userClient->setPassword($hashedPassword);
+                $userClient->setConfirmPwd($hashedPassword);
+                $userClient->setCreateAt(new \DateTime('now'));
+                $userClient->setRoles(['ROLE_READER']);
+                $userClient->setClient($data);
+                $em->persist($userClient);
 
-            $em->persist($data);
-            $em->flush();
-            $this->addFlash('success','Le nouveau partenaire a bien été ajouté');
-            return $this->redirectToRoute('app_client');
+                $email = (new TemplatedEmail())
+                    ->from(new Address('havikoro2004@gmail.com','Energy Fit Academy'))
+                    ->to($userClient->getEmail())
+                    ->subject('Activation de compte')
+                    ->htmlTemplate('mails/activation.html.twig');
+                $mailer->send($email);
+
+
+                $em->persist($data);
+                $em->flush();
+                $this->addFlash('success','Le nouveau partenaire a bien été ajouté');
+                return $this->redirectToRoute('app_home');
+
+            }
+
         }
 
         return $this->render('client/add.html.twig', [
@@ -225,7 +264,7 @@ class ClientController extends AbstractController
        $em->remove($client);
        $em->flush();
        $this->addFlash('success','Le partenaire a bien été supprimé');
-       return $this->redirectToRoute('app_client');
+       return $this->redirectToRoute('app_home');
     }
 
 }
