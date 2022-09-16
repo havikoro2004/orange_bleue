@@ -128,8 +128,14 @@ class ClientController extends AbstractController
 
     #[Route('/client/{id}/edit', name: 'app_client_edit')]
     #[IsGranted('ROLE_ADMIN')]
-    public function edit(Client $client,ManagerRegistry $manager , Request $request,ValidatorInterface $validator): Response
+    public function edit(UserRepository $userRepository,Client $client,
+                         ManagerRegistry $manager , Request $request,
+                         ValidatorInterface $validator,MailerInterface $mailer): Response
     {
+        $userClient= $userRepository->findOneBy([
+            'client'=>$client
+        ]);
+
         $error =null;
         $em = $manager->getManager();
         $form = $this->createForm(ClientType::class,$client);
@@ -140,10 +146,19 @@ class ClientController extends AbstractController
             $error = $validator->validate($data);
         }
         if ($form->isSubmitted() && $form->isValid()){
+
+            $email = (new TemplatedEmail())
+                ->from(new Address('havikoro2004@gmail.com','Energy Fit Academy'))
+                ->to($userClient->getEmail())
+                ->subject('Modification du profil')
+                ->context(['sujet'=>'Votre profil a été modifié connectez-vous pour voir plus de détails'])
+                ->htmlTemplate('mails/email_notifications.html.twig');
+            $mailer->send($email);
+
             $em->persist($data);
             $em->flush();
             $this->addFlash('success','Le profil du client '.$client->getName().' a bien été modifié');
-            return $this->redirectToRoute('app_client');
+            return $this->redirectToRoute('app_home');
         }
 
         return $this->render('client/client_edit.html.twig', [
