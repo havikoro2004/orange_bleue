@@ -45,6 +45,9 @@ class Branch
     #[ORM\OneToOne(mappedBy: 'branch', cascade: ['persist', 'remove'])]
     private ?User $user = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $manager = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -153,6 +156,18 @@ class Branch
         }
 
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getManager(): ?string
+    {
+        return $this->manager;
+    }
+
+    public function setManager(string $manager): self
+    {
+        $this->manager = $manager;
 
         return $this;
     }

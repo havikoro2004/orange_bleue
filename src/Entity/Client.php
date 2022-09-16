@@ -63,7 +63,7 @@ class Client
     #[Assert\Email]
     private ?string $commercial_contact = null;
 
-    #[ORM\ManyToMany(targetEntity: Permission::class, mappedBy: 'client')]
+    #[ORM\ManyToMany(targetEntity: Permission::class, mappedBy: 'client',cascade: ['persist', 'remove'])]
     private Collection $permissions;
 
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: Branch::class,cascade: ['persist', 'remove'])]

@@ -28,42 +28,6 @@ class PermissionController extends AbstractController
         ]);
     }
 
-    #[Route('/permission/add/{id}', name: 'app_permission_add')]
-    #[IsGranted('ROLE_ADMIN')]
-    public function add(Client $client,ManagerRegistry $manager,Request $request ,ValidatorInterface $validator,PermissionRepository $permissionRepository): Response
-    {
-        $ifClientHavePermission = $permissionRepository->finOneJoinClient([
-            'id'=>$client->getId()
-        ]);
-        if ($ifClientHavePermission){
-            return $this->redirectToRoute('app_home');
-        }
-        $permissions = New Permission();
-        $errors = null;
-        $em=$manager->getManager();
-        $form = $this->createForm(PermissionType::class);
-        $form->handleRequest($request);
-
-        $data = $form->getData();
-        if ($data){
-            $error = $validator->validate($data);
-        }
-        if ($form->isSubmitted() && $form->isValid()){
-
-            $data->addClient($client);
-            $data->setBranch(false);
-            $em->persist($data);
-            $em->flush();
-            $this->addFlash('success','Les permissions ont bien été ajoutées');
-            return $this->redirectToRoute('app_client_one',[
-                'id'=>$client->getId()
-            ]);
-        }
-        return $this->render('permission/add.html.twig', [
-            'form'=>$form->createView(),
-            'errors'=>$errors,
-        ]);
-    }
 
     #[Route('/permission/edit/{id}', name: 'app_permission_edit')]
     #[Entity('client', options: ['id' => 'id'])]

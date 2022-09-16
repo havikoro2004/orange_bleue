@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Branch;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -18,6 +19,7 @@ class BranchType extends AbstractType
             ->add('imageFile',VichFileType::class,[
                 'required'=>false
             ])
+            ->add('manager',EmailType::class)
         ;
     }
 

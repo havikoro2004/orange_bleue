@@ -19,9 +19,8 @@
                 <ul class="list-unstyled">
                     <li class="m-2">Structure Id :{{ branche.id }}</li>
                     <li class="m-2">Adresse :{{ branche.adress }}</li>
-                    <li class="m-2">Manager : {% if branche.getUser() %}{{ branche.getUser().getEmail() }} {% else %}
-                            <span class="text-danger">Non fourni</span>{% endif %}</li>
-                    <li class="m-2">Date de création :{{ branche.getCreatedAt()|date('d-m-Y ') }} à {{ branche.getCreatedAt()|date(' H:i')}} </li>
+                    <li class="m-2">Manager : {{ branche.getManager()}}
+                    <li class="m-2">Date de création :{{ branche.getCreatedAt()|date('d-m-Y ') }}</li>
                 </ul>
             </div>
             <div id="name={{ branche.id}}" class="editPermissionsBranch">
@@ -31,7 +30,6 @@
         <div class="container text-center">
             {% include 'components/branch/_delete_modal.html.twig' %}
             <a href="/client/{{ client.id }}/branch/{{ branche.id }}/edit" class="btn btn-success">Modifier &nbsp <i class="bi bi-pencil-square" style="font-size:14px"></i></a>
-            <a href="/client/{{ client.id }}/branch/{{ branche.id }}/add_user" class="btn btn-success">Manager &nbsp<i class="bi bi-person-workspace" style="font-size:14px"></i></a>
             <a href="" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete{{ branche.id }}">Supprimer <i class="bi bi-trash3" style="font-size:14px"></i></a>
         </div>
     </div>

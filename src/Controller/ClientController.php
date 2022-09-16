@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Branch;
 use App\Entity\Client;
 use App\Entity\Permission;
+use App\Entity\User;
 use App\Form\BranchType;
 use App\Form\ClientType;
 use App\Repository\BranchRepository;
@@ -19,6 +20,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -38,9 +40,9 @@ class ClientController extends AbstractController
 
     #[Route('/client/add', name: 'app_client_add')]
     #[IsGranted('ROLE_ADMIN')]
-    public function add(ManagerRegistry $manager , Request $request,ValidatorInterface $validator): Response
+    public function add(UserPasswordHasherInterface $hasher,PermissionRepository $permissionRepository,ManagerRegistry $manager , Request $request,ValidatorInterface $validator): Response
     {
-        $client = New Client();
+        $userClient = New User();
         $error =null;
         $em = $manager->getManager();
         $form = $this->createForm(ClientType::class);
@@ -53,6 +55,23 @@ class ClientController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()){
             $data->setCreateAt(new \DateTime('now'));
             $data->setActive(true);
+            $addPermissions = New Permission();
+            $defaultPermissions = $permissionRepository->findOneBy(['id'=>1]);
+            $defaultPermissions->cloneClass($addPermissions);
+            $addPermissions->setBranch(false);
+            $data->addPermission($addPermissions);
+
+
+            $userClient->setEmail($data->getTechnicalContact());
+            $planPassword = md5(uniqid());
+            $hashedPassword = $hasher->hashPassword($userClient,$planPassword);
+            $userClient->setPassword($hashedPassword);
+            $userClient->setConfirmPwd($hashedPassword);
+            $userClient->setCreateAt(new \DateTime('now'));
+            $userClient->setRoles(['ROLE_READER']);
+            $userClient->setClient($data);
+            $em->persist($userClient);
+
             $em->persist($data);
             $em->flush();
             $this->addFlash('success','Le nouveau partenaire a bien été ajouté');
@@ -98,6 +117,7 @@ class ClientController extends AbstractController
     public function showOne(BranchRepository $branchRepository,ValidatorInterface $validator
                             ,ManagerRegistry $manager,
                             Request $request,Client $client,ClientRepository $clientRepository,
+                            UserPasswordHasherInterface $hasher,
                             PermissionRepository $permissionRepository): Response
     {
         $errors = null;
@@ -128,6 +148,7 @@ class ClientController extends AbstractController
             $error = $validator->validate($data);
         }
         if ($form->isSubmitted() && $form->isValid()){
+            $userBranch = New User();
             $structurePermissions = New Permission();
             $permissions->cloneClass($structurePermissions);
             $structurePermissions->addClient($client);
@@ -137,6 +158,16 @@ class ClientController extends AbstractController
             $data->setPermission($structurePermissions);
             $data->setActive(true);
             $data->setCreatedAt(new \DateTime('now'));
+
+            $userBranch->setEmail($data->getManager());
+            $planPassword = md5(uniqid());
+            $hashedPassword = $hasher->hashPassword($userBranch,$planPassword);
+            $userBranch->setPassword($hashedPassword);
+            $userBranch->setConfirmPwd($hashedPassword);
+            $userBranch->setCreateAt(new \DateTime('now'));
+            $userBranch->setRoles(['ROLE_USER']);
+            $userBranch->setBranch($data);
+            $em->persist($userBranch);
 
             $em->persist($data);
             $em->flush();
