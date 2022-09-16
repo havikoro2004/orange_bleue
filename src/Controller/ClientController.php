@@ -32,7 +32,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class ClientController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_USER')]
     public function index(ClientRepository $clientRepository): Response
     {
         if ($this->getUser()->getRoles()[0] == 'ROLE_READER'){
@@ -171,10 +171,10 @@ class ClientController extends AbstractController
     #[Entity('client', options: ['id' => 'id'])]
     #[IsGranted('ROLE_ADMIN')]
     public function showOne(BranchRepository $branchRepository,ValidatorInterface $validator
-                            ,ManagerRegistry $manager,
+                            ,ManagerRegistry $manager,UserRepository $userRepository,
                             Request $request,Client $client,ClientRepository $clientRepository,
                             UserPasswordHasherInterface $hasher,
-                            PermissionRepository $permissionRepository): Response
+                            PermissionRepository $permissionRepository,MailerInterface $mailer): Response
     {
         $errors = null;
         $permissions=null;
@@ -216,19 +216,43 @@ class ClientController extends AbstractController
             $data->setCreatedAt(new \DateTime('now'));
 
             $userBranch->setEmail($data->getManager());
-            $planPassword = md5(uniqid());
-            $hashedPassword = $hasher->hashPassword($userBranch,$planPassword);
-            $userBranch->setPassword($hashedPassword);
-            $userBranch->setConfirmPwd($hashedPassword);
-            $userBranch->setCreateAt(new \DateTime('now'));
-            $userBranch->setRoles(['ROLE_USER']);
-            $userBranch->setBranch($data);
-            $em->persist($userBranch);
+            if ($userRepository->findOneBy([
+                'email'=>$userBranch->getEmail()
+            ])){
+                    $this->addFlash('alert','Cette adresse email est deja utilisée');
+            }else {
+                $planPassword = md5(uniqid());
+                $hashedPassword = $hasher->hashPassword($userBranch,$planPassword);
+                $userBranch->setPassword($hashedPassword);
+                $userBranch->setConfirmPwd($hashedPassword);
+                $userBranch->setCreateAt(new \DateTime('now'));
+                $userBranch->setRoles(['ROLE_USER']);
+                $userBranch->setBranch($data);
+                $userBranch->setToken(md5(uniqid()));
 
-            $em->persist($data);
-            $em->flush();
-            $this->addFlash('success','La nouvelle structure a bien été crée');
-            return $this->redirect($request->getUri());
+                $email = (new TemplatedEmail())
+                    ->from(new Address('havikoro2004@gmail.com','Energy Fit Academy'))
+                    ->to($userBranch->getEmail())
+                    ->subject('Activation de compte')
+                    ->context(['token'=>$userBranch->getToken()])
+                    ->htmlTemplate('mails/activation.html.twig');
+                $mailer->send($email);
+
+                $emailClient = (new TemplatedEmail())
+                    ->from(new Address('havikoro2004@gmail.com','Energy Fit Academy'))
+                    ->to($data->getClient()->getUser()->getEmail())
+                    ->subject('Nouvelle Structure')
+                    ->context(['sujet'=>'Une nouvelle structure a été crée sur votre profil'])
+                    ->htmlTemplate('mails/new_user.html.twig');
+                $mailer->send($emailClient);
+
+                $em->persist($userBranch);
+
+                $em->persist($data);
+                $em->flush();
+                $this->addFlash('success','La nouvelle structure a bien été crée');
+                return $this->redirect($request->getUri());
+            }
 
         }
 
