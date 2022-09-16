@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Message;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -84,10 +85,18 @@ class BranchController extends AbstractController
             $email = (new TemplatedEmail())
                 ->from(new Address('havikoro2004@gmail.com','Energy Fit Academy'))
                 ->to($userClient->getEmail(),'havikoro2004@gmail.com')
-                ->subject('Modification du profil')
+                ->subject('Modification de votre structure')
                 ->context(['sujet'=>'Votre structure a été modifié connectez-vous pour voir plus de détails'])
                 ->htmlTemplate('mails/email_notifications.html.twig');
             $mailer->send($email);
+
+            $emailClient = (new TemplatedEmail())
+                ->from(new Address('havikoro2004@gmail.com','Energy Fit Academy'))
+                ->to($data->getClient()->getUser()->getEmail())
+                ->subject('Modification de votre structure')
+                ->context(['sujet'=>'Votre structure a été modifié connectez-vous pour voir plus de détails'])
+                ->htmlTemplate('mails/email_notifications.html.twig');
+            $mailer->send($emailClient);
 
             $em->persist($data);
             $em->flush();
