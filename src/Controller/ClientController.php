@@ -272,18 +272,36 @@ class ClientController extends AbstractController
 
     #[Route('/client/{id}/active', name: 'app_client_active')]
     #[IsGranted('ROLE_ADMIN')]
-    public function active(Client $client,ManagerRegistry $manager , Request $request,ValidatorInterface $validator): Response
+    public function active(Client $client,ManagerRegistry $manager
+        ,MailerInterface $mailer): Response
     {
         $em = $manager->getManager();
         $status = $client->isActive();
         $message = null;
         $error=null;
+        $sujet=null;
+        $text = null;
+
         if ($status){
             $message = 'Le client '.$client->getName().'a bien été désactivé ';
+            $sujet='Désactivation du compte';
+            $text ='Votre compte partenaire a été désactivé';
+
         } else {
             $message = 'Le client '.$client->getName().' a bien été activé';
+            $sujet='Activation du compte';
+            $text ='Votre compte partenaire est désormais activé';
         }
         $client->setActive(!$client->isActive());
+
+        $emailClient = (new TemplatedEmail())
+            ->from(new Address('havikoro2004@gmail.com','Energy Fit Academy'))
+            ->to($client->getTechnicalContact())
+            ->subject($sujet)
+            ->context(['sujet'=>$sujet,'text'=>$text])
+            ->htmlTemplate('mails/activation_desactivation_compte.html.twig');
+        $mailer->send($emailClient);
+
         $em->flush();
         $this->addFlash('success',$message);
         return $this->redirectToRoute('app_client');
@@ -291,7 +309,8 @@ class ClientController extends AbstractController
 
     #[Route('/client/{id}/delete', name: 'app_client_delete')]
     #[IsGranted('ROLE_ADMIN')]
-    public function delete(UserRepository $userRepository,Client $client,ManagerRegistry $manager): Response
+    public function delete(UserRepository $userRepository,
+                           Client $client,ManagerRegistry $manager,MailerInterface $mailer): Response
     {
         $em = $manager->getManager();
         $user = $userRepository->findOneBy([
@@ -305,7 +324,16 @@ class ClientController extends AbstractController
        $em->remove($client);
        $em->flush();
        $this->addFlash('success','Le partenaire a bien été supprimé');
-       return $this->redirectToRoute('app_home');
+
+        $emailClient = (new TemplatedEmail())
+            ->from(new Address('havikoro2004@gmail.com','Energy Fit Academy'))
+            ->to($client->getTechnicalContact())
+            ->subject('Suppression du compte partenaire')
+            ->htmlTemplate('mails/suppression_compte.html.twig');
+        $mailer->send($emailClient);
+
+
+        return $this->redirectToRoute('app_home');
     }
 
 }

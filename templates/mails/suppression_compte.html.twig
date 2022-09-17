@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% apply inky_to_html|inline_css(source('@css/foundation-emails.css')) %}
+        <container>
+            <row>
+                <columns>
+                    <h1 class="text-center">Suppression du compte</h1>
+                    <p class="text-center">Votre compte est supprimé vous ne pouvez plus acceder à votre profil</p>
+                </columns>
+            </row>
+        </container>
+        <p>L'équipe Energy Fit Academy</p>
+    {% endapply %}
+{% endblock %}
