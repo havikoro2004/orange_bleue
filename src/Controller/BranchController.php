@@ -16,7 +16,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
-use Symfony\Component\Mime\Message;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -78,16 +77,16 @@ class BranchController extends AbstractController
         $email = (new TemplatedEmail())
             ->from(new Address('havikoro2004@gmail.com','Energy Fit Academy'))
             ->to($branch->getManager())
-            ->subject('Modification de votre structure')
-            ->context(['sujet'=>'Votre structure a été modifié connectez-vous pour voir plus de détails'])
-            ->htmlTemplate('mails/email_notifications.html.twig');
+            ->subject('Suppression de votre structure')
+            ->context(['sujet'=>'Votre structure a été supprimée'])
+            ->htmlTemplate('mails/suppression_compte.html.twig');
         $mailer->send($email);
 
         $emailClient = (new TemplatedEmail())
             ->from(new Address('havikoro2004@gmail.com','Energy Fit Academy'))
             ->to($branch->getClient()->getUser()->getEmail())
-            ->subject('Modification de votre structure')
-            ->context(['sujet'=>'Les informations de votre structure dont l\'id est : '.$branch->getId() . ' ont bien été changés'])
+            ->subject('Suppression de structure')
+            ->context(['sujet'=>'La structure dont l\'id est : '.$branch->getId() . ' est supprimée'])
             ->htmlTemplate('mails/email_notifications.html.twig');
         $mailer->send($emailClient);
 

@@ -314,7 +314,7 @@ class ClientController extends AbstractController
         $emailClient = (new TemplatedEmail())
             ->from(new Address('havikoro2004@gmail.com','Energy Fit Academy'))
             ->to($client->getTechnicalContact())
-            ->subject('Suppression du compte partenaire')
+            ->subject('Votre compte est supprimé vous ne pouvez plus y acceder')
             ->htmlTemplate('mails/suppression_compte.html.twig');
         $mailer->send($emailClient);
 
