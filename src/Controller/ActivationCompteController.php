@@ -30,7 +30,6 @@ class ActivationCompteController extends AbstractController
 
         if ($form->isSubmitted()){
             if ($data->get('password')->getViewData() !== $data->get('confirm_pass')->getViewData()){
-                dd($data->get('password')->getViewData());
                 $this->addFlash('alert','Les mots de passe ne correspondent pas');
             } else {
 
