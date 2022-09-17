@@ -23,16 +23,14 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class BranchController extends AbstractController
 {
     #[Route('/branch/{id}/edit', name: 'app_branch_active')]
+    #[Entity('branch', options: ['id' => 'id'])]
     #[IsGranted('ROLE_ADMIN')]
     public function index(Branch $branch,ManagerRegistry $manager,
-                          BranchRepository $branchRepository,MailerInterface $mailer): Response
+                          MailerInterface $mailer): Response
     {
         $em = $manager->getManager();
-        $branche = $branchRepository->findOneBy([
-            'id'=>$branch->getId()
-        ]);
-        $status = $branche->isActive();
-        $branche->setActive(!$branche->isActive());
+        $status = $branch->isActive();
+        $branch->setActive(!$branch->isActive());
         if ($status){
             $titreMail = 'Désactivation de structure';
             $message = 'La structure bien été désactivée ';
@@ -45,7 +43,7 @@ class BranchController extends AbstractController
         $em->flush();
         $email = (new TemplatedEmail())
             ->from(new Address('havikoro2004@gmail.com','Energy Fit Academy'))
-            ->to($branche->getManager())
+            ->to($branch->getManager())
             ->subject($message)
             ->context(['text'=>$text,'titre'=>$titreMail])
             ->htmlTemplate('mails/activation_desactivation_compte.html.twig');
@@ -53,7 +51,7 @@ class BranchController extends AbstractController
 
         $emailClient = (new TemplatedEmail())
             ->from(new Address('havikoro2004@gmail.com','Energy Fit Academy'))
-            ->to($branche->getClient()->getUser()->getEmail())
+            ->to($branch->getClient()->getUser()->getEmail())
             ->subject($message)
             ->context(['titre'=>$titreMail .' '.$branch->getId(),'text'=>$text])
             ->htmlTemplate('mails/activation_desactivation_compte.html.twig');
@@ -79,7 +77,7 @@ class BranchController extends AbstractController
 
         $email = (new TemplatedEmail())
             ->from(new Address('havikoro2004@gmail.com','Energy Fit Academy'))
-            ->to($branch->getEmail())
+            ->to($branch->getManager())
             ->subject('Modification de votre structure')
             ->context(['sujet'=>'Votre structure a été modifié connectez-vous pour voir plus de détails'])
             ->htmlTemplate('mails/email_notifications.html.twig');

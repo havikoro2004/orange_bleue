@@ -11,7 +11,7 @@
                 {% endif %}
                 {% include 'components/branch/_modal_active_branch.html.twig' %}
                 <div class="form-check form-switch ms-3">
-                    <input  {% if client.isActive == false %}disabled {% endif %}{% if branche.isActive()%} checked {% endif %} name="{{ branche.id }}" title="Désactiver" data-bs-toggle="modal" data-bs-target="#activeBranch{{ branche.id }}" class="form-check-input activeBranch" type="checkbox" role="switch" id="branchActive">
+                    <input  {% if client.isActive == false or branche.getUser().getToken() %} disabled {% endif %}{% if branche.isActive()%} checked {% endif %} name="{{ branche.id }}" title="Désactiver" data-bs-toggle="modal" data-bs-target="#activeBranch{{ branche.id }}" class="form-check-input activeBranch" type="checkbox" role="switch" id="branchActive">
                     <label class="form-check-label text-secondary" >{% if branche.isActive %} On {% else%}Off {% endif %}</label>
                 </div>
             </div>
@@ -21,6 +21,9 @@
                     <li class="m-2">Adresse :{{ branche.adress }}</li>
                     <li class="m-2">Manager : {{ branche.getManager()}}
                     <li class="m-2">Date de création :{{ branche.getCreatedAt()|date('d-m-Y ') }}</li>
+                    {% if branche.getUser().getToken() %}
+                    <li class="m-2">Manager : <span class="text-warning">En attente d'activation</span>
+                    {% endif %}
                 </ul>
             </div>
             <div id="name={{ branche.id}}" class="editPermissionsBranch">
