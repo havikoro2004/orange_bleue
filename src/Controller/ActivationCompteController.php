@@ -21,6 +21,9 @@ class ActivationCompteController extends AbstractController
         $user = $userRepository->findOneBy([
            'token'=>$token
         ]);
+        if (!$user){
+            throw $this->createNotFoundException();
+        }
         $form = $this->createForm(ChangePasswordType::class);
         $em = $managerRegistry->getManager();
         $data =$form->handleRequest($request);
