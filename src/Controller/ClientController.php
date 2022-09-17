@@ -277,11 +277,6 @@ class ClientController extends AbstractController
     {
         $em = $manager->getManager();
         $status = $client->isActive();
-        $message = null;
-        $error=null;
-        $sujet=null;
-        $text = null;
-
         if ($status){
             $message = 'Le client '.$client->getName().'a bien été désactivé ';
             $sujet='Désactivation du compte';
@@ -298,7 +293,7 @@ class ClientController extends AbstractController
             ->from(new Address('havikoro2004@gmail.com','Energy Fit Academy'))
             ->to($client->getTechnicalContact())
             ->subject($sujet)
-            ->context(['sujet'=>$sujet,'text'=>$text])
+            ->context(['sujet'=>$sujet,'text'=>$text,'titre'=>$sujet])
             ->htmlTemplate('mails/activation_desactivation_compte.html.twig');
         $mailer->send($emailClient);
 
@@ -309,18 +304,9 @@ class ClientController extends AbstractController
 
     #[Route('/client/{id}/delete', name: 'app_client_delete')]
     #[IsGranted('ROLE_ADMIN')]
-    public function delete(UserRepository $userRepository,
-                           Client $client,ManagerRegistry $manager,MailerInterface $mailer): Response
+    public function delete(Client $client,ManagerRegistry $manager,MailerInterface $mailer): Response
     {
-        $em = $manager->getManager();
-        $user = $userRepository->findOneBy([
-           'client'=>$client->getId()
-        ]);
-       if ($user){
-           $em->remove($user);
-           $em->flush();
-       }
-
+       $em = $manager->getManager();
        $em->remove($client);
        $em->flush();
        $this->addFlash('success','Le partenaire a bien été supprimé');

@@ -24,37 +24,75 @@ class BranchController extends AbstractController
 {
     #[Route('/branch/{id}/edit', name: 'app_branch_active')]
     #[IsGranted('ROLE_ADMIN')]
-    public function index(Branch $branch,ManagerRegistry $manager,BranchRepository $branchRepository): Response
+    public function index(Branch $branch,ManagerRegistry $manager,
+                          BranchRepository $branchRepository,MailerInterface $mailer): Response
     {
         $em = $manager->getManager();
         $branche = $branchRepository->findOneBy([
             'id'=>$branch->getId()
         ]);
         $status = $branche->isActive();
-        $message = null;
         $branche->setActive(!$branche->isActive());
         if ($status){
+            $titreMail = 'Désactivation de structure';
             $message = 'La structure bien été désactivée ';
+            $text='Votre structure a bien été désactivé vous ne pouvez plus acceder à votre profil';
         } else {
+            $titreMail = 'Activation de structure';
             $message = 'La structure a bien été activée';
+            $text='Votre structure a bien été activée vous pouvez désormais vous connecter à votre profil';
         }
         $em->flush();
+        $email = (new TemplatedEmail())
+            ->from(new Address('havikoro2004@gmail.com','Energy Fit Academy'))
+            ->to($branche->getManager())
+            ->subject($message)
+            ->context(['text'=>$text,'titre'=>$titreMail])
+            ->htmlTemplate('mails/activation_desactivation_compte.html.twig');
+        $mailer->send($email);
+
+        $emailClient = (new TemplatedEmail())
+            ->from(new Address('havikoro2004@gmail.com','Energy Fit Academy'))
+            ->to($branche->getClient()->getUser()->getEmail())
+            ->subject($message)
+            ->context(['titre'=>$titreMail .' '.$branch->getId(),'text'=>$text])
+            ->htmlTemplate('mails/activation_desactivation_compte.html.twig');
+        $mailer->send($emailClient);
+
         $this->addFlash('success',$message);
 
         return $this->render('branch/index.html.twig', [
             'controller_name' => 'BranchController',
         ]);
+
     }
 
     #[Route('/client/{id_client}/branch/{id_branch}/delete', name: 'app_branch_delete')]
     #[Entity('client', options: ['id' => 'id_client'])]
     #[Entity('branch', options: ['id' => 'id_branch'])]
     #[IsGranted('ROLE_ADMIN')]
-    public function delete(Client $client,Branch $branch,ManagerRegistry $manager): Response
+    public function delete(Client $client,Branch $branch,ManagerRegistry $manager,MailerInterface $mailer): Response
     {
         $em = $manager->getManager();
         $em->remove($branch);
         $em->flush();
+
+        $email = (new TemplatedEmail())
+            ->from(new Address('havikoro2004@gmail.com','Energy Fit Academy'))
+            ->to($branch->getEmail())
+            ->subject('Modification de votre structure')
+            ->context(['sujet'=>'Votre structure a été modifié connectez-vous pour voir plus de détails'])
+            ->htmlTemplate('mails/email_notifications.html.twig');
+        $mailer->send($email);
+
+        $emailClient = (new TemplatedEmail())
+            ->from(new Address('havikoro2004@gmail.com','Energy Fit Academy'))
+            ->to($branch->getClient()->getUser()->getEmail())
+            ->subject('Modification de votre structure')
+            ->context(['sujet'=>'Les informations de votre structure dont l\'id est : '.$branch->getId() . ' ont bien été changés'])
+            ->htmlTemplate('mails/email_notifications.html.twig');
+        $mailer->send($emailClient);
+
         $this->addFlash('success','La structure a bien été supprimée');
         return $this->redirectToRoute('app_client_one',[
             'id'=>$client->getId()
@@ -79,12 +117,9 @@ class BranchController extends AbstractController
             $error = $validator->validate($data);
         }
         if ($form->isSubmitted() && $form->isValid()){
-            $userClient = $userRepository->findOneBy([
-                'branch'=>$branch
-            ]);
             $email = (new TemplatedEmail())
                 ->from(new Address('havikoro2004@gmail.com','Energy Fit Academy'))
-                ->to($userClient->getEmail(),'havikoro2004@gmail.com')
+                ->to($branch->getManager())
                 ->subject('Modification de votre structure')
                 ->context(['sujet'=>'Votre structure a été modifié connectez-vous pour voir plus de détails'])
                 ->htmlTemplate('mails/email_notifications.html.twig');
@@ -94,7 +129,7 @@ class BranchController extends AbstractController
                 ->from(new Address('havikoro2004@gmail.com','Energy Fit Academy'))
                 ->to($data->getClient()->getUser()->getEmail())
                 ->subject('Modification de votre structure')
-                ->context(['sujet'=>'Votre structure a été modifié connectez-vous pour voir plus de détails'])
+                ->context(['sujet'=>'Les informations de votre structure dont l\'id est : '.$branch->getId() . ' ont bien été changés'])
                 ->htmlTemplate('mails/email_notifications.html.twig');
             $mailer->send($emailClient);
 

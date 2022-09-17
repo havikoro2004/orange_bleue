@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% apply inky_to_html|inline_css(source('@css/foundation-emails.css')) %}
+        <container>
+            <row>
+                <columns>
+                    <h1 class="text-center">Modification permissions</h1>
+                    <p class="text-center">{{text}}</p>
+                    <p class="text-center">Connectez-vous pour voir les détails de ces modifications</p>
+                </columns>
+            </row>
+            <spacer size="16"></spacer>
+            <row>
+                <columns>
+                    <center>
+                        <button href="https://localhost:8000/login">Se connecter</button>
+                    </center>
+                </columns>
+            </row>
+        </container>
+        <p>L'équipe Energy Fit Academy</p>
+    {% endapply %}
+{% endblock %}
