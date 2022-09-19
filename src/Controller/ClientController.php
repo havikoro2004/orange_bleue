@@ -61,6 +61,9 @@ class ClientController extends AbstractController
                     'errors'=>null,
                     'param'=>$request->getPathInfo()
                 ]),
+                'paginator'=>$this->renderView('components/client/_pagination.html.twig',[
+                    'clients'=>$clients,
+                ])
             ]);
         }
         $clients = $paginator->paginate($clientRepository->findAllDesc(),$request->query->getInt('page',1),2);

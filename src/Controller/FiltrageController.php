@@ -23,6 +23,9 @@ class FiltrageController extends AbstractController
                     'errors'=>null,
                     'param'=>$request->getPathInfo()
                 ]),
+                'paginator'=>$this->renderView('components/client/_pagination.html.twig',[
+                    'clients'=>$clients,
+                ])
             ]);
         }
         $clients = $paginator->paginate($clientRepository->finActif(),$request->query->getInt('page',1),2);
@@ -44,6 +47,9 @@ class FiltrageController extends AbstractController
                     'errors'=>null,
                     'param'=>$request->getPathInfo()
                 ]),
+                'paginator'=>$this->renderView('components/client/_pagination.html.twig',[
+                    'clients'=>$clients,
+                ])
             ]);
         }
         $clients = $paginator->paginate($clientRepository->finInactif(),$request->query->getInt('page',1),2);
@@ -57,11 +63,18 @@ class FiltrageController extends AbstractController
     #[Route('/client_letter', name: 'byLetter')]
     public function byLetter(PaginatorInterface $paginator,Request $request,ClientRepository $clientRepository): Response
     {
-        $clients = $paginator->paginate($clientRepository->finByLetter('zed'),$request->query->getInt('page',1),2);
-        return $this->render('client/index.html.twig', [
-            'clients'=>$clients,
-            'errors'=>null,
-
+        $letter = json_decode($request->getContent())->letter;
+        $filterStatus = json_decode($request->getContent())->filterStatus;
+        $clients = $paginator->paginate($clientRepository->finByLetter($letter,$filterStatus),$request->query->getInt('page',1),2);
+        return new JsonResponse([
+            'ajaxContent'=>$this->renderView('components/client/_ajaxContent.html.twig',[
+                'clients'=>$clients,
+                'errors'=>null,
+                'param'=>$request->getPathInfo()
+            ]),
+            'paginator'=>$this->renderView('components/client/_pagination.html.twig',[
+                'clients'=>$clients,
+            ])
         ]);
     }
 

@@ -162,8 +162,11 @@ if (document.getElementById('errorsNewPassword')){
 }
 
 if (document.getElementById('actifs')){
-    const actifs = document.getElementById('actifs')
+    var actifs = document.getElementById('actifs')
     actifs.addEventListener('click',()=>{
+        actifs.value = 1
+        inactifs.value=0
+        tous.value=0
         axios.get('/find_actifs', {
             headers : {
                 'X-Requested-With' : 'XMLHttpRequest'
@@ -171,12 +174,16 @@ if (document.getElementById('actifs')){
         })
             .then(function (response) {
                 document.getElementById('ajaxContent').innerHTML=response.data.ajaxContent
+                document.getElementById('paginator').innerHTML=response.data.paginator
             })
     })
 }
 if (document.getElementById('inactifs')){
-    const inactifs = document.getElementById('inactifs')
+    var inactifs = document.getElementById('inactifs')
     inactifs.addEventListener('click',()=>{
+        actifs.value = 0
+        inactifs.value=1
+        tous.value=0
         axios.get('/find_inactif', {
             headers : {
                 'X-Requested-With' : 'XMLHttpRequest'
@@ -184,12 +191,16 @@ if (document.getElementById('inactifs')){
         })
             .then(function (response) {
                 document.getElementById('ajaxContent').innerHTML=response.data.ajaxContent
+                document.getElementById('paginator').innerHTML=response.data.paginator
             })
     })
 }
 if (document.getElementById('tous')){
-    const tous = document.getElementById('tous')
+    var tous = document.getElementById('tous')
     tous.addEventListener('click',()=>{
+        actifs.value = 0
+        inactifs.value=0
+        tous.value=1
         axios.get('/', {
             headers : {
                 'X-Requested-With' : 'XMLHttpRequest'
@@ -197,6 +208,35 @@ if (document.getElementById('tous')){
         })
             .then(function (response) {
                 document.getElementById('ajaxContent').innerHTML=response.data.ajaxContent
+                document.getElementById('paginator').innerHTML=response.data.paginator
             })
+    })
+}
+if (document.getElementById('recherche')){
+    const recherche = document.getElementById('recherche')
+    recherche.addEventListener('keyup',()=>{
+        var filterStatus = null
+        if (actifs.value==1){
+            filterStatus='actifs'
+        } else if (inactifs.value==1){
+            filterStatus='inactifs'
+        } else {
+            filterStatus='tous'
+        }
+        const text = recherche.value
+        axios.post('/client_letter', {
+            letter: text,
+            filterStatus:filterStatus
+        })
+            .then(function (response) {
+                document.getElementById('ajaxContent').innerHTML=response.data.ajaxContent
+                document.getElementById('paginator').innerHTML=''
+                if (document.getElementsByClassName('imgActiveBtn').length == 0 ){
+                    document.getElementById('ajaxContent').innerHTML='<div class="mt-3 container text-center alert alert-danger">Aucun partenaire trouvé avec ce mot clé saisi</div>'
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
     })
 }

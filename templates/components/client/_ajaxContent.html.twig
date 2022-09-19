@@ -51,6 +51,4 @@
         <img src="{{ asset('build/images/no_client.jpg') }}" alt="" width="100%">
     </div>
 {% endif %}
-<div id="paginator" class="container text-center">
-    {{ knp_pagination_render(clients,'@KnpPaginator/Pagination/twitter_bootstrap_v4_pagination.html.twig') }}
-</div>
+{% include 'components/client/_pagination.html.twig' %}

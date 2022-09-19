@@ -66,14 +66,19 @@ class ClientRepository extends ServiceEntityRepository
             ;
     }
 
-    public function finByLetter($word)
+    public function finByLetter($word,$status)
     {
-        return $this->createQueryBuilder('c')
+        $query =  $this->createQueryBuilder('c')
             ->where('c.name LIKE :word')
             ->setParameter(':word',$word.'%')
-            ->orderBy('c.createAt','DESC')
-            ->getQuery()
-            ->getResult()
+            ->orderBy('c.createAt','DESC');
+            if ($status === 'actifs'){
+                $query = $query->andWhere('c.active =1');
+            }
+            if ($status === 'inactifs'){
+                $query = $query->andWhere('c.active =0');
+            }
+           return $query->getQuery()->getResult();
             ;
     }
 //    /**
