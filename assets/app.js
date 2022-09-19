@@ -240,3 +240,46 @@ if (document.getElementById('recherche')){
             });
     })
 }
+
+if (document.getElementById('branchActifs')){
+    var branchActifs = document.getElementById('branchActifs')
+    branchActifs.addEventListener('click',()=>{
+        axios.post('/branch_actifs', {
+            idClient: branchActifs.name,
+        })
+            .then(function (response) {
+                document.getElementById('branchCard').innerHTML=response.data.branchCard
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    })
+}
+if (document.getElementById('branchInactifs')){
+    var branchInactifs = document.getElementById('branchInactifs')
+    branchInactifs.addEventListener('click',()=>{
+        axios.post('/branch_inactifs', {
+            idClient: branchInactifs.name,
+        })
+            .then(function (response) {
+                document.getElementById('branchCard').innerHTML=response.data.branchCard
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    })
+}
+if (document.getElementById('branchTous')){
+    var branchTous = document.getElementById('branchTous')
+    branchTous.addEventListener('click',()=>{
+        axios.post('/branch_tous', {
+            idClient: branchTous.name,
+        })
+            .then(function (response) {
+                document.getElementById('branchCard').innerHTML=response.data.branchCard
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    })
+}

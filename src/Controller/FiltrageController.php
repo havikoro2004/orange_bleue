@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\BranchRepository;
 use App\Repository\ClientRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -78,4 +79,60 @@ class FiltrageController extends AbstractController
         ]);
     }
 
+    #[Route('/branch_actifs', name: 'branch_actif')]
+    public function branchActifs(ClientRepository $clientRepository,Request $request,BranchRepository $branchRepository): Response
+    {
+    //Je n'utilise pas le if $request->isXttp ... si je n'ai pas de pagination
+        $idClient = intval(json_decode($request->getContent())->idClient);
+        $client = $clientRepository->findOneBy([
+            'id'=>$idClient
+        ]);
+        $branche = $branchRepository->findActif($client);
+            return new JsonResponse([
+                'branchCard'=>$this->renderView('components/branch/_ajaxBranchContent.html.twig',[
+                    'branches'=>$branche,
+                    'errors'=>null,
+                    'client'=>$client,
+                    'param'=>$request->getPathInfo()
+                ]),
+            ]);
+        }
+
+    #[Route('/branch_inactifs', name: 'branch_inactif')]
+    public function branchInactifs(ClientRepository $clientRepository,Request $request,BranchRepository $branchRepository): Response
+    {
+        //Je n'utilise pas le if $request->isXttp ... si je n'ai pas de pagination
+        $idClient = intval(json_decode($request->getContent())->idClient);
+        $client = $clientRepository->findOneBy([
+            'id'=>$idClient
+        ]);
+        $branche = $branchRepository->findInactif($client);
+        return new JsonResponse([
+            'branchCard'=>$this->renderView('components/branch/_ajaxBranchContent.html.twig',[
+                'branches'=>$branche,
+                'errors'=>null,
+                'client'=>$client,
+                'param'=>$request->getPathInfo()
+            ]),
+        ]);
+    }
+
+    #[Route('/branch_tous', name: 'branch_tous')]
+    public function branchTous(ClientRepository $clientRepository,Request $request,BranchRepository $branchRepository): Response
+    {
+        //Je n'utilise pas le if $request->isXttp ... si je n'ai pas de pagination
+        $idClient = intval(json_decode($request->getContent())->idClient);
+        $client = $clientRepository->findOneBy([
+            'id'=>$idClient
+        ]);
+        $branche = $branchRepository->findAllTou($client);
+        return new JsonResponse([
+            'branchCard'=>$this->renderView('components/branch/_ajaxBranchContent.html.twig',[
+                'branches'=>$branche,
+                'errors'=>null,
+                'client'=>$client,
+                'param'=>$request->getPathInfo()
+            ]),
+        ]);
+    }
 }
