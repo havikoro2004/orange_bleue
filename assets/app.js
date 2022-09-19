@@ -158,5 +158,45 @@ if (document.getElementById('editBranch')){
 
 if (document.getElementById('errorsNewPassword')){
     const errorsNewPassword = document.getElementById('errorsNewPassword')
-    console.log(errorsNewPassword.getElementsByTagName('ul')[0].setAttribute('class','list-unstyled m-0 p-0'))
+    errorsNewPassword.getElementsByTagName('ul')[0].setAttribute('class','list-unstyled m-0 p-0')
+}
+
+if (document.getElementById('actifs')){
+    const actifs = document.getElementById('actifs')
+    actifs.addEventListener('click',()=>{
+        axios.get('/find_actifs', {
+            headers : {
+                'X-Requested-With' : 'XMLHttpRequest'
+            }
+        })
+            .then(function (response) {
+                document.getElementById('ajaxContent').innerHTML=response.data.ajaxContent
+            })
+    })
+}
+if (document.getElementById('inactifs')){
+    const inactifs = document.getElementById('inactifs')
+    inactifs.addEventListener('click',()=>{
+        axios.get('/find_inactif', {
+            headers : {
+                'X-Requested-With' : 'XMLHttpRequest'
+            }
+        })
+            .then(function (response) {
+                document.getElementById('ajaxContent').innerHTML=response.data.ajaxContent
+            })
+    })
+}
+if (document.getElementById('tous')){
+    const tous = document.getElementById('tous')
+    tous.addEventListener('click',()=>{
+        axios.get('/', {
+            headers : {
+                'X-Requested-With' : 'XMLHttpRequest'
+            }
+        })
+            .then(function (response) {
+                document.getElementById('ajaxContent').innerHTML=response.data.ajaxContent
+            })
+    })
 }

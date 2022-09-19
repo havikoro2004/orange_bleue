@@ -15,10 +15,12 @@ use App\Repository\UserRepository;
 
 use App\Services\CloneClass;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
@@ -33,7 +35,7 @@ class ClientController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
     #[IsGranted('ROLE_USER')]
-    public function index(ClientRepository $clientRepository): Response
+    public function index(PaginatorInterface $paginator,Request $request,ClientRepository $clientRepository): Response
     {
         if ($this->getUser()->getRoles()[0] == 'ROLE_READER'){
             if (!$this->getUser()->getClient()->isActive()){
@@ -51,11 +53,22 @@ class ClientController extends AbstractController
                 'id'=>$this->getUser()->getBranch()->getId()
             ]);
         }
-        $clients = $clientRepository->findAllDesc();
+        if ($request->isXmlHttpRequest()){
+            $clients = $paginator->paginate($clientRepository->findAllDesc(),$request->query->getInt('page',1),2);
+            return new JsonResponse([
+                'ajaxContent'=>$this->renderView('components/client/_ajaxContent.html.twig',[
+                    'clients'=>$clients,
+                    'errors'=>null,
+                    'param'=>$request->getPathInfo()
+                ]),
+            ]);
+        }
+        $clients = $paginator->paginate($clientRepository->findAllDesc(),$request->query->getInt('page',1),2);
         return $this->render('client/index.html.twig', [
             'controller_name' => 'ClientController',
             'clients'=>$clients,
-            'errors'=>null
+            'errors'=>null,
+            'param'=>$request->getPathInfo()
         ]);
     }
 

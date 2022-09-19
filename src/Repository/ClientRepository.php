@@ -46,7 +46,36 @@ class ClientRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+    public function finActif()
+    {
+        return $this->createQueryBuilder('c')
+            ->where('c.active = 1')
+            ->orderBy('c.createAt','DESC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 
+    public function finInactif()
+    {
+        return $this->createQueryBuilder('c')
+            ->where('c.active = 0')
+            ->orderBy('c.createAt','DESC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function finByLetter($word)
+    {
+        return $this->createQueryBuilder('c')
+            ->where('c.name LIKE :word')
+            ->setParameter(':word',$word.'%')
+            ->orderBy('c.createAt','DESC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 //    /**
 //     * @return Client[] Returns an array of Client objects
 //     */

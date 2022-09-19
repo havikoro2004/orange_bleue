@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Branch;
 use App\Entity\Client;
 use App\Form\BranchType;
-use App\Repository\BranchRepository;
 use App\Repository\UserRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
