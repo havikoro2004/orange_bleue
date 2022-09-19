@@ -296,7 +296,19 @@ class ClientController extends AbstractController
         if ($status){
             $message = 'Le client '.$client->getName().'a bien été désactivé ';
             $sujet='Désactivation du compte';
-            $text ='Votre compte partenaire a été désactivé';
+            $text ='Votre compte a été désactivé';
+            $branches = $client->getBranches();
+            foreach ($branches as $branche){
+                $text='Votre compte a été désactivé suite à la désactivation du compte parent';
+                $branche->setActive(0);
+                $emailClient = (new TemplatedEmail())
+                    ->from(new Address('havikoro2004@gmail.com','Energy Fit Academy'))
+                    ->to($branche->getManager())
+                    ->subject($sujet)
+                    ->context(['sujet'=>$sujet,'text'=>$text,'titre'=>$sujet])
+                    ->htmlTemplate('mails/activation_desactivation_compte.html.twig');
+                $mailer->send($emailClient);
+            }
 
         } else {
             $message = 'Le client '.$client->getName().' a bien été activé';
