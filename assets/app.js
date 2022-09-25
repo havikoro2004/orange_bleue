@@ -161,82 +161,189 @@ if (document.getElementById('errorsNewPassword')){
     errorsNewPassword.getElementsByTagName('ul')[0].setAttribute('class','list-unstyled m-0 p-0')
 }
 
-if (document.getElementById('actifs')){
-    var actifs = document.getElementById('actifs')
-    actifs.addEventListener('click',()=>{
-        actifs.value = 1
-        inactifs.value=0
-        tous.value=0
-        axios.get('/find_actifs', {
-            headers : {
-                'X-Requested-With' : 'XMLHttpRequest'
-            }
-        })
-            .then(function (response) {
-                document.getElementById('ajaxContent').innerHTML=response.data.ajaxContent
-                document.getElementById('paginator').innerHTML=response.data.paginator
-            })
-    })
-}
-if (document.getElementById('inactifs')){
-    var inactifs = document.getElementById('inactifs')
-    inactifs.addEventListener('click',()=>{
-        actifs.value = 0
-        inactifs.value=1
-        tous.value=0
-        axios.get('/find_inactif', {
-            headers : {
-                'X-Requested-With' : 'XMLHttpRequest'
-            }
-        })
-            .then(function (response) {
-                document.getElementById('ajaxContent').innerHTML=response.data.ajaxContent
-                document.getElementById('paginator').innerHTML=response.data.paginator
-            })
-    })
-}
-if (document.getElementById('tous')){
-    var tous = document.getElementById('tous')
-    tous.addEventListener('click',()=>{
-        actifs.value = 0
-        inactifs.value=0
-        tous.value=1
-        axios.get('/', {
-            headers : {
-                'X-Requested-With' : 'XMLHttpRequest'
-            }
-        })
-            .then(function (response) {
-                document.getElementById('ajaxContent').innerHTML=response.data.ajaxContent
-                document.getElementById('paginator').innerHTML=response.data.paginator
-            })
-    })
-}
-if (document.getElementById('recherche')){
-    const recherche = document.getElementById('recherche')
-    recherche.addEventListener('keyup',()=>{
-        var filterStatus = null
-        if (actifs.value==1){
-            filterStatus='actifs'
-        } else if (inactifs.value==1){
-            filterStatus='inactifs'
+// Pagination Script
+let nbrPage = 2
+const plusBtn = document.getElementById('plusBtn')
+const seeMoreBtn = document.getElementById('seeMore')
+const actifsCheckbox = document.getElementById('actifs')
+const inactifCheckbox = document.getElementById('inactifs')
+const touCheckbox = document.getElementById('tous')
+const contentDiv =document.getElementById('clientCard')
+const footer = document.getElementById('footer')
+let arrayContent=[...contentDiv.children]
+let arraySliced = arrayContent.slice(0,nbrPage)
+const alertNotFoundFilter = document.getElementById('alertNotFoundFilter')
+const rechercheInput = document.getElementById('recherche')
+
+// Afficher tous les partenaires
+touCheckbox.addEventListener('click',()=>{
+    rechercheInput.value=''
+    alertNotFoundFilter.innerHTML=''
+    seeMoreBtn.setAttribute('class','d-flex justify-content-center align-items-center')
+    nbrPage = 2
+    arrayContent=[...contentDiv.children]
+    arraySliced = arrayContent.slice(0,nbrPage)
+    arrayContent.forEach(item=>{
+        if (arraySliced.includes(item)){
+            item.setAttribute('class','my-3 p-4 article m-auto rounded list-group')
         } else {
-            filterStatus='tous'
+            item.setAttribute('class','d-none')
         }
-        const text = recherche.value
-        axios.post('/client_letter', {
-            letter: text,
-            filterStatus:filterStatus
-        })
-            .then(function (response) {
-                document.getElementById('ajaxContent').innerHTML=response.data.ajaxContent
-                document.getElementById('paginator').innerHTML=''
-                if (document.getElementsByClassName('imgActiveBtn').length == 0 ){
-                    document.getElementById('ajaxContent').innerHTML='<div class="mt-3 container text-center alert alert-danger">Aucun partenaire trouvé avec ce mot clé saisi</div>'
-                }
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+    })
+    if (nbrPage >= arrayContent.length){
+        seeMoreBtn.setAttribute('class','d-none')
+    }
+    footer.scrollIntoView()
+    finByLetter()
+})
+
+// Afficher les partenaires inactifs
+inactifCheckbox.addEventListener('click',()=>{
+    rechercheInput.value=''
+    alertNotFoundFilter.innerHTML=''
+    seeMoreBtn.setAttribute('class','d-flex justify-content-center align-items-center')
+    nbrPage = 2
+    arrayContent=[]
+    for (let i = 0 ; i < contentDiv.children.length ; i++){
+        if (!contentDiv.children[i].getElementsByTagName('input')[0].checked){
+            arrayContent.push(contentDiv.children[i])
+            contentDiv.children[i].setAttribute('class','my-3 p-4 article m-auto rounded list-group')
+            console.log(arrayContent)
+        } else {
+            contentDiv.children[i].setAttribute('class','d-none')
+        }
+    }
+    arraySliced = arrayContent.slice(0,nbrPage)
+    arrayContent.forEach(item=>{
+        if (arraySliced.includes(item)){
+            item.setAttribute('class','my-3 p-4 article m-auto rounded list-group')
+        } else {
+            item.setAttribute('class','d-none')
+        }
+    })
+    if (nbrPage >= arrayContent.length){
+        seeMoreBtn.setAttribute('class','d-none')
+    }
+    footer.scrollIntoView()
+
+    // Recherche par lettre
+    rechercheInput.addEventListener('keyup',()=>{
+        alertNotFoundFilter.innerHTML=''
+        seeMoreBtn.setAttribute('class','d-none')
+        let arrayFindByLetter=[]
+        for ( let i = 0 ; i < contentDiv.children.length ; i++){
+            let nameField = contentDiv.children[i].getElementsByTagName('ul')[0].children[1].textContent
+            if (nameField.includes(rechercheInput.value) && !contentDiv.children[i].getElementsByTagName('input')[0].checked){
+                contentDiv.children[i].setAttribute('class','my-3 p-4 article m-auto rounded list-group')
+                arrayFindByLetter.push(contentDiv.children[i])
+            } else {
+                contentDiv.children[i].setAttribute('class','d-none')
+            }
+        }
+        if (arrayFindByLetter.length===0){
+            let alert = document.createElement('div')
+            alert.innerHTML='<div class="alert alert-danger container text-center">Aucun client trouvé avec ce nom</div>'
+            alertNotFoundFilter.appendChild(alert)
+        }
+    })
+})
+
+// Afficher les partenaires actifs
+actifsCheckbox.addEventListener('click',()=>{
+    rechercheInput.value=''
+    alertNotFoundFilter.innerHTML=''
+    seeMoreBtn.setAttribute('class','d-flex justify-content-center align-items-center')
+    nbrPage = 2
+    arrayContent=[]
+    for (let i = 0 ; i < contentDiv.children.length ; i++){
+        if (contentDiv.children[i].getElementsByTagName('input')[0].checked){
+            arrayContent.push(contentDiv.children[i])
+            contentDiv.children[i].setAttribute('class','my-3 p-4 article m-auto rounded list-group')
+            console.log(arrayContent)
+        } else {
+            contentDiv.children[i].setAttribute('class','d-none')
+        }
+    }
+    arraySliced = arrayContent.slice(0,nbrPage)
+    arrayContent.forEach(item=>{
+        if (arraySliced.includes(item)){
+            item.setAttribute('class','my-3 p-4 article m-auto rounded list-group')
+        } else {
+            item.setAttribute('class','d-none')
+        }
+    })
+    if (nbrPage >= arrayContent.length){
+        seeMoreBtn.setAttribute('class','d-none')
+    }
+    footer.scrollIntoView()
+
+    // Recherche par lettre
+    rechercheInput.addEventListener('keyup',()=>{
+        alertNotFoundFilter.innerHTML=''
+        seeMoreBtn.setAttribute('class','d-none')
+        let arrayFindByLetter=[]
+        for ( let i = 0 ; i < contentDiv.children.length ; i++){
+            let nameField = contentDiv.children[i].getElementsByTagName('ul')[0].children[1].textContent
+            if (nameField.includes(rechercheInput.value) && contentDiv.children[i].getElementsByTagName('input')[0].checked){
+                contentDiv.children[i].setAttribute('class','my-3 p-4 article m-auto rounded list-group')
+                arrayFindByLetter.push(contentDiv.children[i])
+            } else {
+                contentDiv.children[i].setAttribute('class','d-none')
+            }
+        }
+        if (arrayFindByLetter.length===0){
+            let alert = document.createElement('div')
+            alert.innerHTML='<div class="alert alert-danger container text-center">Aucun client trouvé avec ce nom</div>'
+            alertNotFoundFilter.appendChild(alert)
+        }
+    })
+
+})
+
+// Bouton pagination page home
+plusBtn.addEventListener('click',()=>{
+    nbrPage+=2
+    arraySliced = arrayContent.slice(0,nbrPage)
+    arrayContent.forEach(item=>{
+        if (arraySliced.includes(item)){
+            item.setAttribute('class','my-3 p-4 article m-auto rounded list-group')
+        } else {
+            item.setAttribute('class','d-none')
+        }
+    })
+    if (nbrPage >= arrayContent.length){
+        seeMoreBtn.setAttribute('class','d-none')
+    }
+    footer.scrollIntoView()
+})
+arrayContent.forEach(item=>{
+    if (arraySliced.includes(item)){
+        item.setAttribute('class','my-3 p-4 article m-auto rounded list-group')
+    } else {
+        item.setAttribute('class','d-none')
+    }
+})
+
+const finByLetter = function(){
+    // Recherche par lettre
+    rechercheInput.addEventListener('keyup',()=>{
+        alertNotFoundFilter.innerHTML=''
+        seeMoreBtn.setAttribute('class','d-none')
+        let arrayFindByLetter=[]
+        for ( let i = 0 ; i < contentDiv.children.length ; i++){
+            let nameField = contentDiv.children[i].getElementsByTagName('ul')[0].children[1].textContent
+            if (nameField.includes(rechercheInput.value)){
+                contentDiv.children[i].setAttribute('class','my-3 p-4 article m-auto rounded list-group')
+                arrayFindByLetter.push(contentDiv.children[i])
+            } else {
+                contentDiv.children[i].setAttribute('class','d-none')
+            }
+        }
+        if (arrayFindByLetter.length===0){
+            let alert = document.createElement('div')
+            alert.innerHTML='<div class="alert alert-danger container text-center">Aucun client trouvé avec ce nom</div>'
+            alertNotFoundFilter.appendChild(alert)
+        }
     })
 }
+finByLetter()
