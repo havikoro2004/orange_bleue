@@ -33,7 +33,7 @@ class ClientController extends AbstractController
     // Page d'accueil
     #[Route('/', name: 'app_home')]
     #[IsGranted('ROLE_USER')]
-    public function index(PaginatorInterface $paginator,Request $request,ClientRepository $clientRepository): Response
+    public function index(Request $request,ClientRepository $clientRepository): Response
     {
 
         // Faire les redirections des users selon leurs rôle
@@ -53,20 +53,7 @@ class ClientController extends AbstractController
                 'id'=>$this->getUser()->getBranch()->getId()
             ]);
         }
-        if ($request->isXmlHttpRequest()){
-            $clients = $paginator->paginate($clientRepository->findAllDesc(),$request->query->getInt('page',1),2);
-            return new JsonResponse([
-                'ajaxContent'=>$this->renderView('components/client/_ajaxContent.html.twig',[
-                    'clients'=>$clients,
-                    'errors'=>null,
-                    'param'=>$request->getPathInfo()
-                ]),
-                'paginator'=>$this->renderView('components/client/_pagination.html.twig',[
-                    'clients'=>$clients,
-                ])
-            ]);
-        }
-        $clients = $paginator->paginate($clientRepository->findAllDesc(),$request->query->getInt('page',1),2);
+        $clients = $clientRepository->findAllDesc();
         return $this->render('client/index.html.twig', [
             'controller_name' => 'ClientController',
             'clients'=>$clients,

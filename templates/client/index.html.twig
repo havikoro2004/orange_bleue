@@ -16,6 +16,7 @@
                 </nav>
             </div>
             <h1 class="text-center text-secondary my-4">Liste des partenaires</h1>
+            <div id="alertNotFoundFilter"></div>
             <div class="text-center m-4 d-flex align-items-center" id="filtrageForm">
                 <div class="form-check mx-2">
                     <input class="form-check-input" type="radio" name="flexRadioDefault" id="tous"{% if param == '/' %} checked {% endif %} >
@@ -41,9 +42,62 @@
                 <a href="/client/add" class="btn btn-primary">Ajouter partenaire</a>
             </div>
             {% include 'components/client/_flashes.html.twig' %}
-            <div id="ajaxContent">
-              {% include 'components/client/_ajaxContent.html.twig' %}
-            </div>
+            {% if clients %}
+                <div class="partenaire" id="clientCard">
+                    {% for client in clients %}
+                        <div class="my-3 p-4 article m-auto rounded list-group" style="width: 98%">
+                            <div class="imgActiveBtn">
+                                <div>
+                                    <a title="Aller sur le profil" href="/client/{{ client.id }}">
+                                        {% if client.getImageName() %}
+                                            <img class="list-group border border-secondary imgHover" width="200px" height="160px" src="/images/client_logo/{{ client.getImageName() }}" alt="partenaire".{{ client.id }}>
+                                        {% else %}
+                                            <img title="Aller sur le profil" class="list-group border border-secondary imgHover" width="200px" height="160px" src="{{ asset('build/images/default.jpg') }}" alt="partenaire".{{ client.id }}>
+                                        {% endif %}
+                                    </a>
+                                </div>
+                                <div class="form-check form-switch mt-3">
+                                    <input {% if client.getUser().getToken()%}disabled{% endif%} title="{% if client.active %} Désactiver {% else%} Activer {% endif %}" data-bs-toggle="modal" data-bs-target="#exampleModal{{client.id }}" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" {% if client.active %} checked {% endif %}>
+                                    <label class="form-check-label text-secondary" for="flexSwitchCheckDefault">{% if client.active %} On {% else%} Off {% endif %}</label>
+                                </div>
+                                {% include 'components/client/_modal.html.twig' %}
+                            </div>
+                            <ul class="border border-secondary list-unstyled bg bg-white rounded-2">
+                                <li class="m-2">Client ID :{{ client.id }}</li>
+                                <li class="m-2">Nom : {{ client.name }}</li>
+                                <li class="m-2">
+                                    Description courte :
+                                    {% if client.getShortDesc() %}
+                                    {{ client.getShortDesc() }}
+                                    {% else %}
+                                    <span class="text-danger">Non fourni</span></li>
+                                {% endif %}
+                                <li class="m-2">
+                                    Url :
+                                    {% if client.getUrl() %}
+                                    {{ client.getUrl() }}
+                                    {% else %}
+                                    <span class="text-danger">Non fourni</span></li>
+                                {% endif %}
+                                <li class="m-2">Date de création : {{ client.getCreateAt()|date('d-m-Y ') }}</li>
+                                {% if client.getUser().getToken() %}
+                                    <li class="m-2"> Status : <span class="text-warning">en Attendte de validation</span></li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div id="seeMore" class="d-flex justify-content-center align-items-center">
+                    <i class="bi bi-plus-circle-dotted btn" style="font-size: 1.5rem" id="plusBtn"></i> Voir plus
+                </div>
+            {% else %}
+                <div class="container text-center mb-3">
+                    <div class="alert alert-dark text-center">
+                        Aucun partenaire n'est enregistré
+                    </div>
+                    <img src="{{ asset('build/images/no_client.jpg') }}" alt="" width="100%">
+                </div>
+            {% endif %}
         </section>
         {% include 'components/_footer.html.twig' %}
     </div>
