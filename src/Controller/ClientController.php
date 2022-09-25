@@ -12,7 +12,6 @@ use App\Repository\BranchRepository;
 use App\Repository\ClientRepository;
 use App\Repository\PermissionRepository;
 use App\Repository\UserRepository;
-
 use App\Services\CloneClass;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\PaginatorInterface;
@@ -25,18 +24,19 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
-use Symfony\Component\Mime\Email;
-use Symfony\Component\Mime\Message;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ClientController extends AbstractController
 {
+    // Page d'accueil
     #[Route('/', name: 'app_home')]
     #[IsGranted('ROLE_USER')]
     public function index(PaginatorInterface $paginator,Request $request,ClientRepository $clientRepository): Response
     {
+
+        // Faire les redirections des users selon leurs rôle
         if ($this->getUser()->getRoles()[0] == 'ROLE_READER'){
             if (!$this->getUser()->getClient()->isActive()){
                 return $this->redirectToRoute('app_inactive');
@@ -75,6 +75,7 @@ class ClientController extends AbstractController
         ]);
     }
 
+    // Ajouter un client
     #[Route('/client/add', name: 'app_client_add')]
     #[IsGranted('ROLE_ADMIN')]
     public function add(UserPasswordHasherInterface $hasher,PermissionRepository
@@ -117,6 +118,7 @@ class ClientController extends AbstractController
                 $userClient->setClient($data);
                 $em->persist($userClient);
 
+                // Envoyer un email au compte utilisateur partenaire
                 $email = (new TemplatedEmail())
                     ->from(new Address('havikoro2004@gmail.com','Energy Fit Academy'))
                     ->to($userClient->getEmail())
@@ -141,7 +143,7 @@ class ClientController extends AbstractController
         ]);
     }
 
-
+    // Modifier les informations du compte client
     #[Route('/client/{id}/edit', name: 'app_client_edit')]
     #[IsGranted('ROLE_ADMIN')]
     public function edit(UserRepository $userRepository,Client $client,
@@ -163,6 +165,7 @@ class ClientController extends AbstractController
         }
         if ($form->isSubmitted() && $form->isValid()){
 
+            // Envoyer un email au compte utilisateur partenaire pour informer des modifications
             $email = (new TemplatedEmail())
                 ->from(new Address('havikoro2004@gmail.com','Energy Fit Academy'))
                 ->to($userClient->getEmail())
@@ -183,6 +186,7 @@ class ClientController extends AbstractController
         ]);
     }
 
+    // La page qui affiche les informations du client avec les branches
     #[Route('/client/{id}', name: 'app_client_one')]
     #[Entity('client', options: ['id' => 'id'])]
     #[IsGranted('ROLE_ADMIN')]
@@ -286,6 +290,7 @@ class ClientController extends AbstractController
         ]);
     }
 
+    // Activer ou désactiver un client
     #[Route('/client/{id}/active', name: 'app_client_active')]
     #[IsGranted('ROLE_ADMIN')]
     public function active(Client $client,ManagerRegistry $manager
@@ -330,6 +335,7 @@ class ClientController extends AbstractController
         return $this->redirectToRoute('app_client');
     }
 
+    // Supprimer un client
     #[Route('/client/{id}/delete', name: 'app_client_delete')]
     #[IsGranted('ROLE_ADMIN')]
     public function delete(Client $client,ManagerRegistry $manager,MailerInterface $mailer): Response

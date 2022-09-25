@@ -13,6 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class GuestController extends AbstractController
 {
+    // Page profil partenaire en lécture seul
     #[Route('/guest/client/{id}', name: 'app_guest_client')]
     #[IsGranted('ROLE_READER')]
     public function index(BranchRepository $branchRepository ,Client $client ,PermissionRepository $permissionRepository): Response
@@ -31,6 +32,8 @@ class GuestController extends AbstractController
             'branches'=>$branches
         ]);
     }
+
+    // Page profil d'une structure en lécture seul
     #[Route('/guest/branch/{id}', name: 'app_guest_branch')]
     #[IsGranted('ROLE_USER')]
     public function branchIndex(Branch $branch): Response

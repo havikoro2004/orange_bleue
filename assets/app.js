@@ -12,7 +12,9 @@ window.onpageshow = function(event) {
     if (event.persisted || performance.getEntriesByType("navigation")[0].type === 'back_forward') {
         location.reload();
     }
-};
+}
+
+// Activer ou désactiver les clients dans la liste de la page d'accueil
 const cardClient = document.getElementById('clientCard')
 if (cardClient){
     for (let i = 0 ; i < cardClient.children.length ; i++){
@@ -39,6 +41,8 @@ if (cardClient){
         })
     }
 }
+
+// Activer désactiver le client dans sa page profil
 const pageOneInput = document.getElementById('activBtnOnePage')
 if (pageOneInput){
     const btnActiveOnePage = pageOneInput.children[0]
@@ -61,6 +65,8 @@ if (pageOneInput){
         })
     })
 }
+
+//Activer ou désactiver les permissions globales d'un client dans sa page profil
 if (document.getElementById('permissionCollaps')){
     const permissionCollaps = document.getElementById('permissionCollaps')
     const switchesBtns = permissionCollaps.getElementsByClassName('form-check-input')
@@ -87,12 +93,14 @@ if (document.getElementById('permissionCollaps')){
         })
     }
 }
+
+// Activer ou désactiver une branche d'un client dans sa page profil
 if (document.getElementById('branchCard')){
     const activeBranchModal = document.getElementById('branchCard')
     for (let i=0 ; i< activeBranchModal.children.length ; i++){
-
        const activeBtn = activeBranchModal.children[i].getElementsByClassName('activeBranch')
             activeBtn[0].addEventListener('click',(e)=>{
+                console.log(activeBtn)
                 e.preventDefault()
                 const footer = activeBranchModal.children[i].getElementsByClassName('modal-footer')[0].children[1]
                 const body = activeBranchModal.children[i].getElementsByClassName('modal-body')[0]
@@ -115,6 +123,7 @@ if (document.getElementById('branchCard')){
 
 }
 
+// Activer ou désactiver des permissions d'une branche dans la page profil d'un client
 if(document.getElementById('branchCard')){
     const branchCard = document.getElementById('branchCard')
     for (let i=0;i<branchCard.children.length;i++){
@@ -146,21 +155,24 @@ if(document.getElementById('branchCard')){
     }
 }
 
+// Mettre l'input email d'un client en mode reaOnly pour ne pas pouvoir le modifier
 if (document.getElementById('modifClient')){
     const sectionPartenaireEdit = document.getElementById('modifClient')
     sectionPartenaireEdit.getElementsByTagName('form')[0].children[6].children[1].readOnly=true
 }
-
+// Mettre l'input email d'une structure en mode reaOnly pour ne pas pouvoir le modifier
 if (document.getElementById('editBranch')){
     const sectionBranchEdit =document.getElementById('editBranch')
     sectionBranchEdit.getElementsByTagName('form')[0].children[2].readOnly=true
 }
 
+// Modifier le design de la div erreur de type 'Alert' dans le champs modifier mot de passe
 if (document.getElementById('errorsNewPassword')){
     const errorsNewPassword = document.getElementById('errorsNewPassword')
     errorsNewPassword.getElementsByTagName('ul')[0].setAttribute('class','list-unstyled m-0 p-0')
 }
 
+// Afficher les clients actifs seulement
 if (document.getElementById('actifs')){
     var actifs = document.getElementById('actifs')
     actifs.addEventListener('click',()=>{
@@ -178,6 +190,8 @@ if (document.getElementById('actifs')){
             })
     })
 }
+
+// Afficher les clients inactifs seulement
 if (document.getElementById('inactifs')){
     var inactifs = document.getElementById('inactifs')
     inactifs.addEventListener('click',()=>{
@@ -195,6 +209,8 @@ if (document.getElementById('inactifs')){
             })
     })
 }
+
+// Afficher tous les clients
 if (document.getElementById('tous')){
     var tous = document.getElementById('tous')
     tous.addEventListener('click',()=>{
@@ -212,6 +228,8 @@ if (document.getElementById('tous')){
             })
     })
 }
+
+// Afficher le client en tapant son nom sur le formulaire de recherche
 if (document.getElementById('recherche')){
     const recherche = document.getElementById('recherche')
     recherche.addEventListener('keyup',()=>{
@@ -241,6 +259,7 @@ if (document.getElementById('recherche')){
     })
 }
 
+// Afficher les branches activent seulement
 if (document.getElementById('branchActifs')){
     var branchActifs = document.getElementById('branchActifs')
     branchActifs.addEventListener('click',()=>{
@@ -255,6 +274,8 @@ if (document.getElementById('branchActifs')){
             });
     })
 }
+
+// Afficher les branches inactives seulement
 if (document.getElementById('branchInactifs')){
     var branchInactifs = document.getElementById('branchInactifs')
     branchInactifs.addEventListener('click',()=>{
@@ -269,6 +290,8 @@ if (document.getElementById('branchInactifs')){
             });
     })
 }
+
+// Afficher toutes les branches
 if (document.getElementById('branchTous')){
     var branchTous = document.getElementById('branchTous')
     branchTous.addEventListener('click',()=>{

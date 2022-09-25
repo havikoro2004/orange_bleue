@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Controller;
-
 use App\Entity\Branch;
 use App\Entity\Client;
 use App\Form\BranchType;
@@ -20,6 +19,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class BranchController extends AbstractController
 {
+    // Activer ou désactiver une branch en récupérant son id
     #[Route('/branch/{id}/edit', name: 'app_branch_active')]
     #[Entity('branch', options: ['id' => 'id'])]
     #[IsGranted('ROLE_ADMIN')]
@@ -63,6 +63,7 @@ class BranchController extends AbstractController
 
     }
 
+    // Supprimer une branche en récupérant son id
     #[Route('/client/{id_client}/branch/{id_branch}/delete', name: 'app_branch_delete')]
     #[Entity('client', options: ['id' => 'id_client'])]
     #[Entity('branch', options: ['id' => 'id_branch'])]
@@ -95,6 +96,7 @@ class BranchController extends AbstractController
         ]);
     }
 
+    // Modifier les informations d'une branche
     #[Route('/client/{id_client}/branch/{id_branch}/edit', name: 'app_branch_edit')]
     #[Entity('client', options: ['id' => 'id_client'])]
     #[Entity('branch', options: ['id' => 'id_branch'])]
@@ -113,6 +115,8 @@ class BranchController extends AbstractController
             $error = $validator->validate($data);
         }
         if ($form->isSubmitted() && $form->isValid()){
+
+            // ENvoyer une notification au utilisateur de la structure
             $email = (new TemplatedEmail())
                 ->from(new Address('havikoro2004@gmail.com','Energy Fit Academy'))
                 ->to($branch->getManager())
@@ -121,6 +125,7 @@ class BranchController extends AbstractController
                 ->htmlTemplate('mails/email_notifications.html.twig');
             $mailer->send($email);
 
+            // Envoyer un email à l'utilisateur du compte partenaire
             $emailClient = (new TemplatedEmail())
                 ->from(new Address('havikoro2004@gmail.com','Energy Fit Academy'))
                 ->to($data->getClient()->getUser()->getEmail())

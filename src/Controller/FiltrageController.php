@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Controller;
-
 use App\Repository\BranchRepository;
 use App\Repository\ClientRepository;
 use Knp\Component\Pager\PaginatorInterface;
@@ -13,6 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class FiltrageController extends AbstractController
 {
+    // Afficher les clients actifs seulement
     #[Route('/find_actifs', name: 'actifs')]
     public function actif(PaginatorInterface $paginator,Request $request,ClientRepository $clientRepository): Response
     {
@@ -37,6 +36,7 @@ class FiltrageController extends AbstractController
         ]);
     }
 
+    // Afficher les clients inactifs seulement
     #[Route('/find_inactif', name: 'inactif')]
     public function inactif(PaginatorInterface $paginator,Request $request,ClientRepository $clientRepository): Response
     {
@@ -61,6 +61,7 @@ class FiltrageController extends AbstractController
         ]);
     }
 
+    // Afficher les clients en tapant les lettres de leurs nom
     #[Route('/client_letter', name: 'byLetter')]
     public function byLetter(PaginatorInterface $paginator,Request $request,ClientRepository $clientRepository): Response
     {
@@ -79,6 +80,7 @@ class FiltrageController extends AbstractController
         ]);
     }
 
+    // Afficher les structures actives seulement
     #[Route('/branch_actifs', name: 'branch_actif')]
     public function branchActifs(ClientRepository $clientRepository,Request $request,BranchRepository $branchRepository): Response
     {
@@ -98,6 +100,7 @@ class FiltrageController extends AbstractController
             ]);
         }
 
+    // Afficher les structures inactives seulement
     #[Route('/branch_inactifs', name: 'branch_inactif')]
     public function branchInactifs(ClientRepository $clientRepository,Request $request,BranchRepository $branchRepository): Response
     {
@@ -117,6 +120,7 @@ class FiltrageController extends AbstractController
         ]);
     }
 
+    // Afficher toutes les structures
     #[Route('/branch_tous', name: 'branch_tous')]
     public function branchTous(ClientRepository $clientRepository,Request $request,BranchRepository $branchRepository): Response
     {

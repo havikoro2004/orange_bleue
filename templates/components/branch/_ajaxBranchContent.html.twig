@@ -7,7 +7,7 @@
                 {% else %}
                     <img class="list-group border border-secondary imgHover" width="200px" height="160px" src="{{ asset('build/images/strucDefault.jpg') }}" alt="partenaire".{{ client.id }}>
                 {% endif %}
-                {% include 'components/branch/_modal_active_branch.html.twig' %}
+
                 <div class="form-check form-switch ms-3">
                     <input  {% if client.isActive == false or branche.getUser().getToken() %} disabled {% endif %}{% if branche.isActive()%} checked {% endif %} name="{{ branche.id }}" title="Désactiver" data-bs-toggle="modal" data-bs-target="#activeBranch{{ branche.id }}" class="form-check-input activeBranch" type="checkbox" role="switch" id="branchActive">
                     <label class="form-check-label text-secondary" >{% if branche.isActive %} On {% else%}Off {% endif %}</label>

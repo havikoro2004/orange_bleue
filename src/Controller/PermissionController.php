@@ -3,8 +3,6 @@
 namespace App\Controller;
 use App\Entity\Branch;
 use App\Entity\Client;
-use App\Entity\Permission;
-use App\Form\PermissionType;
 use App\Repository\BranchRepository;
 use App\Repository\PermissionRepository;
 use App\Services\getPermissionsMethodes;
@@ -31,8 +29,7 @@ class PermissionController extends AbstractController
             'controller_name' => 'PermissionController',
         ]);
     }
-
-
+    // Modifier les permissions d'un client partenaire
     #[Route('/permission/edit/{id}', name: 'app_permission_edit')]
     #[Entity('client', options: ['id' => 'id'])]
     #[IsGranted('ROLE_ADMIN')]
@@ -40,13 +37,23 @@ class PermissionController extends AbstractController
         ,PermissionRepository $permissionRepository,MailerInterface $mailer): Response
     {
         $em = $manager->getManager();
+        // Récupérer l'id des permissions de la branchee
         $permissionsByClient = $permissionRepository->finOneJoinClient($client);
+
+
+        // Créer un objet pour avoir la methode getMethodes() qui active ou désactive une permission selon son id
         $getMethode = New getPermissionsMethodes();
+
+        // Récupérer l'input de la permission
         $axiosPost = json_decode($request->getContent())->inputName;
+
+        // Appliquer la modification de la permission avec la methode de l'objet getPermissionsMethodes
         $getMethode->getMethodes($permissionsByClient,$axiosPost);
+
         $em->flush();
         $this->addFlash('success','La permission a bien été changée');
 
+        // Envoyer un email pour notifier les changement des permissions
         $emailClient = (new TemplatedEmail())
             ->from(new Address('havikoro2004@gmail.com','Energy Fit Academy'))
             ->to($client->getTechnicalContact())
@@ -57,6 +64,7 @@ class PermissionController extends AbstractController
 
     }
 
+    // Modifier les permissions d'une structure
     #[Route('/permission/{clien_id}/{branch_id}/edit', name: 'app_permission_branch_edit')]
     #[Entity('client', options: ['id' => 'clien_id'])]
     #[Entity('branch', options: ['id' => 'branch_id'])]
@@ -70,12 +78,20 @@ class PermissionController extends AbstractController
         $branches = $branchRepository->findOneBy([
             'id'=>$branch->getId()
         ]);
+        // Récupérer l'id des permissions de la branchee
         $permissions = $permissionRepository->fineOneJoinBranch($branches);
+
+        // Créer un objet pour avoir la methode getMethodes() qui active ou désactive une permission selon son id
         $getMethode = New getPermissionsMethodes();
+
+        // Récupérer l'input de la permission
         $axiosPost = json_decode($request->getContent())->inputName;
+
+        // Appliquer la modification de la permission avec la methode de l'objet getPermissionsMethodes
         $getMethode->getMethodes($permissions,$axiosPost);
         $em->flush();
 
+        // Envoyer un email pour notifier les changement des permissions
         $emailClient = (new TemplatedEmail())
             ->from(new Address('havikoro2004@gmail.com','Energy Fit Academy'))
             ->to($branches->getManager(),$branches->getClient()->getTechnicalContact())
