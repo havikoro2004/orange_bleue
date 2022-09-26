@@ -1,4 +1,25 @@
 <h3 class="text-center text-secondary mb-3">Structures du partenaire</h3>
+<div class="text-center m-4 d-flex align-items-center justify-content-center" id="filterBranch">
+    <div class="form-check mx-2">
+        <input class="form-check-input" type="radio" name="flexRadioDefault" id="tousBranch"checked >
+        <label class="form-check-label" for="flexRadioDefault1">
+            Tous
+        </label>
+    </div>
+    <div class="form-check mx-2" id="formActif">
+        <input class="form-check-input" type="radio" name="flexRadioDefault" id="actifsBranch">
+        <label class="form-check-label" for="flexRadioDefault2">
+            Actifs
+        </label>
+    </div>
+    <div class="form-check mx-2">
+        <input class="form-check-input" type="radio" name="flexRadioDefault" id="inactifsBranch">
+        <label class="form-check-label" for="flexRadioDefault2">
+            Inactifs
+        </label>
+    </div>
+</div>
+<h3 class="text-center text-secondary mb-3">Structures du partenaire</h3>
 <div class="{{ client.id }}" id="branchCard">
     {% for branche in branches %}
     <div class="grandDivCardPermissions my-4">
@@ -16,9 +37,9 @@
             </div>
             <div>
                 <ul class="list-unstyled">
-                    <li class="m-2">Structure Id :{{ branche.id }}</li>
-                    <li class="m-2">Adresse :{{ branche.adress }}</li>
-                    <li class="m-2">Manager : {% if branche.getUser() %}{{ branche.getUser().getEmail() }} {% else %}
+                    <li class="liBranch">Structure Id :{{ branche.id }}</li>
+                    <li class="liBranch">Adresse :{{ branche.adress }}</li>
+                    <li class="liBranch">Manager : {% if branche.getUser() %}{{ branche.getUser().getEmail() }} {% else %}
                             <span class="text-danger">Non fourni</span>{% endif %}</li>
                     <li class="m-2">Date de création :{{ branche.getCreatedAt()|date('d-m-Y ') }} à {{ branche.getCreatedAt()|date(' H:i')}} </li>
                 </ul>
