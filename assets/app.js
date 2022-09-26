@@ -12,7 +12,9 @@ window.onpageshow = function(event) {
     if (event.persisted || performance.getEntriesByType("navigation")[0].type === 'back_forward') {
         location.reload();
     }
-};
+}
+
+// Activer ou désactiver un partenaire depuis la page d'accueil
 const cardClient = document.getElementById('clientCard')
 if (cardClient){
     for (let i = 0 ; i < cardClient.children.length ; i++){
@@ -39,6 +41,8 @@ if (cardClient){
         })
     }
 }
+
+// Activer ou désactiver un partenaire dans sa page profil
 const pageOneInput = document.getElementById('activBtnOnePage')
 if (pageOneInput){
     const btnActiveOnePage = pageOneInput.children[0]
@@ -61,6 +65,8 @@ if (pageOneInput){
         })
     })
 }
+
+// Activer ou désactiver une permission globale
 if (document.getElementById('permissionCollaps')){
     const permissionCollaps = document.getElementById('permissionCollaps')
     const switchesBtns = permissionCollaps.getElementsByClassName('form-check-input')
@@ -87,6 +93,8 @@ if (document.getElementById('permissionCollaps')){
         })
     }
 }
+
+// Activer ou désactiver une structure
 if (document.getElementById('branchCard')){
     const activeBranchModal = document.getElementById('branchCard')
     for (let i=0 ; i< activeBranchModal.children.length ; i++){
@@ -115,6 +123,7 @@ if (document.getElementById('branchCard')){
 
 }
 
+// Activer ou désactiver une ou plusieurs permissions d'une structure
 if(document.getElementById('branchCard')){
     const branchCard = document.getElementById('branchCard')
     for (let i=0;i<branchCard.children.length;i++){
@@ -146,164 +155,180 @@ if(document.getElementById('branchCard')){
     }
 }
 
+// Mettre le formulaire email en ReadOnly pour ne pas pouvoir modifier l'adresse mail de l'utilisateur partenaire
 if (document.getElementById('modifClient')){
     const sectionPartenaireEdit = document.getElementById('modifClient')
     sectionPartenaireEdit.getElementsByTagName('form')[0].children[6].children[1].readOnly=true
 }
 
+// Mettre le formulaire email en ReadOnly pour ne pas pouvoir modifier l'adresse mail de l'utilisateur structure
 if (document.getElementById('editBranch')){
     const sectionBranchEdit =document.getElementById('editBranch')
     sectionBranchEdit.getElementsByTagName('form')[0].children[2].readOnly=true
 }
 
+// Modifier le css de la div alert erreur de la page modifier mot de passe user
 if (document.getElementById('errorsNewPassword')){
     const errorsNewPassword = document.getElementById('errorsNewPassword')
     errorsNewPassword.getElementsByTagName('ul')[0].setAttribute('class','list-unstyled m-0 p-0')
 }
 
-// Pagination Script
-let nbrPage = 2
-const plusBtn = document.getElementById('plusBtn')
-const seeMoreBtn = document.getElementById('seeMore')
-const actifsCheckbox = document.getElementById('actifs')
-const inactifCheckbox = document.getElementById('inactifs')
-const touCheckbox = document.getElementById('tous')
-const contentDiv =document.getElementById('clientCard')
-const footer = document.getElementById('footer')
-let arrayContent=[...contentDiv.children]
-let arraySliced = arrayContent.slice(0,nbrPage)
-const alertNotFoundFilter = document.getElementById('alertNotFoundFilter')
-const rechercheInput = document.getElementById('recherche')
+if (document.getElementById('filtrageForm')){
+    // Pagination Script
+    let nbrPage = 2
+    const plusBtn = document.getElementById('plusBtn')
+    const seeMoreBtn = document.getElementById('seeMore')
+    const actifsCheckbox = document.getElementById('actifs')
+    const inactifCheckbox = document.getElementById('inactifs')
+    const touCheckbox = document.getElementById('tous')
+    const contentDiv =document.getElementById('clientCard')
+    const footer = document.getElementById('footer')
+    let arrayContent=[...contentDiv.children]
+    let arraySliced = arrayContent.slice(0,nbrPage)
+    const alertNotFoundFilter = document.getElementById('alertNotFoundFilter')
+    const rechercheInput = document.getElementById('recherche')
 
 // Afficher tous les partenaires
-touCheckbox.addEventListener('click',()=>{
-    rechercheInput.value=''
-    alertNotFoundFilter.innerHTML=''
-    seeMoreBtn.setAttribute('class','d-flex justify-content-center align-items-center')
-    nbrPage = 2
-    arrayContent=[...contentDiv.children]
-    arraySliced = arrayContent.slice(0,nbrPage)
-    arrayContent.forEach(item=>{
-        if (arraySliced.includes(item)){
-            item.setAttribute('class','my-3 p-4 article m-auto rounded list-group')
-        } else {
-            item.setAttribute('class','d-none')
+    touCheckbox.addEventListener('click',()=>{
+        rechercheInput.value=''
+        alertNotFoundFilter.innerHTML=''
+        seeMoreBtn.setAttribute('class','d-flex justify-content-center align-items-center')
+        nbrPage = 2
+        arrayContent=[...contentDiv.children]
+        arraySliced = arrayContent.slice(0,nbrPage)
+        arrayContent.forEach(item=>{
+            if (arraySliced.includes(item)){
+                item.setAttribute('class','my-3 p-4 article m-auto rounded list-group')
+            } else {
+                item.setAttribute('class','d-none')
+            }
+        })
+        if (nbrPage >= arrayContent.length){
+            seeMoreBtn.setAttribute('class','d-none')
         }
+        footer.scrollIntoView()
+        finByLetter()
     })
-    if (nbrPage >= arrayContent.length){
-        seeMoreBtn.setAttribute('class','d-none')
-    }
-    footer.scrollIntoView()
-    finByLetter()
-})
 
 // Afficher les partenaires inactifs
-inactifCheckbox.addEventListener('click',()=>{
-    rechercheInput.value=''
-    alertNotFoundFilter.innerHTML=''
-    seeMoreBtn.setAttribute('class','d-flex justify-content-center align-items-center')
-    nbrPage = 2
-    arrayContent=[]
-    for (let i = 0 ; i < contentDiv.children.length ; i++){
-        if (!contentDiv.children[i].getElementsByTagName('input')[0].checked){
-            arrayContent.push(contentDiv.children[i])
-            contentDiv.children[i].setAttribute('class','my-3 p-4 article m-auto rounded list-group')
-            console.log(arrayContent)
-        } else {
-            contentDiv.children[i].setAttribute('class','d-none')
-        }
-    }
-    arraySliced = arrayContent.slice(0,nbrPage)
-    arrayContent.forEach(item=>{
-        if (arraySliced.includes(item)){
-            item.setAttribute('class','my-3 p-4 article m-auto rounded list-group')
-        } else {
-            item.setAttribute('class','d-none')
-        }
-    })
-    if (nbrPage >= arrayContent.length){
-        seeMoreBtn.setAttribute('class','d-none')
-    }
-    footer.scrollIntoView()
-
-    // Recherche par lettre
-    rechercheInput.addEventListener('keyup',()=>{
+    inactifCheckbox.addEventListener('click',()=>{
+        rechercheInput.value=''
         alertNotFoundFilter.innerHTML=''
-        seeMoreBtn.setAttribute('class','d-none')
-        let arrayFindByLetter=[]
-        for ( let i = 0 ; i < contentDiv.children.length ; i++){
-            let nameField = contentDiv.children[i].getElementsByTagName('ul')[0].children[1].textContent
-            if (nameField.includes(rechercheInput.value) && !contentDiv.children[i].getElementsByTagName('input')[0].checked){
+        seeMoreBtn.setAttribute('class','d-flex justify-content-center align-items-center')
+        nbrPage = 2
+        arrayContent=[]
+        for (let i = 0 ; i < contentDiv.children.length ; i++){
+            if (!contentDiv.children[i].getElementsByTagName('input')[0].checked){
+                arrayContent.push(contentDiv.children[i])
                 contentDiv.children[i].setAttribute('class','my-3 p-4 article m-auto rounded list-group')
-                arrayFindByLetter.push(contentDiv.children[i])
+                console.log(arrayContent)
             } else {
                 contentDiv.children[i].setAttribute('class','d-none')
             }
         }
-        if (arrayFindByLetter.length===0){
-            let alert = document.createElement('div')
-            alert.innerHTML='<div class="alert alert-danger container text-center">Aucun client trouvé avec ce nom</div>'
-            alertNotFoundFilter.appendChild(alert)
+        arraySliced = arrayContent.slice(0,nbrPage)
+        arrayContent.forEach(item=>{
+            if (arraySliced.includes(item)){
+                item.setAttribute('class','my-3 p-4 article m-auto rounded list-group')
+            } else {
+                item.setAttribute('class','d-none')
+            }
+        })
+        if (nbrPage >= arrayContent.length){
+            seeMoreBtn.setAttribute('class','d-none')
         }
+        footer.scrollIntoView()
+
+        // Recherche par lettre
+        rechercheInput.addEventListener('keyup',()=>{
+            alertNotFoundFilter.innerHTML=''
+            seeMoreBtn.setAttribute('class','d-none')
+            let arrayFindByLetter=[]
+            for ( let i = 0 ; i < contentDiv.children.length ; i++){
+                let nameField = contentDiv.children[i].getElementsByTagName('ul')[0].children[1].textContent
+                if (nameField.includes(rechercheInput.value) && !contentDiv.children[i].getElementsByTagName('input')[0].checked){
+                    contentDiv.children[i].setAttribute('class','my-3 p-4 article m-auto rounded list-group')
+                    arrayFindByLetter.push(contentDiv.children[i])
+                } else {
+                    contentDiv.children[i].setAttribute('class','d-none')
+                }
+            }
+            if (arrayFindByLetter.length===0){
+                let alert = document.createElement('div')
+                alert.innerHTML='<div class="alert alert-danger container text-center">Aucun client trouvé avec ce nom</div>'
+                alertNotFoundFilter.appendChild(alert)
+            }
+        })
     })
-})
 
 // Afficher les partenaires actifs
-actifsCheckbox.addEventListener('click',()=>{
-    rechercheInput.value=''
-    alertNotFoundFilter.innerHTML=''
-    seeMoreBtn.setAttribute('class','d-flex justify-content-center align-items-center')
-    nbrPage = 2
-    arrayContent=[]
-    for (let i = 0 ; i < contentDiv.children.length ; i++){
-        if (contentDiv.children[i].getElementsByTagName('input')[0].checked){
-            arrayContent.push(contentDiv.children[i])
-            contentDiv.children[i].setAttribute('class','my-3 p-4 article m-auto rounded list-group')
-            console.log(arrayContent)
-        } else {
-            contentDiv.children[i].setAttribute('class','d-none')
-        }
-    }
-    arraySliced = arrayContent.slice(0,nbrPage)
-    arrayContent.forEach(item=>{
-        if (arraySliced.includes(item)){
-            item.setAttribute('class','my-3 p-4 article m-auto rounded list-group')
-        } else {
-            item.setAttribute('class','d-none')
-        }
-    })
-    if (nbrPage >= arrayContent.length){
-        seeMoreBtn.setAttribute('class','d-none')
-    }
-    footer.scrollIntoView()
-
-    // Recherche par lettre
-    rechercheInput.addEventListener('keyup',()=>{
+    actifsCheckbox.addEventListener('click',()=>{
+        rechercheInput.value=''
         alertNotFoundFilter.innerHTML=''
-        seeMoreBtn.setAttribute('class','d-none')
-        let arrayFindByLetter=[]
-        for ( let i = 0 ; i < contentDiv.children.length ; i++){
-            let nameField = contentDiv.children[i].getElementsByTagName('ul')[0].children[1].textContent
-            if (nameField.includes(rechercheInput.value) && contentDiv.children[i].getElementsByTagName('input')[0].checked){
+        seeMoreBtn.setAttribute('class','d-flex justify-content-center align-items-center')
+        nbrPage = 2
+        arrayContent=[]
+        for (let i = 0 ; i < contentDiv.children.length ; i++){
+            if (contentDiv.children[i].getElementsByTagName('input')[0].checked){
+                arrayContent.push(contentDiv.children[i])
                 contentDiv.children[i].setAttribute('class','my-3 p-4 article m-auto rounded list-group')
-                arrayFindByLetter.push(contentDiv.children[i])
+                console.log(arrayContent)
             } else {
                 contentDiv.children[i].setAttribute('class','d-none')
             }
         }
-        if (arrayFindByLetter.length===0){
-            let alert = document.createElement('div')
-            alert.innerHTML='<div class="alert alert-danger container text-center">Aucun client trouvé avec ce nom</div>'
-            alertNotFoundFilter.appendChild(alert)
+        arraySliced = arrayContent.slice(0,nbrPage)
+        arrayContent.forEach(item=>{
+            if (arraySliced.includes(item)){
+                item.setAttribute('class','my-3 p-4 article m-auto rounded list-group')
+            } else {
+                item.setAttribute('class','d-none')
+            }
+        })
+        if (nbrPage >= arrayContent.length){
+            seeMoreBtn.setAttribute('class','d-none')
         }
-    })
+        footer.scrollIntoView()
 
-})
+        // Recherche par lettre
+        rechercheInput.addEventListener('keyup',()=>{
+            alertNotFoundFilter.innerHTML=''
+            seeMoreBtn.setAttribute('class','d-none')
+            let arrayFindByLetter=[]
+            for ( let i = 0 ; i < contentDiv.children.length ; i++){
+                let nameField = contentDiv.children[i].getElementsByTagName('ul')[0].children[1].textContent
+                if (nameField.includes(rechercheInput.value) && contentDiv.children[i].getElementsByTagName('input')[0].checked){
+                    contentDiv.children[i].setAttribute('class','my-3 p-4 article m-auto rounded list-group')
+                    arrayFindByLetter.push(contentDiv.children[i])
+                } else {
+                    contentDiv.children[i].setAttribute('class','d-none')
+                }
+            }
+            if (arrayFindByLetter.length===0){
+                let alert = document.createElement('div')
+                alert.innerHTML='<div class="alert alert-danger container text-center">Aucun client trouvé avec ce nom</div>'
+                alertNotFoundFilter.appendChild(alert)
+            }
+        })
+
+    })
 
 // Bouton pagination page home
-plusBtn.addEventListener('click',()=>{
-    nbrPage+=2
-    arraySliced = arrayContent.slice(0,nbrPage)
+    plusBtn.addEventListener('click',()=>{
+        nbrPage+=2
+        arraySliced = arrayContent.slice(0,nbrPage)
+        arrayContent.forEach(item=>{
+            if (arraySliced.includes(item)){
+                item.setAttribute('class','my-3 p-4 article m-auto rounded list-group')
+            } else {
+                item.setAttribute('class','d-none')
+            }
+        })
+        if (nbrPage >= arrayContent.length){
+            seeMoreBtn.setAttribute('class','d-none')
+        }
+        footer.scrollIntoView()
+    })
     arrayContent.forEach(item=>{
         if (arraySliced.includes(item)){
             item.setAttribute('class','my-3 p-4 article m-auto rounded list-group')
@@ -311,39 +336,28 @@ plusBtn.addEventListener('click',()=>{
             item.setAttribute('class','d-none')
         }
     })
-    if (nbrPage >= arrayContent.length){
-        seeMoreBtn.setAttribute('class','d-none')
-    }
-    footer.scrollIntoView()
-})
-arrayContent.forEach(item=>{
-    if (arraySliced.includes(item)){
-        item.setAttribute('class','my-3 p-4 article m-auto rounded list-group')
-    } else {
-        item.setAttribute('class','d-none')
-    }
-})
 
-const finByLetter = function(){
-    // Recherche par lettre
-    rechercheInput.addEventListener('keyup',()=>{
-        alertNotFoundFilter.innerHTML=''
-        seeMoreBtn.setAttribute('class','d-none')
-        let arrayFindByLetter=[]
-        for ( let i = 0 ; i < contentDiv.children.length ; i++){
-            let nameField = contentDiv.children[i].getElementsByTagName('ul')[0].children[1].textContent
-            if (nameField.includes(rechercheInput.value)){
-                contentDiv.children[i].setAttribute('class','my-3 p-4 article m-auto rounded list-group')
-                arrayFindByLetter.push(contentDiv.children[i])
-            } else {
-                contentDiv.children[i].setAttribute('class','d-none')
+    const finByLetter = function(){
+        // Recherche par lettre
+        rechercheInput.addEventListener('keyup',()=>{
+            alertNotFoundFilter.innerHTML=''
+            seeMoreBtn.setAttribute('class','d-none')
+            let arrayFindByLetter=[]
+            for ( let i = 0 ; i < contentDiv.children.length ; i++){
+                let nameField = contentDiv.children[i].getElementsByTagName('ul')[0].children[1].textContent
+                if (nameField.includes(rechercheInput.value)){
+                    contentDiv.children[i].setAttribute('class','my-3 p-4 article m-auto rounded list-group')
+                    arrayFindByLetter.push(contentDiv.children[i])
+                } else {
+                    contentDiv.children[i].setAttribute('class','d-none')
+                }
             }
-        }
-        if (arrayFindByLetter.length===0){
-            let alert = document.createElement('div')
-            alert.innerHTML='<div class="alert alert-danger container text-center">Aucun client trouvé avec ce nom</div>'
-            alertNotFoundFilter.appendChild(alert)
-        }
-    })
+            if (arrayFindByLetter.length===0){
+                let alert = document.createElement('div')
+                alert.innerHTML='<div class="alert alert-danger container text-center">Aucun client trouvé avec ce nom</div>'
+                alertNotFoundFilter.appendChild(alert)
+            }
+        })
+    }
+    finByLetter()
 }
-finByLetter()

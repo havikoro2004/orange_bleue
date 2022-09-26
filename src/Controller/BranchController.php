@@ -116,7 +116,7 @@ class BranchController extends AbstractController
         }
         if ($form->isSubmitted() && $form->isValid()){
 
-            // ENvoyer une notification au utilisateur de la structure
+            // Envoyer une notification au utilisateur de la structure
             $email = (new TemplatedEmail())
                 ->from(new Address('havikoro2004@gmail.com','Energy Fit Academy'))
                 ->to($branch->getManager())
@@ -129,7 +129,7 @@ class BranchController extends AbstractController
             $emailClient = (new TemplatedEmail())
                 ->from(new Address('havikoro2004@gmail.com','Energy Fit Academy'))
                 ->to($data->getClient()->getUser()->getEmail())
-                ->subject('Modification de votre structure')
+                ->subject('Modification d\'une structure')
                 ->context(['sujet'=>'Les informations de votre structure dont l\'id est : '.$branch->getId() . ' ont bien été changés'])
                 ->htmlTemplate('mails/email_notifications.html.twig');
             $mailer->send($emailClient);
