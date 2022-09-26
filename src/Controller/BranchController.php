@@ -152,7 +152,7 @@ class BranchController extends AbstractController
 
         ]);
     }
-
+// le lien pour valider une nouvelle branche de la part du compte partenaire
     #[Route('/valide_branch/{token}')]
     public function validBranch($token,BranchRepository $branchRepository,
                                 ManagerRegistry $managerRegistry,
