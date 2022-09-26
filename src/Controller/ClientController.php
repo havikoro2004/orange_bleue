@@ -14,12 +14,10 @@ use App\Repository\PermissionRepository;
 use App\Repository\UserRepository;
 use App\Services\CloneClass;
 use Doctrine\Persistence\ManagerRegistry;
-use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
@@ -212,52 +210,34 @@ class ClientController extends AbstractController
         }
         if ($form->isSubmitted() && $form->isValid()){
             $userBranch = New User();
-            $structurePermissions = New Permission();
-            $permissions->cloneClass($structurePermissions);
-            $structurePermissions->addClient($client);
-            $structurePermissions->setBranch(true);
-
-            $data->setClient($client);
-            $data->setPermission($structurePermissions);
-            $data->setActive(true);
-            $data->setCreatedAt(new \DateTime('now'));
-
             $userBranch->setEmail($data->getManager());
             if ($userRepository->findOneBy([
                 'email'=>$userBranch->getEmail()
             ])){
                     $this->addFlash('alert','Cette adresse email est deja utilisée');
             }else {
-                $planPassword = md5(uniqid());
-                $hashedPassword = $hasher->hashPassword($userBranch,$planPassword);
-                $userBranch->setPassword($hashedPassword);
-                $userBranch->setConfirmPwd($hashedPassword);
-                $userBranch->setCreateAt(new \DateTime('now'));
-                $userBranch->setRoles(['ROLE_USER']);
-                $userBranch->setBranch($data);
-                $userBranch->setToken(md5(uniqid()));
-
-                $email = (new TemplatedEmail())
-                    ->from(new Address('havikoro2004@gmail.com','Energy Fit Academy'))
-                    ->to($userBranch->getEmail())
-                    ->subject('Activation de compte')
-                    ->context(['token'=>$userBranch->getToken()])
-                    ->htmlTemplate('mails/activation.html.twig');
-                $mailer->send($email);
+                $structurePermissions = New Permission();
+                $permissions->cloneClass($structurePermissions);
+                $structurePermissions->addClient($client);
+                $structurePermissions->setBranch(true);
+                $token = md5(uniqid());
+                $data->setClient($client);
+                $data->setToken($token);
+                $data->setPermission($structurePermissions);
+                $data->setActive(true);
+                $data->setCreatedAt(new \DateTime('now'));
 
                 $emailClient = (new TemplatedEmail())
                     ->from(new Address('havikoro2004@gmail.com','Energy Fit Academy'))
                     ->to($data->getClient()->getUser()->getEmail())
                     ->subject('Nouvelle Structure')
-                    ->context(['sujet'=>'Une nouvelle structure a été crée sur votre profil'])
-                    ->htmlTemplate('mails/new_user.html.twig');
+                    ->context(['token'=>$token])
+                    ->htmlTemplate('mails/autorise_branch.html.twig');
                 $mailer->send($emailClient);
-
-                $em->persist($userBranch);
 
                 $em->persist($data);
                 $em->flush();
-                $this->addFlash('success','La nouvelle structure a bien été crée');
+                $this->addFlash('success','La nouvelle structure a bien été crée en attente de validation');
                 return $this->redirect($request->getUri());
             }
 

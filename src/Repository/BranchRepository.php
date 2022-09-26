@@ -46,6 +46,7 @@ class BranchRepository extends ServiceEntityRepository
             ->join('b.permission','p')
             ->where('b.client = :id')
             ->andWhere('p.branch=:status')
+            ->andWhere('b.token IS NULL')
             ->orderBy('b.createdAt','DESC')
             ->setParameter('status',true)
             ->setParameter('id', $value)
@@ -64,27 +65,7 @@ class BranchRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
-    public function findInactif($client)
-    {
-        return $this->createQueryBuilder('b')
-            ->where('b.active =0')
-            ->andWhere('b.client = :client')
-            ->setParameter('client',$client)
-            ->orderBy('b.createdAt','DESC')
-            ->getQuery()
-            ->getResult()
-            ;
-    }
-    public function findAllTou($client)
-    {
-        return $this->createQueryBuilder('b')
-            ->where('b.client = :client')
-            ->setParameter('client',$client)
-            ->orderBy('b.createdAt','DESC')
-            ->getQuery()
-            ->getResult()
-            ;
-    }
+
 
 //    /**
 //     * @return Branch[] Returns an array of Branch objects

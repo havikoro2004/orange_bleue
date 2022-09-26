@@ -74,6 +74,7 @@ class Client
 
     #[ORM\OneToOne(mappedBy: 'client', cascade: ['persist', 'remove'])]
     private ?User $user = null;
+
     public function __construct()
     {
         $this->permissions = new ArrayCollection();

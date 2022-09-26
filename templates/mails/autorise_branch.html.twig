@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% apply inky_to_html|inline_css(source('@css/foundation-emails.css')) %}
+        <container>
+            <row>
+                <columns>
+                    <h1 class="text-center">Nouvelle structure</h1>
+                    <p class="text-center">Une nouvelle structure a été crée sur votre profil pour valider cette structure cliquer sur le lien ci-dessu</p>
+                </columns>
+            </row>
+            <spacer size="16"></spacer>
+            <row>
+                <columns>
+                    <center>
+                        <button href="https://localhost:8000/valide_branch/{{ token }}">Autoriser</button>
+                    </center>
+                </columns>
+            </row>
+        </container>
+        <p>L'équipe Energy Fit Academy</p>
+    {% endapply %}
+{% endblock %}

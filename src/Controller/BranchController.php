@@ -3,7 +3,10 @@
 namespace App\Controller;
 use App\Entity\Branch;
 use App\Entity\Client;
+use App\Entity\User;
 use App\Form\BranchType;
+use App\Repository\BranchRepository;
+use App\Repository\ClientRepository;
 use App\Repository\UserRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
@@ -14,8 +17,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Vich\UploaderBundle\Exception\NoFileFoundException;
 
 class BranchController extends AbstractController
 {
@@ -146,5 +151,57 @@ class BranchController extends AbstractController
             'client'=>$client
 
         ]);
+    }
+
+    #[Route('/valide_branch/{token}')]
+    public function validBranch($token,BranchRepository $branchRepository,
+                                ManagerRegistry $managerRegistry,
+                                ClientRepository $clientRepository,
+                                MailerInterface $mailer,UserPasswordHasherInterface $hasher):Response
+    {
+            $em = $managerRegistry->getManager();
+            $branche = $branchRepository->findOneBy([
+                'token'=>$token
+            ]);
+            if (!$branche){
+                throw new NoFileFoundException('Cette page n\'existe pas');
+            }
+            $branche->setToken(null);
+            $client = $clientRepository->findOneBy([
+                'id'=>$branche->getClient()
+            ]);
+
+            $userBranch = New User();
+            $planPassword = md5(uniqid());
+            $hashedPassword = $hasher->hashPassword($userBranch,$planPassword);
+            $userBranch->setPassword($hashedPassword);
+            $userBranch->setConfirmPwd($hashedPassword);
+            $userBranch->setCreateAt(new \DateTime('now'));
+            $userBranch->setEmail($branche->getManager());
+            $userBranch->setRoles(['ROLE_USER']);
+            $userBranch->setBranch($branche);
+            $userBranch->setToken(md5(uniqid()));
+
+            $email = (new TemplatedEmail())
+                ->from(new Address('havikoro2004@gmail.com','Energy Fit Academy'))
+                ->to($branche->getManager())
+                ->subject('Activation de compte')
+                ->context(['token'=>$userBranch->getToken()])
+                ->htmlTemplate('mails/activation.html.twig');
+            $mailer->send($email);
+
+            $em->persist($userBranch);
+            $em->flush();
+
+            $email = (new TemplatedEmail())
+                ->from(new Address('havikoro2004@gmail.com','Energy Fit Academy'))
+                ->to($client->getTechnicalContact())
+                ->subject('Activation de structure')
+                ->context(['sujet'=>'Félicitation votre structure dont l\'id est '.$branche->getId().' est désormais active'])
+                ->htmlTemplate('mails/validation_new_branch.html.twig');
+            $mailer->send($email);
+            $this->addFlash('success','Félicitation votre structure a bien été validée');
+            return $this->redirectToRoute('app_login');
+            return new Response('cc');
     }
 }
