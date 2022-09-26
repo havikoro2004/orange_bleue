@@ -7,6 +7,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[Vich\Uploadable]
 #[ORM\Entity(repositoryClass: BranchRepository::class)]
@@ -19,6 +20,7 @@ class Branch
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $adress = null;
+    #[Assert\Regex('/^\w+/')]
 
     #[ORM\Column]
     private ?bool $active = null;

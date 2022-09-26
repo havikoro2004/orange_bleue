@@ -175,7 +175,7 @@ if (document.getElementById('errorsNewPassword')){
 
 if (document.getElementById('filtrageForm')){
     // Pagination Script
-    let nbrPage = 2
+    let nbrPage = 6
     const plusBtn = document.getElementById('plusBtn')
     const seeMoreBtn = document.getElementById('seeMore')
     const actifsCheckbox = document.getElementById('actifs')
@@ -193,7 +193,7 @@ if (document.getElementById('filtrageForm')){
         rechercheInput.value=''
         alertNotFoundFilter.innerHTML=''
         seeMoreBtn.setAttribute('class','d-flex justify-content-center align-items-center')
-        nbrPage = 2
+        nbrPage = 6
         arrayContent=[...contentDiv.children]
         arraySliced = arrayContent.slice(0,nbrPage)
         arrayContent.forEach(item=>{
@@ -206,7 +206,6 @@ if (document.getElementById('filtrageForm')){
         if (nbrPage >= arrayContent.length){
             seeMoreBtn.setAttribute('class','d-none')
         }
-        footer.scrollIntoView()
         finByLetter()
     })
 
@@ -215,13 +214,12 @@ if (document.getElementById('filtrageForm')){
         rechercheInput.value=''
         alertNotFoundFilter.innerHTML=''
         seeMoreBtn.setAttribute('class','d-flex justify-content-center align-items-center')
-        nbrPage = 2
+        nbrPage = 6
         arrayContent=[]
         for (let i = 0 ; i < contentDiv.children.length ; i++){
             if (!contentDiv.children[i].getElementsByTagName('input')[0].checked){
                 arrayContent.push(contentDiv.children[i])
                 contentDiv.children[i].setAttribute('class','my-3 p-4 article m-auto rounded list-group')
-                console.log(arrayContent)
             } else {
                 contentDiv.children[i].setAttribute('class','d-none')
             }
@@ -237,7 +235,6 @@ if (document.getElementById('filtrageForm')){
         if (nbrPage >= arrayContent.length){
             seeMoreBtn.setAttribute('class','d-none')
         }
-        footer.scrollIntoView()
 
         // Recherche par lettre
         rechercheInput.addEventListener('keyup',()=>{
@@ -266,13 +263,12 @@ if (document.getElementById('filtrageForm')){
         rechercheInput.value=''
         alertNotFoundFilter.innerHTML=''
         seeMoreBtn.setAttribute('class','d-flex justify-content-center align-items-center')
-        nbrPage = 2
+        nbrPage = 6
         arrayContent=[]
         for (let i = 0 ; i < contentDiv.children.length ; i++){
             if (contentDiv.children[i].getElementsByTagName('input')[0].checked){
                 arrayContent.push(contentDiv.children[i])
                 contentDiv.children[i].setAttribute('class','my-3 p-4 article m-auto rounded list-group')
-                console.log(arrayContent)
             } else {
                 contentDiv.children[i].setAttribute('class','d-none')
             }
@@ -288,7 +284,6 @@ if (document.getElementById('filtrageForm')){
         if (nbrPage >= arrayContent.length){
             seeMoreBtn.setAttribute('class','d-none')
         }
-        footer.scrollIntoView()
 
         // Recherche par lettre
         rechercheInput.addEventListener('keyup',()=>{
@@ -313,9 +308,9 @@ if (document.getElementById('filtrageForm')){
 
     })
 
-// Bouton pagination page home
+// Bouton pagination
     plusBtn.addEventListener('click',()=>{
-        nbrPage+=2
+        nbrPage+=4
         arraySliced = arrayContent.slice(0,nbrPage)
         arrayContent.forEach(item=>{
             if (arraySliced.includes(item)){
@@ -360,4 +355,44 @@ if (document.getElementById('filtrageForm')){
         })
     }
     finByLetter()
+}
+// Filtrer les structures
+
+if (document.getElementById('branchCard')){
+    const branchCard = document.getElementById('branchCard')
+    const actifsBranch =document.getElementById('actifsBranch')
+    const inactifsBranch =document.getElementById('inactifsBranch')
+    const touBranch =document.getElementById('tousBranch')
+
+
+// Afficher les structures actives
+    actifsBranch.addEventListener('click',()=>{
+        for (let i = 0 ; i < branchCard.children.length ; i++){
+            const input = branchCard.children[i].getElementsByTagName('input')
+            if (!input[0].checked){
+                branchCard.children[i].setAttribute('class','d-none')
+            } else {
+                branchCard.children[i].setAttribute('class','grandDivCardPermissions my-4')
+            }
+        }
+    })
+
+// Afficher les structures inactives
+    inactifsBranch.addEventListener('click',()=>{
+        for (let i = 0 ; i < branchCard.children.length ; i++){
+            const input = branchCard.children[i].getElementsByTagName('input')
+            if (input[0].checked){
+                branchCard.children[i].setAttribute('class','d-none')
+            } else {
+                branchCard.children[i].setAttribute('class','grandDivCardPermissions my-4')
+            }
+        }
+    })
+// Afficher toutes les structures
+    touBranch.addEventListener('click',()=>{
+        for (let i = 0 ; i < branchCard.children.length ; i++){
+            branchCard.children[i].setAttribute('class','grandDivCardPermissions my-4')
+        }
+    })
+
 }

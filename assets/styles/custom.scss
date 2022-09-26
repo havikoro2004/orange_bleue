@@ -8,6 +8,11 @@ html,body {
   margin: 0;
   font-family: 'bahan';
 }
+.liBranch{
+  margin-left: 0;
+  margin-bottom: 0.5rem;
+  margin-top: 0.7rem;
+}
 .content {
   display: grid;
   grid-template-rows: 6vh 5fr 6vh;
@@ -114,7 +119,7 @@ table{
   display: grid;
   grid-template-columns: 1fr;
   margin-bottom: 2rem;
-  align-items: center;
+  align-items: start;
   justify-content: center;
 }
 .grandDivCardPermissions{
@@ -151,6 +156,10 @@ table{
   .ul-connexion{
     margin-top: 0;
   }
+  .liBranch{
+    margin-left: 0.7rem;
+    margin-top: 0;
+  }
   .bread{
     margin-top: 0.3rem;
   }
@@ -173,7 +182,8 @@ table{
     grid-template-columns: 1fr 1fr;
   }
   .cardBranchPermissions{
-    grid-template-columns: 1fr 3fr 6fr;
+    grid-template-columns: 1fr 3fr 5fr;
+    margin-bottom: 0;
   }
   .editPermissionsBranch{
     grid-template-columns: 1fr 1fr;
