@@ -57,7 +57,7 @@
                                     </a>
                                 </div>
                                 <div class="form-check form-switch mt-3">
-                                    <input {% if client.getUser().getToken()%}disabled{% endif%} title="{% if client.active %} Désactiver {% else%} Activer {% endif %}" data-bs-toggle="modal" data-bs-target="#exampleModal{{client.id }}" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" {% if client.active %} checked {% endif %}>
+                                    <input title="{% if client.active %} Désactiver {% else%} Activer {% endif %}" data-bs-toggle="modal" data-bs-target="#exampleModal{{client.id }}" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" {% if client.active %} checked {% endif %}>
                                     <label class="form-check-label text-secondary" for="flexSwitchCheckDefault">{% if client.active %} On {% else%} Off {% endif %}</label>
                                 </div>
                                 {% include 'components/client/_modal.html.twig' %}
@@ -80,9 +80,6 @@
                                     <span class="text-danger">Non fourni</span></li>
                                 {% endif %}
                                 <li class="m-2">Date de création : {{ client.getCreateAt()|date('d-m-Y ') }}</li>
-                                {% if client.getUser().getToken() %}
-                                    <li class="m-2"> Status : <span class="text-warning">en Attendte de validation</span></li>
-                                {% endif %}
                             </ul>
                         </div>
                     {% endfor %}
