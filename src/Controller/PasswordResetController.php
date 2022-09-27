@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Form\ChangePasswordType;
 use App\Form\ResetPawdType;
 use App\Repository\UserRepository;
@@ -21,8 +22,11 @@ class PasswordResetController extends AbstractController
 {
     #[Route('/password_reset', name: 'app_password_reset')]
     public function index(Request $request
-        , UserRepository $userRepository, MailerInterface $mailer): Response
+        , UserRepository $userRepository, MailerInterface $mailer,ManagerRegistry $managerRegistry): Response
     {
+        if ($this->getUser()){
+            return $this->redirectToRoute('app_home');
+        }
         $form = $this->createForm(ResetPawdType::class);
         $data = $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -30,8 +34,10 @@ class PasswordResetController extends AbstractController
                 'email' => $data->get('email')->getViewData()
             ]);
             if ($existeEmail) {
+                $em = $managerRegistry->getManager();
                 $token = md5(uniqid());
                 $existeEmail->setToken($token);
+                $em->flush();
                 $emailClient = (new TemplatedEmail())
                     ->from(new Address('havikoro2004@gmail.com', 'Energy Fit Academy'))
                     ->to($existeEmail->getEmail())
