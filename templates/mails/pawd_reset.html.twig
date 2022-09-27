@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% apply inky_to_html|inline_css(source('@css/foundation-emails.css')) %}
+        <container>
+            <row>
+                <columns>
+                    <h1 class="text-center">Demande de restauration de mot de passe</h1>
+                    <p class="text-center">Vous avez demandé un changement de mot de passe pour effectuer cette restauration cliquer sur ce lien</p>
+                </columns>
+            </row>
+            <spacer size="16"></spacer>
+            <row>
+                <columns>
+                    <center>
+                        <button class="rounded" href="https://localhost:8000/pwd_reset/{{ token }}">Rénitialiser</button>
+                    </center>
+                </columns>
+            </row>
+        </container>
+        <p>L'équipe Energy Fit Academy</p>
+    {% endapply %}
+{% endblock %}

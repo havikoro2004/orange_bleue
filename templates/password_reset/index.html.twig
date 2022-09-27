@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+{% block title %}Modification du mot de passe{% endblock %}
+{% block body %}
+    <h1 class="text-secondary text-center m-5">Modification du mot de passe</h1>
+    <div class="m-5">
+        {{ form_start(form) }}
+        <div class="mx-4" id="errorsNewPassword">
+            {# ********************* Les messages Flashe ******************* #}
+            {% for message in app.flashes('success') %}
+                <div class="flash-notice text-center">
+                    <div class="alert alert-success">{{ message }}</div>
+                </div>
+            {% endfor %}
+            {% for message in app.flashes('alert') %}
+                <div class="flash-notice text-center">
+                    <div class="alert alert-danger">{{ message }}</div>
+                </div>
+            {% endfor %}
+            {% if form_errors(form.email) %}
+                <div class="alert alert-danger text-center">
+                    {{ form_errors(form.email)  }}
+                </div>
+            {% endif %}
+            {{ form_label(form, 'Email')}}
+            {{ form_widget(form.email , {'attr': {'placeholder': 'Inserer adresse email','class':'form-control mb-2'}}) }}
+        </div>
+        <button class="btn btn-primary mx-4 mb-5">Valider</button>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
