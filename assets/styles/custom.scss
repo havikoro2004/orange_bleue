@@ -132,6 +132,11 @@ table{
   display: grid;
   grid-template-columns: 1fr;
 }
+.resetpwd{
+  display: grid;
+  justify-content: center;
+
+}
 @media (min-width: 720px) {
   .article {
     grid-template-columns: 1fr 6fr;
