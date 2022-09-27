@@ -32,6 +32,9 @@ class Branch
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $imageName = null;
 
+    #[ORM\Column(type: 'datetime' , nullable: true)]
+    private ?\DateTimeInterface $updatedAt = null;
+
     #[ORM\ManyToOne(inversedBy: 'branches')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Client $client = null;

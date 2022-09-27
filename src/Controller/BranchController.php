@@ -139,7 +139,6 @@ class BranchController extends AbstractController
                 ->htmlTemplate('mails/email_notifications.html.twig');
             $mailer->send($emailClient);
 
-            $em->persist($data);
             $em->flush();
             $this->addFlash('success','La structure a bien été modifiée');
 
