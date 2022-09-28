@@ -188,6 +188,29 @@ if (document.getElementById('filtrageForm')){
     const alertNotFoundFilter = document.getElementById('alertNotFoundFilter')
     const rechercheInput = document.getElementById('recherche')
 
+    const finByLetterAll = function(){
+        // Recherche par lettre
+        rechercheInput.addEventListener('keyup',()=>{
+            alertNotFoundFilter.innerHTML=''
+            seeMoreBtn.setAttribute('class','d-none')
+            let arrayFindByLetter=[]
+            for ( let i = 0 ; i < contentDiv.children.length ; i++){
+                let nameField = contentDiv.children[i].getElementsByTagName('ul')[0].children[1].textContent.toLowerCase()
+                if (nameField.includes(rechercheInput.value.toLowerCase())){
+                    contentDiv.children[i].setAttribute('class','my-3 p-4 article m-auto rounded list-group')
+                    arrayFindByLetter.push(contentDiv.children[i])
+                } else {
+                    contentDiv.children[i].setAttribute('class','d-none')
+                }
+            }
+            if (arrayFindByLetter.length===0){
+                let alert = document.createElement('div')
+                alert.innerHTML='<div class="alert alert-danger container text-center">Aucun client trouvé avec ce nom</div>'
+                alertNotFoundFilter.appendChild(alert)
+            }
+        })
+    }
+
 // Afficher tous les partenaires
     touCheckbox.addEventListener('click',()=>{
         rechercheInput.value=''
@@ -206,7 +229,7 @@ if (document.getElementById('filtrageForm')){
         if (nbrPage >= arrayContent.length){
             seeMoreBtn.setAttribute('class','d-none')
         }
-        finByLetter()
+        finByLetterAll()
     })
 
 // Afficher les partenaires inactifs
@@ -242,8 +265,8 @@ if (document.getElementById('filtrageForm')){
             seeMoreBtn.setAttribute('class','d-none')
             let arrayFindByLetter=[]
             for ( let i = 0 ; i < contentDiv.children.length ; i++){
-                let nameField = contentDiv.children[i].getElementsByTagName('ul')[0].children[1].textContent
-                if (nameField.includes(rechercheInput.value) && !contentDiv.children[i].getElementsByTagName('input')[0].checked){
+                let nameField = contentDiv.children[i].getElementsByTagName('ul')[0].children[1].textContent.toLowerCase()
+                if (nameField.includes(rechercheInput.value.toLowerCase()) && !contentDiv.children[i].getElementsByTagName('input')[0].checked){
                     contentDiv.children[i].setAttribute('class','my-3 p-4 article m-auto rounded list-group')
                     arrayFindByLetter.push(contentDiv.children[i])
                 } else {
@@ -291,8 +314,8 @@ if (document.getElementById('filtrageForm')){
             seeMoreBtn.setAttribute('class','d-none')
             let arrayFindByLetter=[]
             for ( let i = 0 ; i < contentDiv.children.length ; i++){
-                let nameField = contentDiv.children[i].getElementsByTagName('ul')[0].children[1].textContent
-                if (nameField.includes(rechercheInput.value) && contentDiv.children[i].getElementsByTagName('input')[0].checked){
+                let nameField = contentDiv.children[i].getElementsByTagName('ul')[0].children[1].textContent.toLowerCase()
+                if (nameField.includes(rechercheInput.value.toLowerCase()) && contentDiv.children[i].getElementsByTagName('input')[0].checked){
                     contentDiv.children[i].setAttribute('class','my-3 p-4 article m-auto rounded list-group')
                     arrayFindByLetter.push(contentDiv.children[i])
                 } else {
@@ -332,29 +355,8 @@ if (document.getElementById('filtrageForm')){
         }
     })
 
-    const finByLetter = function(){
-        // Recherche par lettre
-        rechercheInput.addEventListener('keyup',()=>{
-            alertNotFoundFilter.innerHTML=''
-            seeMoreBtn.setAttribute('class','d-none')
-            let arrayFindByLetter=[]
-            for ( let i = 0 ; i < contentDiv.children.length ; i++){
-                let nameField = contentDiv.children[i].getElementsByTagName('ul')[0].children[1].textContent
-                if (nameField.includes(rechercheInput.value)){
-                    contentDiv.children[i].setAttribute('class','my-3 p-4 article m-auto rounded list-group')
-                    arrayFindByLetter.push(contentDiv.children[i])
-                } else {
-                    contentDiv.children[i].setAttribute('class','d-none')
-                }
-            }
-            if (arrayFindByLetter.length===0){
-                let alert = document.createElement('div')
-                alert.innerHTML='<div class="alert alert-danger container text-center">Aucun client trouvé avec ce nom</div>'
-                alertNotFoundFilter.appendChild(alert)
-            }
-        })
-    }
-    finByLetter()
+    // Recherche par lettre
+    finByLetterAll()
 }
 // Filtrer les structures
 
