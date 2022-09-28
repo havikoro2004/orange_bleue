@@ -16,24 +16,26 @@
             </div>
             <h1 class="text-center text-secondary my-4">Liste des partenaires</h1>
             <div id="alertNotFoundFilter"></div>
-            <div class="text-center m-4 d-flex align-items-center" id="filtrageForm">
-                <div class="form-check mx-2">
-                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="tous" checked >
-                    <label class="form-check-label" for="flexRadioDefault1">
-                        Tous
-                    </label>
-                </div>
-                <div class="form-check mx-2" id="formActif">
-                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="actifs">
-                    <label class="form-check-label" for="flexRadioDefault2">
-                        Actifs
-                    </label>
-                </div>
-                <div class="form-check mx-2">
-                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="inactifs">
-                    <label class="form-check-label" for="flexRadioDefault2">
-                        Inactifs
-                    </label>
+            <div class="formulaireFiltrage container mb-3" id="filtrageForm">
+                <div class="checkBoxFiltre">
+                    <div class="form-check mx-2">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="tous" checked >
+                        <label class="form-check-label" for="flexRadioDefault1">
+                            Tous
+                        </label>
+                    </div>
+                    <div class="form-check mx-2" id="formActif">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="actifs">
+                        <label class="form-check-label" for="flexRadioDefault2">
+                            Actifs
+                        </label>
+                    </div>
+                    <div class="form-check mx-2">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="inactifs">
+                        <label class="form-check-label" for="flexRadioDefault2">
+                            Inactifs
+                        </label>
+                    </div>
                 </div>
                 <input id="recherche" type="text" class="form-control" placeholder="Recherche par nom">
             </div>

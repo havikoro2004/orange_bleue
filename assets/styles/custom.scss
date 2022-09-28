@@ -144,6 +144,17 @@ table{
   justify-content: center;
 
 }
+.formulaireFiltrage{
+  display: grid;
+  justify-content: center;
+  grid-template-columns: 1fr;
+}
+.checkBoxFiltre{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.6rem;
+}
 @media (min-width: 720px) {
   .article {
     grid-template-columns: 1fr 6fr;
@@ -206,5 +217,16 @@ table{
   }
   .imgActiveBtn{
     gap: 0;
+  }
+
+  .formulaireFiltrage{
+    grid-template-columns: 1fr 3fr;
+  }
+
+  .checkBoxFiltre{
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    margin-bottom: 0;
   }
 }
