@@ -99,6 +99,13 @@ table{
   grid-template-columns: 1fr 1fr;
   justify-items: start;
   align-items: center;
+  gap: 1rem;
+}
+.imgActiveBtnBranch{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-items: start;
+  align-items: center;
 }
 .permissiongrid{
   display: grid;
@@ -196,5 +203,8 @@ table{
   .showPermissClient{
     justify-content: end;
     margin-right: 3rem;
+  }
+  .imgActiveBtn{
+    gap: 0;
   }
 }
