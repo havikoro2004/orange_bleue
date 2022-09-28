@@ -149,6 +149,9 @@ table{
   justify-content: center;
   margin-bottom: 0.6rem;
 }
+.switchActivBranch {
+  margin-top: 0;
+}
 @media (min-width: 720px) {
   .article {
     grid-template-columns: 1fr 6fr;
@@ -222,5 +225,8 @@ table{
     align-items: center;
     justify-content: start;
     margin-bottom: 0;
+  }
+  .switchActivBranch {
+    margin-top: 1rem;
   }
 }
