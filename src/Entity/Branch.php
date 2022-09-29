@@ -19,8 +19,9 @@ class Branch
     private ?int $id = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank]
     private ?string $adress = null;
-    #[Assert\Regex('/^\w+/')]
+
 
     #[ORM\Column]
     private ?bool $active = null;

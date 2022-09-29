@@ -299,7 +299,7 @@ class ClientController extends AbstractController
 
         $em->flush();
         $this->addFlash('success',$message);
-        return $this->redirectToRoute('app_client');
+        return $this->redirectToRoute('app_home');
     }
 
     // Supprimer un client
