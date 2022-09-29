@@ -37,7 +37,11 @@
                         </label>
                     </div>
                 </div>
-                <input id="recherche" type="text" class="form-control" placeholder="Recherche par nom">
+                <div class="position-relative">
+                    <input id="recherche" type="text" class="form-control" placeholder="Recherche par nom">
+                    <ul id="ulSuggestions" class="position-absolute list-unstyled bg-white rounded" style="width: 100%">
+                    </ul>
+                </div>
             </div>
             <div class="container text-center mb-2">
                 <a href="/client/add" class="btn btn-primary">Ajouter partenaire</a>
@@ -64,8 +68,8 @@
                                 {% include 'components/client/_modal.html.twig' %}
                             </div>
                             <ul class="border border-secondary list-unstyled bg bg-white rounded-2">
-                                <li class="m-2">Client ID :{{ client.id }}</li>
-                                <li class="m-2">Nom : {{ client.name }}</li>
+                                <li class="m-2">Client ID : <span>{{ client.id }}</span></li>
+                                <li class="m-2">Nom : <span>{{ client.name }}</span></li>
                                 <li class="m-2">
                                     Description courte :
                                     {% if client.getShortDesc() %}

@@ -175,7 +175,7 @@ if (document.getElementById('errorsNewPassword')){
 
 if (document.getElementById('filtrageForm')){
     // Pagination Script
-    let nbrPage = 6
+    let nbrPage = 2
     const plusBtn = document.getElementById('plusBtn')
     const seeMoreBtn = document.getElementById('seeMore')
     const actifsCheckbox = document.getElementById('actifs')
@@ -187,36 +187,45 @@ if (document.getElementById('filtrageForm')){
     let arraySliced = arrayContent.slice(0,nbrPage)
     const alertNotFoundFilter = document.getElementById('alertNotFoundFilter')
     const rechercheInput = document.getElementById('recherche')
+    const ulSuggestions = document.getElementById('ulSuggestions')
 
-    const finByLetterAll = function(){
-        // Recherche par lettre
-        rechercheInput.addEventListener('keyup',()=>{
-            alertNotFoundFilter.innerHTML=''
-            seeMoreBtn.setAttribute('class','d-none')
-            let arrayFindByLetter=[]
-            for ( let i = 0 ; i < contentDiv.children.length ; i++){
-                let nameField = contentDiv.children[i].getElementsByTagName('ul')[0].children[1].textContent.toLowerCase()
-                if (nameField.includes(rechercheInput.value.toLowerCase())){
-                    contentDiv.children[i].setAttribute('class','my-3 p-4 article m-auto rounded list-group')
-                    arrayFindByLetter.push(contentDiv.children[i])
-                } else {
-                    contentDiv.children[i].setAttribute('class','d-none')
-                }
-            }
-            if (arrayFindByLetter.length===0){
-                let alert = document.createElement('div')
-                alert.innerHTML='<div class="alert alert-danger container text-center">Aucun client trouvé avec ce nom</div>'
-                alertNotFoundFilter.appendChild(alert)
+// Création d'une fonction qui affiche des partenaires en tapant leurs noms dans la barre de recherche et dans la page qui affiche tous partenaires
+const finAll = function(){
+    rechercheInput.addEventListener('keyup',()=>{
+        document.addEventListener('click',(e)=>{
+            const clickOutInput = rechercheInput.contains(e.target)
+            if (!clickOutInput){
+                ulSuggestions.innerHTML=''
             }
         })
-    }
+        ulSuggestions.innerHTML=''
+        alertNotFoundFilter.innerHTML=''
+        for ( let i = 0 ; i < contentDiv.children.length ; i++){
+            let nameField = contentDiv.children[i].getElementsByTagName('ul')[0].children[1].getElementsByTagName('span')[0].textContent.toLowerCase()
+            let idField = contentDiv.children[i].getElementsByTagName('ul')[0].children[0].getElementsByTagName('span')[0].textContent
+            if (nameField.startsWith(rechercheInput.value.toLowerCase()) && rechercheInput.value!==''){
+                const liSuggestion = document.createElement('li')
+                const link = document.createElement('a')
+                link.textContent=nameField
+                link.href='/client/'+idField
+                liSuggestion.appendChild(link)
+                ulSuggestions.appendChild(liSuggestion)
+                ulSuggestions.setAttribute('classe','position-absolute list-unstyled bg-primary bg-opacity-10 rounded p-2')
+            }
+        }
+    })
+
+}
+
+// On lance la function par défaut vue qu'on va la réutiliser si on click sur le button tous partenaires
+    finAll()
 
 // Afficher tous les partenaires
     touCheckbox.addEventListener('click',()=>{
         rechercheInput.value=''
         alertNotFoundFilter.innerHTML=''
         seeMoreBtn.setAttribute('class','d-flex justify-content-center align-items-center')
-        nbrPage = 6
+        nbrPage = 2
         arrayContent=[...contentDiv.children]
         arraySliced = arrayContent.slice(0,nbrPage)
         arrayContent.forEach(item=>{
@@ -229,15 +238,18 @@ if (document.getElementById('filtrageForm')){
         if (nbrPage >= arrayContent.length){
             seeMoreBtn.setAttribute('class','d-none')
         }
-        finByLetterAll()
+// On réutilise la function qui trouve les partenaires en tapant leurs noms dans la page tous
+        finAll()
+
     })
+
 
 // Afficher les partenaires inactifs
     inactifCheckbox.addEventListener('click',()=>{
         rechercheInput.value=''
         alertNotFoundFilter.innerHTML=''
         seeMoreBtn.setAttribute('class','d-flex justify-content-center align-items-center')
-        nbrPage = 6
+        nbrPage = 2
         arrayContent=[]
         for (let i = 0 ; i < contentDiv.children.length ; i++){
             if (!contentDiv.children[i].getElementsByTagName('input')[0].checked){
@@ -259,26 +271,31 @@ if (document.getElementById('filtrageForm')){
             seeMoreBtn.setAttribute('class','d-none')
         }
 
-        // Recherche par lettre
+        // Recherche un partenaire par les premières lettres de son nom et dans la page qui affiche que les partenaires inactifs
         rechercheInput.addEventListener('keyup',()=>{
+            document.addEventListener('click',(e)=>{
+                const clickOutInput = rechercheInput.contains(e.target)
+                if (!clickOutInput){
+                    ulSuggestions.innerHTML=''
+                }
+            })
+            ulSuggestions.innerHTML=''
             alertNotFoundFilter.innerHTML=''
-            seeMoreBtn.setAttribute('class','d-none')
-            let arrayFindByLetter=[]
             for ( let i = 0 ; i < contentDiv.children.length ; i++){
-                let nameField = contentDiv.children[i].getElementsByTagName('ul')[0].children[1].textContent.toLowerCase()
-                if (nameField.includes(rechercheInput.value.toLowerCase()) && !contentDiv.children[i].getElementsByTagName('input')[0].checked){
-                    contentDiv.children[i].setAttribute('class','my-3 p-4 article m-auto rounded list-group')
-                    arrayFindByLetter.push(contentDiv.children[i])
-                } else {
-                    contentDiv.children[i].setAttribute('class','d-none')
+                let nameField = contentDiv.children[i].getElementsByTagName('ul')[0].children[1].getElementsByTagName('span')[0].textContent.toLowerCase()
+                let idField = contentDiv.children[i].getElementsByTagName('ul')[0].children[0].getElementsByTagName('span')[0].textContent
+                if (nameField.startsWith(rechercheInput.value.toLowerCase()) && !contentDiv.children[i].getElementsByTagName('input')[0].checked && rechercheInput.value!==''){
+                    const liSuggestion = document.createElement('li')
+                    const link = document.createElement('a')
+                    link.textContent=nameField
+                    link.href='/client/'+idField
+                    liSuggestion.appendChild(link)
+                    ulSuggestions.appendChild(liSuggestion)
+                    ulSuggestions.setAttribute('classe','position-absolute list-unstyled bg-primary bg-opacity-10 rounded p-2')
                 }
             }
-            if (arrayFindByLetter.length===0){
-                let alert = document.createElement('div')
-                alert.innerHTML='<div class="alert alert-danger container text-center">Aucun client trouvé avec ce nom</div>'
-                alertNotFoundFilter.appendChild(alert)
-            }
         })
+
     })
 
 // Afficher les partenaires actifs
@@ -286,7 +303,7 @@ if (document.getElementById('filtrageForm')){
         rechercheInput.value=''
         alertNotFoundFilter.innerHTML=''
         seeMoreBtn.setAttribute('class','d-flex justify-content-center align-items-center')
-        nbrPage = 6
+        nbrPage = 2
         arrayContent=[]
         for (let i = 0 ; i < contentDiv.children.length ; i++){
             if (contentDiv.children[i].getElementsByTagName('input')[0].checked){
@@ -308,24 +325,28 @@ if (document.getElementById('filtrageForm')){
             seeMoreBtn.setAttribute('class','d-none')
         }
 
-        // Recherche par lettre
+        // Recherche un partenaire par les premières lettres de son nom et dans la page qui affiche que les partenaires actifs
         rechercheInput.addEventListener('keyup',()=>{
-            alertNotFoundFilter.innerHTML=''
-            seeMoreBtn.setAttribute('class','d-none')
-            let arrayFindByLetter=[]
-            for ( let i = 0 ; i < contentDiv.children.length ; i++){
-                let nameField = contentDiv.children[i].getElementsByTagName('ul')[0].children[1].textContent.toLowerCase()
-                if (nameField.includes(rechercheInput.value.toLowerCase()) && contentDiv.children[i].getElementsByTagName('input')[0].checked){
-                    contentDiv.children[i].setAttribute('class','my-3 p-4 article m-auto rounded list-group')
-                    arrayFindByLetter.push(contentDiv.children[i])
-                } else {
-                    contentDiv.children[i].setAttribute('class','d-none')
+            document.addEventListener('click',(e)=>{
+                const clickOutInput = rechercheInput.contains(e.target)
+                if (!clickOutInput){
+                    ulSuggestions.innerHTML=''
                 }
-            }
-            if (arrayFindByLetter.length===0){
-                let alert = document.createElement('div')
-                alert.innerHTML='<div class="alert alert-danger container text-center">Aucun client trouvé avec ce nom</div>'
-                alertNotFoundFilter.appendChild(alert)
+            })
+            ulSuggestions.innerHTML=''
+            alertNotFoundFilter.innerHTML=''
+            for ( let i = 0 ; i < contentDiv.children.length ; i++){
+                let nameField = contentDiv.children[i].getElementsByTagName('ul')[0].children[1].getElementsByTagName('span')[0].textContent.toLowerCase()
+                let idField = contentDiv.children[i].getElementsByTagName('ul')[0].children[0].getElementsByTagName('span')[0].textContent
+                if (nameField.startsWith(rechercheInput.value.toLowerCase()) && contentDiv.children[i].getElementsByTagName('input')[0].checked && rechercheInput.value!==''){
+                    const liSuggestion = document.createElement('li')
+                    const link = document.createElement('a')
+                    link.textContent=nameField
+                    link.href='/client/'+idField
+                    liSuggestion.appendChild(link)
+                    ulSuggestions.appendChild(liSuggestion)
+                    ulSuggestions.setAttribute('classe','position-absolute list-unstyled bg-primary bg-opacity-10 rounded p-2')
+                }
             }
         })
 
@@ -333,7 +354,7 @@ if (document.getElementById('filtrageForm')){
 
 // Bouton pagination
     plusBtn.addEventListener('click',()=>{
-        nbrPage+=4
+        nbrPage+=2
         arraySliced = arrayContent.slice(0,nbrPage)
         arrayContent.forEach(item=>{
             if (arraySliced.includes(item)){
@@ -355,8 +376,6 @@ if (document.getElementById('filtrageForm')){
         }
     })
 
-    // Recherche par lettre
-    finByLetterAll()
 }
 // Filtrer les structures
 
