@@ -207,8 +207,10 @@ const finAll = function(){
                 const liSuggestion = document.createElement('li')
                 const link = document.createElement('a')
                 link.textContent=nameField
+                link.setAttribute('class','text-decoration-none text-dark')
                 link.href='/client/'+idField
                 liSuggestion.appendChild(link)
+                liSuggestion.setAttribute('class','ms-4')
                 ulSuggestions.appendChild(liSuggestion)
                 ulSuggestions.setAttribute('classe','position-absolute list-unstyled bg-primary bg-opacity-10 rounded p-2')
             }
@@ -288,8 +290,10 @@ const finAll = function(){
                     const liSuggestion = document.createElement('li')
                     const link = document.createElement('a')
                     link.textContent=nameField
+                    link.setAttribute('class','text-decoration-none text-dark')
                     link.href='/client/'+idField
                     liSuggestion.appendChild(link)
+                    liSuggestion.setAttribute('class','ms-4')
                     ulSuggestions.appendChild(liSuggestion)
                     ulSuggestions.setAttribute('classe','position-absolute list-unstyled bg-primary bg-opacity-10 rounded p-2')
                 }
@@ -342,8 +346,10 @@ const finAll = function(){
                     const liSuggestion = document.createElement('li')
                     const link = document.createElement('a')
                     link.textContent=nameField
+                    link.setAttribute('class','text-decoration-none text-dark')
                     link.href='/client/'+idField
                     liSuggestion.appendChild(link)
+                    liSuggestion.setAttribute('class','ms-4')
                     ulSuggestions.appendChild(liSuggestion)
                     ulSuggestions.setAttribute('classe','position-absolute list-unstyled bg-primary bg-opacity-10 rounded p-2')
                 }
