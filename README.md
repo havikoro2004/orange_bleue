@@ -21,7 +21,7 @@ Créer un fichier .env.local ou modifier le fichier .env en ajoutant le code sui
   * APP_SECRET=4e7e53d5f41d49da941414360241b58c
   * DATABASE_URL="mysql://root@127.0.0.1:3306/efa?serverVersion=mariadb-10.6.5"
   * et commenté la ligne (DATABASE_URL="postgresql://app:!ChangeMe!@127.0.0.1:5432/app?serverVersion=14&charset=utf8")
-  * MAILER_DSN=sendgrid://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@default
+  * MAILER_DSN=sendgrid://votrekeyapisendgrid@default
  ### Mise à jour du projet :
  * Taper les commandes suivantes :
  * composer install => pour installer les dépendances depuis composer.lock
