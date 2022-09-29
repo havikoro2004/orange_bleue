@@ -175,7 +175,7 @@ if (document.getElementById('errorsNewPassword')){
 
 if (document.getElementById('filtrageForm')){
     // Pagination Script
-    let nbrPage = 2
+    let nbrPage = 4
     const plusBtn = document.getElementById('plusBtn')
     const seeMoreBtn = document.getElementById('seeMore')
     const actifsCheckbox = document.getElementById('actifs')
@@ -227,7 +227,7 @@ const finAll = function(){
         rechercheInput.value=''
         alertNotFoundFilter.innerHTML=''
         seeMoreBtn.setAttribute('class','d-flex justify-content-center align-items-center')
-        nbrPage = 2
+        nbrPage = 4
         arrayContent=[...contentDiv.children]
         arraySliced = arrayContent.slice(0,nbrPage)
         arrayContent.forEach(item=>{
@@ -251,7 +251,7 @@ const finAll = function(){
         rechercheInput.value=''
         alertNotFoundFilter.innerHTML=''
         seeMoreBtn.setAttribute('class','d-flex justify-content-center align-items-center')
-        nbrPage = 2
+        nbrPage = 4
         arrayContent=[]
         for (let i = 0 ; i < contentDiv.children.length ; i++){
             if (!contentDiv.children[i].getElementsByTagName('input')[0].checked){
@@ -307,7 +307,7 @@ const finAll = function(){
         rechercheInput.value=''
         alertNotFoundFilter.innerHTML=''
         seeMoreBtn.setAttribute('class','d-flex justify-content-center align-items-center')
-        nbrPage = 2
+        nbrPage = 4
         arrayContent=[]
         for (let i = 0 ; i < contentDiv.children.length ; i++){
             if (contentDiv.children[i].getElementsByTagName('input')[0].checked){
@@ -360,7 +360,7 @@ const finAll = function(){
 
 // Bouton pagination
     plusBtn.addEventListener('click',()=>{
-        nbrPage+=2
+        nbrPage+=4
         arraySliced = arrayContent.slice(0,nbrPage)
         arrayContent.forEach(item=>{
             if (arraySliced.includes(item)){
