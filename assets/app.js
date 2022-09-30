@@ -185,22 +185,22 @@ if (document.getElementById('filtrageForm')){
     const footer = document.getElementById('footer')
     let arrayContent=[...contentDiv.children]
     let arraySliced = arrayContent.slice(0,nbrPage)
-    const alertNotFoundFilter = document.getElementById('alertNotFoundFilter')
     const rechercheInput = document.getElementById('recherche')
     const ulSuggestions = document.getElementById('ulSuggestions')
 
 // Création d'une fonction qui affiche des partenaires en tapant leurs noms dans la barre de recherche et dans la page qui affiche tous partenaires
 const finAll = function(){
     rechercheInput.addEventListener('keyup',()=>{
+        document.getElementById('notFoundError').innerHTML=''
         document.addEventListener('click',(e)=>{
             const clickOutInput = rechercheInput.contains(e.target)
             if (!clickOutInput){
                 ulSuggestions.innerHTML=''
                 ulSuggestions.setAttribute('class','d-none')
+                document.getElementById('notFoundError').innerHTML=''
             }
         })
         ulSuggestions.innerHTML=''
-        alertNotFoundFilter.innerHTML=''
         for ( let i = 0 ; i < contentDiv.children.length ; i++){
             let nameField = contentDiv.children[i].getElementsByTagName('ul')[0].children[1].getElementsByTagName('span')[0].textContent.toLowerCase()
             let idField = contentDiv.children[i].getElementsByTagName('ul')[0].children[0].getElementsByTagName('span')[0].textContent
@@ -216,6 +216,7 @@ const finAll = function(){
             ulSuggestions.setAttribute('class','position-absolute list-group border border-2')
         } else{
             ulSuggestions.setAttribute('class','d-none')
+            document.getElementById('notFoundError').innerHTML='<div class="alert-danger alert container text-center">Aucun resultat trouvé</div>'
         }
     })
 
@@ -284,28 +285,32 @@ const finAll = function(){
 
         // Recherche un partenaire par les premières lettres de son nom et dans la page qui affiche que les partenaires inactifs
         rechercheInput.addEventListener('keyup',()=>{
+            document.getElementById('notFoundError').innerHTML=''
             document.addEventListener('click',(e)=>{
                 const clickOutInput = rechercheInput.contains(e.target)
                 if (!clickOutInput){
                     ulSuggestions.innerHTML=''
+                    ulSuggestions.setAttribute('class','d-none')
+                    document.getElementById('notFoundError').innerHTML=''
                 }
             })
             ulSuggestions.innerHTML=''
-            alertNotFoundFilter.innerHTML=''
             for ( let i = 0 ; i < contentDiv.children.length ; i++){
                 let nameField = contentDiv.children[i].getElementsByTagName('ul')[0].children[1].getElementsByTagName('span')[0].textContent.toLowerCase()
                 let idField = contentDiv.children[i].getElementsByTagName('ul')[0].children[0].getElementsByTagName('span')[0].textContent
                 if (nameField.startsWith(rechercheInput.value.toLowerCase()) && !contentDiv.children[i].getElementsByTagName('input')[0].checked && rechercheInput.value!==''){
-                    const liSuggestion = document.createElement('li')
                     const link = document.createElement('a')
                     link.textContent=nameField
-                    link.setAttribute('class','text-decoration-none text-dark')
+                    link.setAttribute('class','list-group-item list-group-item-action  border-0')
                     link.href='/client/'+idField
-                    liSuggestion.appendChild(link)
-                    liSuggestion.setAttribute('class','ms-4')
-                    ulSuggestions.appendChild(liSuggestion)
-                    ulSuggestions.setAttribute('classe','position-absolute list-unstyled bg-primary bg-opacity-10 rounded p-2')
+                    ulSuggestions.appendChild(link)
                 }
+            }
+            if (ulSuggestions.children.length > 0){
+                ulSuggestions.setAttribute('class','position-absolute list-group border border-2')
+            } else{
+                ulSuggestions.setAttribute('class','d-none')
+                document.getElementById('notFoundError').innerHTML='<div class="alert-danger alert container text-center">Aucun resultat trouvé</div>'
             }
         })
 
@@ -346,28 +351,32 @@ const finAll = function(){
 
         // Recherche un partenaire par les premières lettres de son nom et dans la page qui affiche que les partenaires actifs
         rechercheInput.addEventListener('keyup',()=>{
+            document.getElementById('notFoundError').innerHTML=''
             document.addEventListener('click',(e)=>{
                 const clickOutInput = rechercheInput.contains(e.target)
                 if (!clickOutInput){
                     ulSuggestions.innerHTML=''
+                    ulSuggestions.setAttribute('class','d-none')
+                    document.getElementById('notFoundError').innerHTML=''
                 }
             })
             ulSuggestions.innerHTML=''
-            alertNotFoundFilter.innerHTML=''
             for ( let i = 0 ; i < contentDiv.children.length ; i++){
                 let nameField = contentDiv.children[i].getElementsByTagName('ul')[0].children[1].getElementsByTagName('span')[0].textContent.toLowerCase()
                 let idField = contentDiv.children[i].getElementsByTagName('ul')[0].children[0].getElementsByTagName('span')[0].textContent
                 if (nameField.startsWith(rechercheInput.value.toLowerCase()) && contentDiv.children[i].getElementsByTagName('input')[0].checked && rechercheInput.value!==''){
-                    const liSuggestion = document.createElement('li')
                     const link = document.createElement('a')
                     link.textContent=nameField
-                    link.setAttribute('class','text-decoration-none text-dark')
+                    link.setAttribute('class','list-group-item list-group-item-action  border-0')
                     link.href='/client/'+idField
-                    liSuggestion.appendChild(link)
-                    liSuggestion.setAttribute('class','ms-4')
-                    ulSuggestions.appendChild(liSuggestion)
-                    ulSuggestions.setAttribute('classe','position-absolute list-unstyled bg-primary bg-opacity-10 rounded p-2')
+                    ulSuggestions.appendChild(link)
                 }
+            }
+            if (ulSuggestions.children.length > 0){
+                ulSuggestions.setAttribute('class','position-absolute list-group border border-2')
+            } else{
+                ulSuggestions.setAttribute('class','d-none')
+                document.getElementById('notFoundError').innerHTML='<div class="alert-danger alert container text-center">Aucun resultat trouvé</div>'
             }
         })
 
