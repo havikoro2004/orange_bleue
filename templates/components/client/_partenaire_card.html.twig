@@ -43,8 +43,8 @@
             </div>
         </div>
         <ul class="border border-secondary list-unstyled bg bg-white rounded-2">
-            <li class="m-2">Client ID :{{ client.id }}</li>
-            <li class="m-2">Nom client :{{ client.name }}</li>
+            <li class="m-2">Client ID : {{ client.id }}</li>
+            <li class="m-2">Nom client : {{ client.name }}</li>
             <li class="m-2">
                 Description courte :
                 {% if client.getShortDesc() %}
@@ -79,7 +79,7 @@
             </li>
             <li class="m-2">Utilisateur Manager : {{ client.getTechnicalContact() }}</li>
             <li class="m-2">Contact commercial : {{ client.getCommercialContact() }}</li>
-            <li class="m-2">Date de création :{{ client.getCreateAt()|date('d-m-Y ') }}</li>
+            <li class="m-2">Date de création : {{ client.getCreateAt()|date('d-m-Y ') }}</li>
         </ul>
     </div>
 </section>
