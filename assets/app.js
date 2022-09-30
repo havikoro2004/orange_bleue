@@ -226,6 +226,7 @@ const finAll = function(){
 
 // Afficher tous les partenaires
     touCheckbox.addEventListener('click',()=>{
+        document.getElementById('notFoundError').innerHTML=''
         rechercheInput.value=''
         alertNotFoundFilter.innerHTML=''
         seeMoreBtn.setAttribute('class','d-flex justify-content-center align-items-center')
@@ -250,6 +251,8 @@ const finAll = function(){
 
 // Afficher les partenaires inactifs
     inactifCheckbox.addEventListener('click',()=>{
+        let nbrInactifs=0
+        document.getElementById('notFoundError').innerHTML=''
         rechercheInput.value=''
         alertNotFoundFilter.innerHTML=''
         seeMoreBtn.setAttribute('class','d-flex justify-content-center align-items-center')
@@ -259,9 +262,13 @@ const finAll = function(){
             if (!contentDiv.children[i].getElementsByTagName('input')[0].checked){
                 arrayContent.push(contentDiv.children[i])
                 contentDiv.children[i].setAttribute('class','my-3 p-4 article m-auto rounded list-group')
+                nbrInactifs++
             } else {
                 contentDiv.children[i].setAttribute('class','d-none')
             }
+        }
+        if (nbrInactifs===0){
+            document.getElementById('notFoundError').innerHTML='<div class="alert-danger alert container text-center">Aucun partenaire inactif trouvé</div>'
         }
         arraySliced = arrayContent.slice(0,nbrPage)
         arrayContent.forEach(item=>{
@@ -306,6 +313,8 @@ const finAll = function(){
 
 // Afficher les partenaires actifs
     actifsCheckbox.addEventListener('click',()=>{
+        let nbrActifs = 0
+        document.getElementById('notFoundError').innerHTML=''
         rechercheInput.value=''
         alertNotFoundFilter.innerHTML=''
         seeMoreBtn.setAttribute('class','d-flex justify-content-center align-items-center')
@@ -315,9 +324,13 @@ const finAll = function(){
             if (contentDiv.children[i].getElementsByTagName('input')[0].checked){
                 arrayContent.push(contentDiv.children[i])
                 contentDiv.children[i].setAttribute('class','my-3 p-4 article m-auto rounded list-group')
+                nbrActifs++
             } else {
                 contentDiv.children[i].setAttribute('class','d-none')
             }
+        }
+        if (nbrActifs===0){
+            document.getElementById('notFoundError').innerHTML='<div class="alert-danger alert container text-center">Aucun partenaire actif trouvé</div>'
         }
         arraySliced = arrayContent.slice(0,nbrPage)
         arrayContent.forEach(item=>{
@@ -396,29 +409,45 @@ if (document.getElementById('branchCard')){
 
 // Afficher les structures actives
     actifsBranch.addEventListener('click',()=>{
+        let nbrActifsDiv = 0
+        document.getElementById('notFoundErrorBranch').innerHTML=''
+        footer.scrollIntoView()
         for (let i = 0 ; i < branchCard.children.length ; i++){
             const input = branchCard.children[i].getElementsByTagName('input')
             if (!input[0].checked){
                 branchCard.children[i].setAttribute('class','d-none')
             } else {
                 branchCard.children[i].setAttribute('class','grandDivCardPermissions my-4')
+                nbrActifsDiv++
             }
+        }
+        if (nbrActifsDiv===0){
+            document.getElementById('notFoundErrorBranch').innerHTML='<div class="alert-danger alert container text-center">Aucun partenaire actif trouvé</div>'
         }
     })
 
 // Afficher les structures inactives
     inactifsBranch.addEventListener('click',()=>{
+        let nbrInactifs = 0
+        document.getElementById('notFoundErrorBranch').innerHTML=''
         for (let i = 0 ; i < branchCard.children.length ; i++){
             const input = branchCard.children[i].getElementsByTagName('input')
             if (input[0].checked){
                 branchCard.children[i].setAttribute('class','d-none')
+
             } else {
                 branchCard.children[i].setAttribute('class','grandDivCardPermissions my-4')
+                nbrInactifs++
             }
+        }
+        if (nbrInactifs===0){
+            footer.scrollIntoView()
+            document.getElementById('notFoundErrorBranch').innerHTML='<div class="alert-danger alert container text-center">Aucun partenaire actif trouvé</div>'
         }
     })
 // Afficher toutes les structures
     touBranch.addEventListener('click',()=>{
+        document.getElementById('notFoundErrorBranch').innerHTML=''
         for (let i = 0 ; i < branchCard.children.length ; i++){
             branchCard.children[i].setAttribute('class','grandDivCardPermissions my-4')
         }
