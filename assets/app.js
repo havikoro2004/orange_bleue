@@ -196,6 +196,7 @@ const finAll = function(){
             const clickOutInput = rechercheInput.contains(e.target)
             if (!clickOutInput){
                 ulSuggestions.innerHTML=''
+                ulSuggestions.setAttribute('class','d-none')
             }
         })
         ulSuggestions.innerHTML=''
@@ -204,16 +205,17 @@ const finAll = function(){
             let nameField = contentDiv.children[i].getElementsByTagName('ul')[0].children[1].getElementsByTagName('span')[0].textContent.toLowerCase()
             let idField = contentDiv.children[i].getElementsByTagName('ul')[0].children[0].getElementsByTagName('span')[0].textContent
             if (nameField.startsWith(rechercheInput.value.toLowerCase()) && rechercheInput.value!==''){
-                const liSuggestion = document.createElement('li')
                 const link = document.createElement('a')
                 link.textContent=nameField
-                link.setAttribute('class','text-decoration-none text-dark')
+                link.setAttribute('class','list-group-item list-group-item-action  border-0')
                 link.href='/client/'+idField
-                liSuggestion.appendChild(link)
-                liSuggestion.setAttribute('class','ms-4')
-                ulSuggestions.appendChild(liSuggestion)
-                ulSuggestions.setAttribute('classe','position-absolute list-unstyled bg-primary bg-opacity-10 rounded p-2')
+                ulSuggestions.appendChild(link)
             }
+        }
+        if (ulSuggestions.children.length > 0){
+            ulSuggestions.setAttribute('class','position-absolute list-group border border-2')
+        } else{
+            ulSuggestions.setAttribute('class','d-none')
         }
     })
 
