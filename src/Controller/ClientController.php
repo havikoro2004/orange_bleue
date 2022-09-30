@@ -266,7 +266,7 @@ class ClientController extends AbstractController
         $em = $manager->getManager();
         $status = $client->isActive();
         if ($status){
-            $message = 'Le client '.$client->getName().'a bien été désactivé ';
+            $message = 'Le client '.$client->getName().' a bien été désactivé ';
             $sujet='Désactivation du compte';
             $text ='Votre compte a été désactivé';
             $branches = $client->getBranches();

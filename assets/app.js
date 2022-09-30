@@ -451,7 +451,7 @@ if (document.getElementById('branchCard')){
         }
         if (nbrInactifs===0){
             footer.scrollIntoView()
-            document.getElementById('notFoundErrorBranch').innerHTML='<div class="alert-danger alert container text-center">Aucun partenaire actif trouvé</div>'
+            document.getElementById('notFoundErrorBranch').innerHTML='<div class="alert-danger alert container text-center">Aucun partenaire inactif trouvé</div>'
         }
     })
 // Afficher toutes les structures
