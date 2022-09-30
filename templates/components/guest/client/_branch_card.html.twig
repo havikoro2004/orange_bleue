@@ -39,9 +39,10 @@
                 <ul class="list-unstyled">
                     <li class="liBranch">Structure Id :{{ branche.id }}</li>
                     <li class="liBranch">Adresse :{{ branche.adress }}</li>
-                    <li class="liBranch">Manager : {% if branche.getUser() %}{{ branche.getUser().getEmail() }} {% else %}
-                            <span class="text-danger">Non fourni</span>{% endif %}</li>
-                    <li class="m-2">Date de création :{{ branche.getCreatedAt()|date('d-m-Y ') }} à {{ branche.getCreatedAt()|date(' H:i')}} </li>
+                    <li class="liBranch">Code Postal :{{ branche.getCodePostal }}</li>
+                    <li class="liBranch">Ville :{{ branche.getVille }}</li>
+                    <li class="liBranch">Manager : {{ branche.getManager()}}
+                    <li class="liBranch">Date de création :{{ branche.getCreatedAt()|date('d-m-Y ') }}</li>
                 </ul>
             </div>
             <div id="name={{ branche.id}}" class="editPermissionsBranch">

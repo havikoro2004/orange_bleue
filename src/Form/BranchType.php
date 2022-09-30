@@ -5,7 +5,9 @@ namespace App\Form;
 use App\Entity\Branch;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Vich\UploaderBundle\Form\Type\VichFileType;
@@ -20,6 +22,8 @@ class BranchType extends AbstractType
                 'required'=>false
             ])
             ->add('manager',EmailType::class)
+            ->add('code_postal',IntegerType::class)
+            ->add('ville',TextType::class)
         ;
     }
 

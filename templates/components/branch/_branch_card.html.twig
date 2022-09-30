@@ -40,6 +40,8 @@
                     <ul class="list-unstyled">
                         <li class="liBranch">Structure Id :{{ branche.id }}</li>
                         <li class="liBranch">Adresse :{{ branche.adress }}</li>
+                        <li class="liBranch">Code Postal :{{ branche.getCodePostal }}</li>
+                        <li class="liBranch">Ville :{{ branche.getVille }}</li>
                         <li class="liBranch">Manager : {{ branche.getManager()}}
                         <li class="liBranch">Date de création :{{ branche.getCreatedAt()|date('d-m-Y ') }}</li>
                     </ul>

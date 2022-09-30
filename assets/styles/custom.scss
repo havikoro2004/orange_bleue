@@ -10,8 +10,8 @@ html,body {
 }
 .liBranch{
   margin-left: 0;
-  margin-bottom: 0.5rem;
-  margin-top: 0.7rem;
+  margin-top: 0;
+  margin-bottom: 0.1rem;
 }
 .content {
   display: grid;
@@ -178,7 +178,6 @@ table{
   }
   .liBranch{
     margin-left: 0.7rem;
-    margin-top: 0;
   }
   .bread{
     margin-top: 0.3rem;

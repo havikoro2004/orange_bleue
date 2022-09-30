@@ -1,6 +1,9 @@
 {{ form_start(form) }}
-    {{ form_widget(form.adress , {'attr': {'placeholder': 'Adresse ex : 3 Avenue de la Porte d\'Auteuil 75016 Paris','class':'form-control mb-2'}}) }}
+    {{ form_widget(form.adress , {'attr': {'placeholder': 'Ex : 3 Avenue de la Porte d\'Auteuil 75016 Paris','class':'form-control mb-2'}}) }}
     {{ form_widget(form.manager , {'attr': {'placeholder': 'L\'adresse mail du manager','class':'form-control mb-2'}}) }}
+    {{ form_widget(form.code_postal , {'attr': {'placeholder': 'Taper le code postal','class':'form-control mb-2 p position-relative','min':'1'}}) }}
+    <div id="suggestionVillDiv" class="list-group"></div>
+    {{ form_widget(form.ville , {'attr': {'placeholder': 'Nom de la ville','class':'form-control mb-2'}}) }}
     {{ form_widget(form.imageFile , {'attr': {'class':'form-control mb-2'}}) }}
     <button name ="{{ client.id }}" class="btn btn-primary" id="addBranch">Valider</button>
 {{ form_end(form) }}

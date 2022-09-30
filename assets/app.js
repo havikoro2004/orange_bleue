@@ -463,3 +463,42 @@ if (document.getElementById('branchCard')){
     })
 
 }
+
+const codePostal = document.getElementById('branch_code_postal')
+const suggestionVillDiv= document.getElementById('suggestionVillDiv')
+const branchVille = document.getElementById('branch_ville')
+        codePostal.addEventListener('keyup',()=>{
+            document.addEventListener('click',(e)=>{
+                const clickOutInput = codePostal.contains(e.target)
+                if (!clickOutInput){
+                    suggestionVillDiv.setAttribute('class','d-none')
+                }
+            })
+            suggestionVillDiv.textContent=''
+            if (codePostal.value.length >=5){
+                axios.post('/get_code_postal', {
+                    codePostal: codePostal.value,
+                })
+                    .then(function (response) {
+                        suggestionVillDiv.textContent=''
+                        console.log(response.data.forEach(result=>{
+                            const suggestionVill = document.createElement('button')
+                            suggestionVill.setAttribute('class','list-group-item list-group-item-action')
+                            suggestionVill.textContent=result.ville
+                            suggestionVill.addEventListener('click',(e)=>{
+                                e.preventDefault()
+                                branchVille.value=suggestionVill.textContent
+                                suggestionVillDiv.setAttribute('class','d-none')
+                            })
+                            document.getElementById('suggestionVillDiv').appendChild(suggestionVill)
+                            suggestionVillDiv.setAttribute('class','border border-2 list-group p-2 list-unstyled')
+
+                        }));
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            } else {
+                suggestionVillDiv.setAttribute('class','d-none')
+            }
+        })
