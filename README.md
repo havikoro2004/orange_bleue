@@ -3,6 +3,7 @@ Notre client est une grande marque de salle de sport et souhaite la création d�
 Le projet a donc pour but la création et la construction d’une interface cohérente et ergonomique afin d’aider leurs équipes à ouvrir des accès aux modules de leur API auprès des franchisés/partenaires.
 L’interface devra permettre de donner de la visibilité́ sur les partenaires/franchisés utilisant l’API et quels modules sont accessibles par ces partenaires. Elle doit faciliter l'ajout, la modification ou la suppression des permissions aux modules de chaque partenaire/franchisé.
 # Guide d'installation du projet en Localhost 
+## ``` Important : si la configuration Mailer du fichier .env n'est pas faite certains boutons et changement de permissions ne fonctionneront pas car ces fonctionalités sont liés à des envoie de mail ```
 ## Configuration du projet : 
 1. Symfony 6.1
 2. Maria Db 10.6.5
