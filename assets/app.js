@@ -17,6 +17,9 @@ window.onpageshow = function(event) {
 // Activer ou désactiver un partenaire depuis la page d'accueil
 const cardClient = document.getElementById('clientCard')
 if (cardClient){
+    if (document.getElementById('successFlash')){
+        document.getElementById('successFlash').scrollIntoView()
+    }
     for (let i = 0 ; i < cardClient.children.length ; i++){
         const switchBtn = cardClient.children[i].getElementsByClassName('form-check-input')
         const modalBtn = cardClient.children[i].getElementsByClassName('modal-footer')
@@ -24,7 +27,7 @@ if (cardClient){
         const validBtn = modalBtn[0].children[1];
         switchBtn[0].addEventListener('click',(e)=>{
             e.preventDefault()
-            validBtn.addEventListener('click',()=>{
+            validBtn.addEventListener('click',(e)=>{
                 modalBody[0].innerHTML ="<div class=\"spinner-border text-primary\" role=\"status\">\n" +
                     "</div>"
                 axios.post('/client/'+validBtn.id+'/active', {
@@ -36,7 +39,6 @@ if (cardClient){
                         console.log(error);
                     });
                 location.reload();
-
             })
         })
     }
@@ -45,6 +47,9 @@ if (cardClient){
 // Activer ou désactiver un partenaire dans sa page profil
 const pageOneInput = document.getElementById('activBtnOnePage')
 if (pageOneInput){
+    if (document.getElementById('successFlash')){
+        document.getElementById('successFlash').scrollIntoView()
+    }
     const btnActiveOnePage = pageOneInput.children[0]
     const modalBtn = pageOneInput.getElementsByClassName('modal-footer')[0].children[1]
     const modalOnePageBody =  pageOneInput.getElementsByClassName('modal-body')
@@ -68,6 +73,9 @@ if (pageOneInput){
 
 // Activer ou désactiver une permission globale
 if (document.getElementById('permissionCollaps')){
+    if (document.getElementById('successFlash')){
+        document.getElementById('successFlash').scrollIntoView()
+    }
     const permissionCollaps = document.getElementById('permissionCollaps')
     const switchesBtns = permissionCollaps.getElementsByClassName('form-check-input')
     const permissionModal = document.getElementById('permissionsModal')
@@ -111,7 +119,6 @@ if (document.getElementById('branchCard')){
                 })
                     .then(function (response) {
                         console.log(response);
-                        document.body.scrollTop = document.documentElement.scrollTop = 0;
                     })
                     .catch(function (error) {
                         console.log(error);

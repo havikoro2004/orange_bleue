@@ -2,7 +2,7 @@
     {# ********************* Les messages Flashe ******************* #}
     {% for message in app.flashes('success') %}
         <div class="flash-notice text-center">
-            <div class="alert alert-success">{{ message }}</div>
+            <div class="alert alert-success" id="successFlash">{{ message }}</div>
         </div>
     {% endfor %}
     {% for message in app.flashes('alert') %}

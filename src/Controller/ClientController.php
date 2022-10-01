@@ -260,7 +260,7 @@ class ClientController extends AbstractController
     // Activer ou désactiver un client
     #[Route('/client/{id}/active', name: 'app_client_active')]
     #[IsGranted('ROLE_ADMIN')]
-    public function active(Client $client,ManagerRegistry $manager
+    public function active(Request $request,Client $client,ManagerRegistry $manager
         ,MailerInterface $mailer): Response
     {
         $em = $manager->getManager();
@@ -299,7 +299,7 @@ class ClientController extends AbstractController
 
         $em->flush();
         $this->addFlash('success',$message);
-        return $this->redirectToRoute('app_home');
+        
     }
 
     // Supprimer un client

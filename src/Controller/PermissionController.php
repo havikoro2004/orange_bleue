@@ -99,6 +99,9 @@ class PermissionController extends AbstractController
             ->context(['text'=>'Modification de la structure dont l\'id est :'.$branches->getId()])
             ->htmlTemplate('mails/modif_permissions.html.twig');
         $mailer->send($emailClient);
+        if (!$mailer->send($emailClient)){
+            die('hh');
+        }
 
     }
 
