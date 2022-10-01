@@ -49,6 +49,7 @@ const pageOneInput = document.getElementById('activBtnOnePage')
 if (pageOneInput){
     if (document.getElementById('successFlash')){
         document.getElementById('successFlash').scrollIntoView()
+        setTimeout(function() { window.location=window.location;},1000);
     }
     const btnActiveOnePage = pageOneInput.children[0]
     const modalBtn = pageOneInput.getElementsByClassName('modal-footer')[0].children[1]
