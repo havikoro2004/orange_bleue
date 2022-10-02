@@ -23,6 +23,7 @@ security:
             custom_authenticator: App\Security\LoginAuthenticator
             logout:
                 path: app_logout
+                target: app_out
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall

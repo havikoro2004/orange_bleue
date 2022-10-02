@@ -24,6 +24,9 @@ class OutController extends AbstractController
     #[Route('/inactive', name: 'app_inactive')]
     public function Inactive(): Response
     {
+        if (!$this->getUser()){
+            return $this->redirectToRoute('app_home');
+        }
         if ($this->getUser()->getClient() && $this->getUser()->getClient()->isActive()){
             return $this->redirectToRoute('app_home');
         }
