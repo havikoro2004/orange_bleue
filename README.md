@@ -1,17 +1,45 @@
+# Nom du projet : Energy Fit Academy 
+* Le site est hebergé sous un nom de domaine debuter2zero.fr pour la version en ligne
 # Contexte :
 Notre client est une grande marque de salle de sport et souhaite la création d’une interface simple à destination de ses équipes qui gèrent les droits d'accès à ses applications web de ses franchisés et partenaires qui possèdent des salles de sport. Ainsi, lorsqu'une salle de sport ouvre et prend la franchise de cette marque, on lui donne accès à un outil de gestion en ligne. En fonction de ce qu’il va reverser à la marque et de son contrat, il a droit à des options ou modules supplémentaires. Par exemple, un onglet “faire son mailing” ou encore "gérer le planning équipe" ou bien “promotion de la salle" ou encore “vendre des boissons” peut être activé ou désactivé.
 Le projet a donc pour but la création et la construction d’une interface cohérente et ergonomique afin d’aider leurs équipes à ouvrir des accès aux modules de leur API auprès des franchisés/partenaires.
 L’interface devra permettre de donner de la visibilité́ sur les partenaires/franchisés utilisant l’API et quels modules sont accessibles par ces partenaires. Elle doit faciliter l'ajout, la modification ou la suppression des permissions aux modules de chaque partenaire/franchisé.
 # Guide d'installation du projet en Localhost 
 ## ``` Important : si la configuration Mailer du fichier .env n'est pas faite certains boutons de changement de permissions ne fonctionneront pas car ces fonctionalités sont liés à des envoie de mail ```
-## Configuration du projet : 
-1. Symfony 6.1
-2. Maria Db 10.6.5
-3. PHP 8.1 >=
-4. Composer 2.4.0 
-5. Yarn 1.22 
-6. Git Bash
-7. symfony Cli 
+## Documentation technique : 
+### Serveur :
+* Apache 
+* PHP 8.1
+* Extension PHP : PDO
+* MariaDb 10.6.5
+### FRONT :
+* HTML5
+* CSS3
+* Javascript
+* Bootstrap 5 
+* Axios
+### BACK :
+* PHP 8.1
+* Symfony 6
+* PDO
+* MySql 
+### Deployment :
+* FileZilla
+* Cpanel https://www.namecheap.com/
+### Autres outils utilisés dans le projet :
+* Node.js
+* Yarn
+* Webpack 
+* Composer 
+* Symfony CLi
+* GitBash
+* GitHub
+* Trello
+* Photoshop 
+* Adobe XD
+* Visual Paradigm
+* Balsamiq Mockups
+* PhpStorm 
 
 ## Installation :
 ### Importantion du projet via Git Bash :
