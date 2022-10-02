@@ -23,7 +23,7 @@ Créer un fichier .env.local ou modifier le fichier .env en ajoutant le code sui
   * DATABASE_URL="mysql://root@127.0.0.1:3306/efa?serverVersion=mariadb-10.6.5"
   * et commenté la ligne (DATABASE_URL="postgresql://app:!ChangeMe!@127.0.0.1:5432/app?serverVersion=14&charset=utf8")
   * MAILER_DSN=sendgrid://votrekeyapisendgrid@default
- ### Mise à jour du projet :
+ ### Mise à jour du projet et installation des dépendances:
  * Taper les commandes suivantes :
  * composer install => pour installer les dépendances depuis composer.lock
  * symfony console doctrine database:create => pour créer la base de donnée 
