@@ -359,7 +359,10 @@ const finAll = function(){
 
         // Recherche un partenaire par les premières lettres de son nom et dans la page qui affiche que les partenaires actifs
         rechercheInput.addEventListener('keyup',()=>{
+            // Supprimer le message d'erreur s'il existe
             document.getElementById('notFoundError').innerHTML=''
+
+            // Tout reinitialiser si on clique dehors de la div recherche
             document.addEventListener('click',(e)=>{
                 const clickOutInput = rechercheInput.contains(e.target)
                 if (!clickOutInput){
@@ -368,6 +371,7 @@ const finAll = function(){
                     document.getElementById('notFoundError').innerHTML=''
                 }
             })
+
             ulSuggestions.innerHTML=''
             for ( let i = 0 ; i < contentDiv.children.length ; i++){
                 let nameField = contentDiv.children[i].getElementsByTagName('ul')[0].children[1].getElementsByTagName('span')[0].textContent.toLowerCase()
