@@ -22,6 +22,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Message;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -33,9 +34,9 @@ class ClientController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function index(Request $request,ClientRepository $clientRepository): Response
     {
-
-        // Faire les redirections des users selon leurs rôle
+        // Si l'utilisateur a un role READER(Partenaire) il se redirige vers le profil d'un partenaire
         if ($this->getUser()->getRoles()[0] == 'ROLE_READER'){
+            // Si l'utilisateur n'est pas active il se redirige vers une page qui montre statu inactive
             if (!$this->getUser()->getClient()->isActive()){
                 return $this->redirectToRoute('app_inactive');
             }
@@ -43,9 +44,11 @@ class ClientController extends AbstractController
                 'id'=>$this->getUser()->getClient()->getId()
             ]);
         }
+        // Si l'utilisateur a un role User(Structure) il se redirige vers le profil d'une structure
         if ($this->getUser()->getRoles()[0] == 'ROLE_USER'){
-            if (!$this->getUser()->getBranch()->isActive()){
-                return $this->redirectToRoute('app_inactive');
+            // Si l'utilisateur n'est pas active il se redirige vers une page qui montre statu inactive
+            if (!$this->getUser()->getBranch()->isActive() || !$this->getUser()->getBranch()->isParentStatu()){
+                return $this->render('out/inactive.html.twig');
             }
             return $this->redirectToRoute('app_guest_branch',[
                 'id'=>$this->getUser()->getBranch()->getId()
@@ -226,7 +229,7 @@ class ClientController extends AbstractController
                 $data->setPermission($structurePermissions);
                 $data->setActive(true);
                 $data->setCreatedAt(new \DateTime('now'));
-
+                $data->setParentStatu(true);
                 $emailClient = (new TemplatedEmail())
                     ->from(new Address('havikoro2004@gmail.com','Energy Fit Academy'))
                     ->to($data->getClient()->getUser()->getEmail())
@@ -265,14 +268,20 @@ class ClientController extends AbstractController
     {
         $em = $manager->getManager();
         $status = $client->isActive();
+        $branches = $client->getBranches();
+        
+        // On change le statu du client on inversant le statu avec le signe "!"
+        $client->setActive(!$status);
+
+        // Si le statu du partenaire est active on écrit des messages de désactivation
         if ($status){
             $message = 'Le client '.$client->getName().' a bien été désactivé ';
             $sujet='Désactivation du compte';
-            $text ='Votre compte a été désactivé';
-            $branches = $client->getBranches();
+
+            // Notifier les Structures de la désactivation de leurs compte suite à la desactivation du compte parent
             foreach ($branches as $branche){
                 $text='Votre compte a été désactivé suite à la désactivation du compte parent';
-                $branche->setActive(0);
+                $branche->setParentStatu(0);
                 $emailClient = (new TemplatedEmail())
                     ->from(new Address('havikoro2004@gmail.com','Energy Fit Academy'))
                     ->to($branche->getManager())
@@ -281,21 +290,39 @@ class ClientController extends AbstractController
                     ->htmlTemplate('mails/activation_desactivation_compte.html.twig');
                 $mailer->send($emailClient);
             }
-
+            $text ='Votre compte partenaire est désormais desactivé';
+            // Notifier le compte partenaire de la désactivation du compte
+            $emailClient = (new TemplatedEmail())
+                ->from(new Address('havikoro2004@gmail.com','Energy Fit Academy'))
+                ->to($client->getTechnicalContact())
+                ->subject($sujet)
+                ->context(['sujet'=>$sujet,'text'=>$text,'titre'=>$sujet])
+                ->htmlTemplate('mails/activation_desactivation_compte.html.twig');
+            $mailer->send($emailClient);
         } else {
             $message = 'Le client '.$client->getName().' a bien été activé';
             $sujet='Activation du compte';
-            $text ='Votre compte partenaire est désormais activé';
+            // Notifier les Structures de l'activation de leurs compte parent
+            foreach ($branches as $branche){
+                $text='Votre compte parent est activé';
+                $branche->setParentStatu(0);
+                $emailClient = (new TemplatedEmail())
+                    ->from(new Address('havikoro2004@gmail.com','Energy Fit Academy'))
+                    ->to($branche->getManager())
+                    ->subject($sujet)
+                    ->context(['sujet'=>$sujet,'text'=>$text,'titre'=>$sujet])
+                    ->htmlTemplate('mails/activation_desactivation_compte.html.twig');
+                $mailer->send($emailClient);
+            }
+            $text='Votre compte est activé';
+            $emailClient = (new TemplatedEmail())
+                ->from(new Address('havikoro2004@gmail.com','Energy Fit Academy'))
+                ->to($client->getTechnicalContact())
+                ->subject($sujet)
+                ->context(['sujet'=>$sujet,'text'=>$text,'titre'=>$sujet])
+                ->htmlTemplate('mails/activation_desactivation_compte.html.twig');
+            $mailer->send($emailClient);
         }
-        $client->setActive(!$client->isActive());
-
-        $emailClient = (new TemplatedEmail())
-            ->from(new Address('havikoro2004@gmail.com','Energy Fit Academy'))
-            ->to($client->getTechnicalContact())
-            ->subject($sujet)
-            ->context(['sujet'=>$sujet,'text'=>$text,'titre'=>$sujet])
-            ->htmlTemplate('mails/activation_desactivation_compte.html.twig');
-        $mailer->send($emailClient);
 
         $em->flush();
         $this->addFlash('success',$message);

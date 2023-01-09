@@ -63,6 +63,9 @@ class Branch
     #[ORM\Column(length: 255)]
     private ?string $ville = null;
 
+    #[ORM\Column]
+    private ?bool $parentStatu = null;
+
 
     public function getId(): ?int
     {
@@ -220,6 +223,18 @@ class Branch
     public function setVille(string $ville): self
     {
         $this->ville = $ville;
+
+        return $this;
+    }
+
+    public function isParentStatu(): ?bool
+    {
+        return $this->parentStatu;
+    }
+
+    public function setParentStatu(bool $parentStatu): self
+    {
+        $this->parentStatu = $parentStatu;
 
         return $this;
     }
