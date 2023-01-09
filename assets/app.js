@@ -16,20 +16,29 @@ window.onpageshow = function(event) {
 
 // Activer ou désactiver un partenaire depuis la page d'accueil
 const cardClient = document.getElementById('clientCard')
+// Je fais le if pour éviter les messages erreurs dans ma console du navigateur
 if (cardClient){
+    // S'il y a un message flash que la page pointe vers le haut comme ça on va voir ce message flash
+    // j'utilise toujour le if pour éviter les messages erreurs de la console
     if (document.getElementById('successFlash')){
         document.getElementById('successFlash').scrollIntoView()
     }
+    // Pour viser le bouton en question j'ai fait une boucle for
     for (let i = 0 ; i < cardClient.children.length ; i++){
+        // le bouton switche
         const switchBtn = cardClient.children[i].getElementsByClassName('form-check-input')
+        // Reperer les elements du modal
         const modalBtn = cardClient.children[i].getElementsByClassName('modal-footer')
         const modalBody = cardClient.children[i].getElementsByClassName('modal-body')
         const validBtn = modalBtn[0].children[1];
+
         switchBtn[0].addEventListener('click',(e)=>{
             e.preventDefault()
             validBtn.addEventListener('click',(e)=>{
+                // Changer le contenu du modal avec un spinner Bootstrap qui tourne en attendant la réponse de la requête
                 modalBody[0].innerHTML ="<div class=\"spinner-border text-primary\" role=\"status\">\n" +
                     "</div>"
+                // le lien contient l'id du bouton valider du modal qui est l'id du client
                 axios.post('/client/'+validBtn.id+'/active', {
                 })
                     .then(function (response) {
@@ -38,6 +47,8 @@ if (cardClient){
                     .catch(function (error) {
                         console.log(error);
                     });
+                // Actualiser la page qu'on a stoper avec e.preventDefault après la reponse de la requête c'est ça qui
+                // Ferme le modal arpès
                 location.reload();
             })
         })
@@ -326,23 +337,45 @@ const finAll = function(){
 
 // Afficher les partenaires actifs
     actifsCheckbox.addEventListener('click',()=>{
+
+        // Initialisation du nombre des partenaires actifs pour que si il est 0 ajouter une div alert no result found
         let nbrActifs = 0
+
+        // Vider le message flash que j'ai utilisé s'il y a pas de resultat dans la barre de recherche
         document.getElementById('notFoundError').innerHTML=''
+
+        // Vider l'input de la barre de recherche quand je change de filtre ectif/inactif ...etc
         rechercheInput.value=''
+
         alertNotFoundFilter.innerHTML=''
+
+        // Remettre le bouton voir plus en display block si jamais il été masqué quand il affiche tous
+        // les resultats de pagination
         seeMoreBtn.setAttribute('class','d-flex justify-content-center align-items-center')
+        // On définie le nombre de page (resultats des partenaires souhaités)
         nbrPage = 4
+        // On Initialise le tableau pour l'utiliser pour la pagination
         arrayContent=[]
+
         for (let i = 0 ; i < contentDiv.children.length ; i++){
+            // On va voir la Div contentDiv qui contient les resultats des partenaires si le bouton active est checké
             if (contentDiv.children[i].getElementsByTagName('input')[0].checked){
+                // Si le bouton active est checked on ajoute cette div au tableau arrayContent pour l'utiliser après
+                // Pour la pagination
                 arrayContent.push(contentDiv.children[i])
+                // On laisse la div Active en display block avec le CSS de base
                 contentDiv.children[i].setAttribute('class','my-3 p-4 article m-auto rounded list-group')
+
+                // On incrémente pour voir si on met un message flash no result found ou pas
                 nbrActifs++
             } else {
+                // Si le bouton du profil du partenaire n'est pas checked ça veut dire qu'il est pas actif
+                // On met cette div en display none
                 contentDiv.children[i].setAttribute('class','d-none')
             }
         }
         if (nbrActifs===0){
+            // Si on a pas trouvé de resultat on ajoute un message flash no found error
             document.getElementById('notFoundError').innerHTML='<div class="alert-danger alert container text-center">Aucun partenaire actif trouvé</div>'
         }
         arraySliced = arrayContent.slice(0,nbrPage)
@@ -396,18 +429,28 @@ const finAll = function(){
 
 // Bouton pagination
     plusBtn.addEventListener('click',()=>{
+
+        // Initialisation du nombre de partenaire à afficher par page
         nbrPage+=4
+        // Créer un tableau qui contient des partenaire actifs avec la limite nbrPage
         arraySliced = arrayContent.slice(0,nbrPage)
+        // Plus haut on a un tableau arrayContent qui affiche tous les partenaires selon le statu selectioné
+        // on vérifie si chaque partenaire de ce tableau fait parti du tableau arraySliced
+        // on le garde avec le css 'my-3 p-4 article m-auto rounded list-group et display=block
         arrayContent.forEach(item=>{
             if (arraySliced.includes(item)){
                 item.setAttribute('class','my-3 p-4 article m-auto rounded list-group')
-            } else {
+            }
+            // Sinon on le cache avec la class display=none
+            else {
                 item.setAttribute('class','d-none')
             }
         })
+        // Si le nombre de pages est égale ou plus arrayContent ou il y a tous les resultat on masque le bouton voir plus
         if (nbrPage >= arrayContent.length){
             seeMoreBtn.setAttribute('class','d-none')
         }
+        // Pour pointer toujours vers le bas de la page quand on click sur le bouton voir plus j'ai pointer vers le footer
         footer.scrollIntoView()
     })
     arrayContent.forEach(item=>{

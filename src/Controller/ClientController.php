@@ -46,7 +46,7 @@ class ClientController extends AbstractController
         }
         // Si l'utilisateur a un role User(Structure) il se redirige vers le profil d'une structure
         if ($this->getUser()->getRoles()[0] == 'ROLE_USER'){
-            // Si l'utilisateur n'est pas active il se redirige vers une page qui montre statu inactive
+            // Si l'utilisateur n'est pas active ou sont parent (partenaire) n'est pas active il se redirige vers une page qui montre statu inactive
             if (!$this->getUser()->getBranch()->isActive() || !$this->getUser()->getBranch()->isParentStatu()){
                 return $this->render('out/inactive.html.twig');
             }
@@ -70,6 +70,7 @@ class ClientController extends AbstractController
     $permissionRepository,ManagerRegistry $manager , Request $request,
                         ValidatorInterface $validator,MailerInterface $mailer,UserRepository $UserRepository): Response
     {
+        // On ajoute un nouvel Objet User
         $userClient = New User();
         $error =null;
         $em = $manager->getManager();
@@ -83,19 +84,25 @@ class ClientController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()){
             $data->setCreateAt(new \DateTime('now'));
             $data->setActive(true);
+            // Initialiser des permissions pour le nouveau partenaire
             $addPermissions = New Permission();
+            // Récuperer les permissions dont l'id est 1 qu'on va assigner par défault à chaque nouveau partenaire
             $defaultPermissions = $permissionRepository->findOneBy(['id'=>1]);
+            // Prendre les permissions dont l'id est 1 et les inserer aux $addPermissions
             $defaultPermissions->cloneClass($addPermissions);
             $addPermissions->setBranch(false);
+            // Ajouter les permission à notre data
             $data->addPermission($addPermissions);
-
+            //On ajouter l'adresse email de l'utilisateur
             $userClient->setEmail($data->getTechnicalContact());
+            // Vérifier si il y a deja une adresse email dans la base de données
             if ($UserRepository->findOneBy([
                 'email'=>$data->getTechnicalContact()
             ]))
             {
                 $this->addFlash('alert','Cette adresse email est deja utilisé');
             } else {
+                // S'il n'y a pas d'adresse deja utilisé on ajoute un utiliateur avec un mot de passe aleatoire
                 $planPassword = md5(uniqid());
                 $hashedPassword = $hasher->hashPassword($userClient,$planPassword);
                 $userClient->setPassword($hashedPassword);
@@ -103,7 +110,9 @@ class ClientController extends AbstractController
                 $userClient->setToken(md5(uniqid()));
                 $userClient->setCreateAt(new \DateTime('now'));
                 $userClient->setRoles(['ROLE_READER']);
+                // On ajoute le client de cet utilisateur qui est le nouveau partenaire inséré dans la DATA
                 $userClient->setClient($data);
+
                 $em->persist($userClient);
 
                 // Envoyer un email au compte utilisateur partenaire
@@ -269,7 +278,7 @@ class ClientController extends AbstractController
         $em = $manager->getManager();
         $status = $client->isActive();
         $branches = $client->getBranches();
-        
+
         // On change le statu du client on inversant le statu avec le signe "!"
         $client->setActive(!$status);
 
@@ -335,17 +344,28 @@ class ClientController extends AbstractController
     public function delete(Client $client,ManagerRegistry $manager,MailerInterface $mailer): Response
     {
        $em = $manager->getManager();
+       $branches = $client->getBranches();
        $em->remove($client);
        $em->flush();
        $this->addFlash('success','Le partenaire a bien été supprimé');
 
+       // Notifier les structures de ce partenaire de la suppression du leurs compte ainsi que le compte parent
+        foreach ($branches as $branche){
+            $branche->setParentStatu(0);
+            $emailClient = (new TemplatedEmail())
+                ->from(new Address('havikoro2004@gmail.com','Energy Fit Academy'))
+                ->to($branche->getManager())
+                ->subject('Votre compte est supprimé')
+                ->htmlTemplate('mails/suppression_compte.html.twig');
+            $mailer->send($emailClient);
+        }
+        // Notifier l'utilisateur du compte partenaire de la suppression de son compte
         $emailClient = (new TemplatedEmail())
             ->from(new Address('havikoro2004@gmail.com','Energy Fit Academy'))
             ->to($client->getTechnicalContact())
             ->subject('Votre compte est supprimé')
             ->htmlTemplate('mails/suppression_compte.html.twig');
         $mailer->send($emailClient);
-
 
         return $this->redirectToRoute('app_home');
     }
