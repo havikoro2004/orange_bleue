@@ -209,7 +209,7 @@ class Permission
         return $this;
     }
 
-    public function cloneClass(Permission $permission):Void
+    public function clonePermission(Permission $permission):Void
     {
         $permission->setReadResa($this->isReadResa())
                    ->setEditResa($this->isEditResa())

@@ -12,7 +12,7 @@ use App\Repository\BranchRepository;
 use App\Repository\ClientRepository;
 use App\Repository\PermissionRepository;
 use App\Repository\UserRepository;
-use App\Services\CloneClass;
+
 use Doctrine\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
-use Symfony\Component\Mime\Message;
+
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -89,7 +89,7 @@ class ClientController extends AbstractController
             // Récuperer les permissions dont l'id est 1 qu'on va assigner par défault à chaque nouveau partenaire
             $defaultPermissions = $permissionRepository->findOneBy(['id'=>1]);
             // Prendre les permissions dont l'id est 1 et les inserer aux $addPermissions
-            $defaultPermissions->cloneClass($addPermissions);
+            $defaultPermissions->clonePermission($addPermissions);
             $addPermissions->setBranch(false);
             // Ajouter les permission à notre data
             $data->addPermission($addPermissions);
@@ -229,7 +229,7 @@ class ClientController extends AbstractController
                     $this->addFlash('alert','Cette adresse email est deja utilisée');
             }else {
                 $structurePermissions = New Permission();
-                $permissions->cloneClass($structurePermissions);
+                $permissions->clonePermission($structurePermissions);
                 $structurePermissions->addClient($client);
                 $structurePermissions->setBranch(true);
                 $token = md5(uniqid());
