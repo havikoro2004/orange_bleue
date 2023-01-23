@@ -207,6 +207,11 @@ if (document.getElementById('filtrageForm')){
     const rechercheInput = document.getElementById('recherche')
     const ulSuggestions = document.getElementById('ulSuggestions')
 
+    // Si le nombre de pages est égale ou plus arrayContent ou il y a tous les resultat on masque le bouton voir plus
+    if (nbrPage >= arrayContent.length){
+        seeMoreBtn.setAttribute('class','d-none')
+    }
+
 // Création d'une fonction qui affiche des partenaires en tapant leurs noms dans la barre de recherche et dans la page qui affiche tous partenaires
 const finAll = function(){
     rechercheInput.addEventListener('keyup',()=>{
