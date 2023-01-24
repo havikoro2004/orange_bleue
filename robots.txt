@@ -1,0 +1,6 @@
+User-agent: Googlebot
+Disallow: /nogooglebot/
+
+User-agent: *
+
+Sitemap: https://debuter2zero.fr/sitemap.xml
